@@ -19,3 +19,25 @@ float Camera::GetFov()
 {
 	return m_Fov;
 }
+
+void Camera::SetOrthographic(bool value)
+{
+	m_Orthographic = value;
+}
+
+bool Camera::GetOrthographic()
+{
+	return m_Orthographic;
+}
+
+glm::mat4 Camera::CalculateProjection(float width, float height)
+{
+	if (m_Orthographic)
+	{
+		return glm::ortho(m_Postition.x - width / 2.f, m_Postition.x + width / 2.f, m_Postition.y + height / 2.f, m_Postition.y - height / 2.f);
+	}
+	else
+	{
+		return glm::perspective(m_Fov, width / height, m_Near, m_Far);
+	}
+}

@@ -1,7 +1,7 @@
 #include "Transform.h"
 
-Transform::Transform(glm::vec3 position, glm::vec3 rotation)
-	: m_Position(position), m_Rotation(rotation), m_Parent(nullptr)
+Transform::Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+	: m_Position(position), m_Rotation(rotation), m_Scale(scale), m_Parent(nullptr)
 {
 }
 
@@ -29,6 +29,16 @@ glm::vec3 Transform::GetRotation()
 	return m_Rotation;
 }
 
+void Transform::SetScale(glm::vec3 scale)
+{
+	m_Scale = scale;
+}
+
+glm::vec3 Transform::GetScale()
+{
+	return m_Scale;
+}
+
 void Transform::SetParent(Transform* parent)
 {
 	m_Parent = parent;
@@ -46,6 +56,8 @@ glm::mat4 Transform::GetLocalMatrix()
 	matrix = glm::rotate(matrix, glm::radians(m_Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
 	matrix = glm::rotate(matrix, glm::radians(m_Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	matrix = glm::rotate(matrix, glm::radians(m_Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	matrix = glm::scale(matrix, m_Scale);
 
 	return matrix;
 }

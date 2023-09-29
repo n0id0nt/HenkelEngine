@@ -12,10 +12,18 @@ public:
 	glm::mat4 GetViewMatrix();
 	float GetFov();
 
+	void SetOrthographic(bool value);
+	bool GetOrthographic();
+
+	glm::mat4 CalculateProjection(float width, float height);
+
 private:
 	glm::vec3 m_Postition;
 	glm::vec3 m_Front;
 	glm::vec3 m_Up;
 	float m_Fov;
+	bool m_Orthographic;
+	float m_Near = 0.1f;
+	float m_Far = 1000.f;
 };
 

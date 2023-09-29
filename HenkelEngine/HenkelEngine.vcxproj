@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -81,7 +81,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,20 +159,20 @@
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\Color.cpp" />
     <ClCompile Include="scr\Component\Component.cpp" />
-    <ClCompile Include="scr\Component\RendererComponent.cpp" />
+    <ClCompile Include="scr\Component\RenderComponent.cpp" />
+    <ClCompile Include="scr\opengl\Renderer.cpp" />
     <ClCompile Include="scr\Entity\Entity.cpp" />
     <ClCompile Include="scr\Input.cpp" />
     <ClCompile Include="scr\Main.cpp" />
     <ClCompile Include="scr\opengl\FrameBuffer.cpp" />
-    <ClCompile Include="scr\opengl\Mesh.cpp" />
+    <ClCompile Include="scr\opengl\Mesh\Mesh.cpp" />
     <ClCompile Include="scr\opengl\openglHelper.cpp" />
     <ClCompile Include="scr\opengl\Shader.cpp" />
     <ClCompile Include="scr\opengl\Texture.cpp" />
     <ClCompile Include="scr\Scene.cpp" />
     <ClCompile Include="scr\Transform.cpp" />
-    <ClCompile Include="scr\UI\MovePanel.cpp" />
-    <ClCompile Include="scr\UI\ScenePanel.cpp" />
     <ClCompile Include="scr\Window.cpp" />
+    <ClCompile Include="scr\Component\SpriteComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\fragment.shader" />
@@ -189,26 +189,25 @@
     <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="dependencies\nlohmann\json.h" />
     <ClInclude Include="scr\Application.h" />
     <ClInclude Include="scr\Camera.h" />
     <ClInclude Include="scr\Color.h" />
     <ClInclude Include="scr\Component\Component.h" />
-    <ClInclude Include="scr\Component\RendererComponent.h" />
+    <ClInclude Include="scr\Component\RenderComponent.h" />
+    <ClInclude Include="scr\opengl\Renderer.h" />
     <ClInclude Include="scr\Entity\Entity.h" />
     <ClInclude Include="scr\Event.h" />
     <ClInclude Include="scr\Input.h" />
     <ClInclude Include="scr\opengl\FrameBuffer.h" />
-    <ClInclude Include="scr\opengl\IRenderer.h" />
-    <ClInclude Include="scr\opengl\Mesh.h" />
+    <ClInclude Include="scr\opengl\Mesh\Mesh.h" />
     <ClInclude Include="scr\opengl\openglHelper.h" />
     <ClInclude Include="scr\opengl\Shader.h" />
     <ClInclude Include="scr\opengl\Texture.h" />
     <ClInclude Include="scr\Scene.h" />
     <ClInclude Include="scr\Transform.h" />
-    <ClInclude Include="scr\UI\MovePanel.h" />
-    <ClInclude Include="scr\UI\Panel.h" />
-    <ClInclude Include="scr\UI\ScenePanel.h" />
     <ClInclude Include="scr\Window.h" />
+    <ClInclude Include="scr\Component\SpriteComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

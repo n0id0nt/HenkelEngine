@@ -1,5 +1,5 @@
 #include "Mesh.h"
-#include "../Component/RendererComponent.h"
+#include "../../opengl/Renderer.h"
 
 void Mesh::setCubeData(std::vector<Vertex>& vertices)
 {
@@ -47,6 +47,24 @@ void Mesh::setCubeData(std::vector<Vertex>& vertices)
         {{ 0.5f,  0.5f,  0.5f},    {1.0f, 0.0f}},
         {{-0.5f,  0.5f,  0.5f},    {0.0f, 0.0f}},
         {{-0.5f,  0.5f, -0.5f},    {0.0f, 1.0f}} 
+    };
+
+    vertices.clear();
+    vertices = _vertices;
+}
+
+void Mesh::setQuadData(std::vector<Vertex>& vertices)
+{
+    std::vector<Vertex> _vertices =
+    {
+        // Position             Texture
+        {{-0.5f, -0.5f, 0.f},    {0.f, 0.f}},
+        {{ 0.5f, -0.5f, 0.f},    {1.f, 0.f}},
+        {{ 0.5f,  0.5f, 0.f},    {1.f, 1.f}},
+
+        {{ 0.5f,  0.5f, 0.f},    {1.f, 1.f}},
+        {{-0.5f,  0.5f, 0.f},    {0.f, 1.f}},
+        {{-0.5f, -0.5f, 0.f},    {0.f, 0.f}},
     };
 
     vertices.clear();

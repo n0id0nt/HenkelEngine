@@ -16,7 +16,6 @@ void Input::Update()
     m_keysPressed.clear();
     m_keysReleased.clear();
 
-
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {

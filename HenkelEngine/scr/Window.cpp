@@ -23,12 +23,9 @@ Window::Window(std::string name, int x, int y, int w, int h)
 
 	// Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
 	glewExperimental = GL_TRUE;
+
 	// Initialize GLEW to setup the OpenGL Function pointers
-	if (GLEW_OK != glewInit())
-	{
-		std::cout << "Failed to initialize GLEW" << std::endl;
-		//return EXIT_FAILURE;
-	}
+	ASSERT(GLEW_OK == glewInit());
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
