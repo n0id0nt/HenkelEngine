@@ -36,7 +36,7 @@ Window::Window(std::string name, int x, int y, int w, int h)
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-	m_scene = std::make_unique<Scene>(this);
+	m_scene = std::make_unique<Scene>(this, "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/TiledBaseEngine/", "TestLevel.tmx");
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();

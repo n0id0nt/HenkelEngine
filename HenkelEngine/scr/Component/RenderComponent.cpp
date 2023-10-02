@@ -5,10 +5,9 @@
 #include "../Window.h"
 #include "../opengl/Texture.h"
 
-RenderComponent::RenderComponent(Entity* entity)
-    : Component(entity), m_Renderer("res/shaders/vertex.shader", "res/shaders/fragment.shader", "res/images/Zombie.png")
+RenderComponent::RenderComponent(Entity* entity, bool stretchToImageSize, unsigned int QuadCound, std::string texture)
+    : Component(entity), m_Renderer(new Material(texture, "res/shaders/vertex.shader", "res/shaders/fragment.shader"), stretchToImageSize, QuadCound)
 {
-    GetEntity()->GetTransform()->SetScale({ m_Renderer.GetTexture()->GetWidth(), m_Renderer.GetTexture()->GetWidth(), 1.f });
 }
 
 void RenderComponent::Render()

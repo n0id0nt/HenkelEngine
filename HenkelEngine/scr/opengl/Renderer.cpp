@@ -3,64 +3,100 @@
 #include "../Camera.h"
 #include "../Scene.h"
 #include "../Window.h"
-#include "../opengl/Mesh/Mesh.h"
+#include "Mesh/Mesh.h"
 
-
-Renderer::Renderer(std::string vertexShader, std::string fragmentShader, std::string texture)
+Renderer::Renderer(Material* material, bool stretchToImageSize, unsigned int quads) : m_Material(material), m_StretchToImageSize(stretchToImageSize), m_Quads(quads)
 {
-    m_Shader = std::make_unique<Shader>(vertexShader, fragmentShader);
-    m_Shader->Bind();
-    m_Shader->SetUniform1i("image", 0);
-    m_Texture = std::make_unique<Texture>(texture);
-
+    // ensure renderer will actually draw something
+    ASSERT(quads > 0);
     initRenderData();
 }
 
 void Renderer::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
-    // Bind Textures using texture units
-    m_Shader->Bind();
-    m_Texture->Bind();
-
-    // Set world matrices 
-    m_Shader->SetUniformMat4f("model", model);
-    m_Shader->SetUniformMat4f("view", view);
-    m_Shader->SetUniformMat4f("projection", projection);
+    bool isBatching = IsBatching();
+    // Bind Material
+    m_Material->Bind(model, view, projection, m_StretchToImageSize);
 
     GLCall(glBindVertexArray(m_VAO));
 
-    m_Shader->SetUniform4f("spriteColor", {1.f,1.f,1.f,1.f});
-    GLCall(glDrawArrays(GL_TRIANGLES, 0, 36));
+    // loop to ensure no more than the max batch size is rendered
+    int batchesToDraw = glm::ceil((float)m_Vertices.size() / (m_Quads * QUAD_SIZE));
+    for (int i = 0; i < batchesToDraw; i++)
+    {
+        if (isBatching)
+        {
+            GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
+            GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(m_Quads * QUAD_SIZE, m_Vertices.size()), m_Vertices.data()));
+        }
 
+        GLCall(glDrawElements(GL_TRIANGLES, m_Indexes.size(), GL_UNSIGNED_INT, 0));
+
+        if (isBatching && i != batchesToDraw - 1)
+        {
+            m_Vertices.erase(m_Vertices.begin(), m_Vertices.begin() + m_Quads * QUAD_SIZE);
+        }
+    }
     GLCall(glBindVertexArray(0));
+
+    if (isBatching)
+    {
+        m_Vertices.clear();
+    }
 }
 
-Texture* Renderer::GetTexture()
+void Renderer::AddQuadToBatch(const glm::vec2& pos, const glm::vec4& sourceRect)
 {
-    return m_Texture.get();
+    ASSERT(IsBatching());
+    std::vector<Vertex> vertices;
+    Mesh::setQuadData(vertices, pos, sourceRect);
+    m_Vertices.insert(m_Vertices.end(), vertices.begin(), vertices.end());
 }
 
 void Renderer::initRenderData()
 {
-    GLuint VBO;    
-    Mesh::setQuadData(m_Vertices);
+    GLuint IBO;    
+    Mesh::setQuadData(m_Vertices, m_Indexes, m_Quads);
 
     // init the VAO and VBO
     GLCall(glGenVertexArrays(1, &m_VAO));
     GLCall(glBindVertexArray(m_VAO));
 
-    GLCall(glGenBuffers(1, &VBO));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, VBO));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), &m_Vertices[0], GL_STATIC_DRAW));
+    GLCall(glGenBuffers(1, &m_VBO));
+    GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
+
+    // only bother with batching when more than one quad needs to ne drawn
+    if (IsBatching())
+    {
+        GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * QUAD_SIZE * m_Quads, nullptr, GL_DYNAMIC_DRAW));
+    }
+    else
+    {
+        GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), m_Vertices.data(), GL_STATIC_DRAW));
+    }
+
+
+    GLCall(glGenBuffers(1, &IBO));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * m_Indexes.size(), m_Indexes.data(), GL_STATIC_DRAW));
 
     // Position attribute
     GLCall(glEnableVertexAttribArray(0));
     GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0));
 
-    // TexCoord attribute
+    // Color attribute
     GLCall(glEnableVertexAttribArray(1));
-    GLCall(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, Vertex::texCoord))));
+    GLCall(glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, Vertex::color))));
+
+    // TexCoord attribute
+    GLCall(glEnableVertexAttribArray(2));
+    GLCall(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, Vertex::texCoord))));
 
     GLCall(glBindVertexArray(0)); // Unbind VAO
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0)); // Unbind VBO
+}
+
+bool Renderer::IsBatching()
+{
+    return m_Quads > 1;
 }

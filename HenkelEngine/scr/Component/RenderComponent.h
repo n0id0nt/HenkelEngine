@@ -6,10 +6,10 @@
 class RenderComponent : public Component
 {
 public:
-	RenderComponent(Entity* entity);
+	RenderComponent(Entity* entity, bool stretchToImageSize, unsigned int QuadCound = 1, std::string texture = "res/images/CubeFace.png");
 	
-	void Render();
+	virtual void Render();
 
-private:
+protected:
 	Renderer m_Renderer;
 };

@@ -5,7 +5,7 @@
 class SpriteComponent : public RenderComponent
 {
 public:
-	SpriteComponent(Entity* entity) : RenderComponent(entity) {}
+	SpriteComponent(Entity* entity) : RenderComponent(entity, true) {}
 	
 	void Update() override;
 };

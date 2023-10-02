@@ -2,6 +2,9 @@
 
 #include <vector>
 #include "glm\glm.hpp"
+#include "..\..\opengl\openglHelper.h"
+
+#define QUAD_SIZE 4
 
 struct Vertex;
 
@@ -9,6 +12,8 @@ class Mesh
 {
 public:
 	static void setCubeData(std::vector<Vertex>& vertices);
-	static void setQuadData(std::vector<Vertex>& vertices);
+	static void setQuadData(std::vector<Vertex>& vertices, std::vector<GLuint>& indexes, unsigned int quadsCount);
+	static void setQuadData(std::vector<GLuint>& indexes, unsigned int quadsCount);
+	static void setQuadData(std::vector<Vertex>& vertices, const glm::vec2& pos, const glm::vec4& size);
 };
 

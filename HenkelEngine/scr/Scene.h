@@ -11,8 +11,10 @@ class Window;
 class Scene
 {
 public :
-	Scene(Window* window);
+	Scene(Window* window, const std::string& fileDir, const std::string& levelFile);
 	~Scene();
+
+	void LoadScene(const std::string& fileDir, const std::string& levelFile);
 
 	void Update();
 	void Render();
@@ -29,5 +31,7 @@ private:
 	std::unique_ptr<Camera> m_camera;
 	Window* m_window;
 	bool m_dockingEnviromentInited;
+
+	std::string m_name;
 };
 

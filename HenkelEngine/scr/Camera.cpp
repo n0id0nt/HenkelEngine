@@ -35,6 +35,7 @@ glm::mat4 Camera::CalculateProjection(float width, float height)
 	if (m_Orthographic)
 	{
 		return glm::ortho(m_Postition.x - width / 2.f, m_Postition.x + width / 2.f, m_Postition.y + height / 2.f, m_Postition.y - height / 2.f);
+		//return glm::ortho(0.f, width, height, 0.f);
 	}
 	else
 	{

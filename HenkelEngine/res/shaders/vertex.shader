@@ -1,15 +1,18 @@
 #version 330 core
-layout (location = 0) in vec3 position;
-layout (location = 1) in vec2 texCoord;
+layout (location = 0) in vec3 a_Position;
+layout (location = 1) in vec4 a_Color;
+layout (location = 2) in vec2 a_TexCoord;
 
-out vec2 TexCoord;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 U_Model;
+uniform mat4 U_ViewProjection;
+
+out vec2 v_TexCoord;
+out vec4 v_Color;
 
 void main()
 {
-    TexCoord = texCoord.xy;
-    gl_Position = projection * view * model * vec4(position, 1.0f);
+    v_Color = a_Color;
+    v_TexCoord = a_TexCoord;
+    gl_Position = U_Model * U_ViewProjection * vec4(a_Position, 1.0f);
 }
