@@ -1,0 +1,87 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "TestLevel.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "Player.tmx": {
+            "scale": 2.5590625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 132.4703871046526,
+                "y": 159.43338624984736
+            }
+        },
+        "TestLevel.tmj": {
+            "expandedGroupLayers": [
+                3
+            ],
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 272.99999999999994,
+                "y": 219.33333333333331
+            }
+        },
+        "TestLevel.tmx": {
+            "expandedGroupLayers": [
+                3
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 238.99999999999997,
+                "y": 71.33333333333331
+            }
+        },
+        "TestTiles.tsj": {
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
+        },
+        "TestTiles.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
+        }
+    },
+    "last.imagePath": "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/TiledBaseEngine/Tiles",
+    "map.fixedSize": true,
+    "map.height": 20,
+    "map.lastUsedFormat": "json",
+    "map.layerDataFormat": 1,
+    "map.orientation": 1,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 15,
+    "openFiles": [
+        "Player.tmx",
+        "TestLevel.tmx"
+    ],
+    "project": "TestGameForCustomEngine.tiled-project",
+    "property.type": "string",
+    "recentFiles": [
+        "Player.tmx",
+        "TestLevel.tmx",
+        "TestTiles.tsj",
+        "TestLevel.tmj",
+        "TestTiles.tsx"
+    ],
+    "tileset.embedInMap": false,
+    "tileset.lastUsedFormat": "json",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.transparentColor": "#ff00ff",
+    "tileset.type": 0,
+    "tileset.useTransparentColor": false
+}

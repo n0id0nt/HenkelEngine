@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" class="TestLevel" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="5">
+ <tileset firstgid="1" source="TestTiles.tsx"/>
+ <layer id="5" name="Background" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjILhA4QHyE4YHgg76WU3Njvp7e9RMAqGCgAAQQwBMQ==
+  </data>
+ </layer>
+ <layer id="1" name="Ground" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGHnABMS8UcyFhXiwYlzwXDnlcNAjzYcECJIqPBEzI7wJEhg8+NQJEqiE2HkDqhAYIAwBwRwof
+  </data>
+ </layer>
+ <objectgroup id="6" name="Player">
+  <object id="3" gid="5" x="214.667" y="212" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="4" name="Item">
+  <object id="4" gid="3" x="428" y="218.667" width="16" height="16"/>
+ </objectgroup>
+ <layer id="7" name="ForeGround" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMFgB+yCznx2PHDJgQlPDhEVuFIyC4QwAjOAAKg==
+  </data>
+ </layer>
+</map>
