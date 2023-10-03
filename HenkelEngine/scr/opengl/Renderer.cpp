@@ -53,6 +53,12 @@ void Renderer::AddQuadToBatch(const glm::vec2& pos, const glm::vec4& sourceRect)
     m_Vertices.insert(m_Vertices.end(), vertices.begin(), vertices.end());
 }
 
+void Renderer::SetQuadUVs(const glm::vec4& rect)
+{
+    ASSERT(!IsBatching()); // can't be batching because batch is cleared each draw call 
+    Mesh::setQuadData(m_Vertices, { 0.f, 0.f }, rect);
+}
+
 void Renderer::initRenderData()
 {
     GLuint IBO;    

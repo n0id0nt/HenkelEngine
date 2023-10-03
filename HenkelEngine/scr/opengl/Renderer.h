@@ -22,6 +22,8 @@ public:
 
 	void AddQuadToBatch(const glm::vec2& pos, const glm::vec4& size);
 
+	void SetQuadUVs(const glm::vec4& rect);
+
 private:
 
 	void initRenderData();

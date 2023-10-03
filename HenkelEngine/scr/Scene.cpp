@@ -49,25 +49,40 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 	TileSheet tileSheet(fileDir, doc.child("map").child("tileset").attribute("source").as_string());
 
-	for (auto& layer : doc.child("map").children("layer"))
+	for (auto& layer : doc.child("map").children())
 	{
-		// create tilemap component
-		Entity* timemap = CreateEntity(layer.attribute("name").as_string());
-		int width = layer.attribute("width").as_int();
-		int height = layer.attribute("height").as_int();
+		std::string name(layer.name());
+		if (name == "layer")
+		{
+			// create tilemap component
+			Entity* timemap = CreateEntity(layer.attribute("name").as_string());
+			int width = layer.attribute("width").as_int();
+			int height = layer.attribute("height").as_int();
 
-		// retrieve level data
-		ASSERT(std::string(layer.child("data").attribute("encoding").as_string()) == "base64");
-		std::string base64Data = layer.child("data").text().as_string();
-		std::string data = base64_decode(HenkelEngine::trim(base64Data));
-		uLongf numGids = width * height *sizeof(int);
-		std::vector<unsigned> levelArray(numGids);
-		uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
-		levelArray.erase(levelArray.begin() + width * height, levelArray.end());
+			// retrieve level data
+			ASSERT(std::string(layer.child("data").attribute("encoding").as_string()) == "base64");
+			std::string base64Data = layer.child("data").text().as_string();
+			std::string data = base64_decode(HenkelEngine::trim(base64Data));
+			uLongf numGids = width * height * sizeof(int);
+			std::vector<unsigned> levelArray(numGids);
+			uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
+			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
-		timemap->AddComponent(new TileMapComponent(timemap, width, height, levelArray, tileSheet));
-		//timemap->GetTransform()->SetScale({ 32.f, 32.f, 1.f });
-		
+			timemap->AddComponent(new TileMapComponent(timemap, width, height, levelArray, tileSheet));
+			//timemap->GetTransform()->SetScale({ 32.f, 32.f, 1.f });
+		}
+		else if (name == "objectgroup")
+		{
+			// create tilemap component
+			Entity* objectGroup = CreateEntity(layer.attribute("name").as_string());
+			for (auto& object : layer.children("object"))
+			{
+				Entity* gameObject = CreateEntity(object.attribute("name").as_string());
+				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint()));
+				gameObject->GetTransform()->SetParent(objectGroup->GetTransform());
+				gameObject->GetTransform()->SetPosition({ object.attribute("x").as_float(), object.attribute("y").as_float(), 0.f });
+			}
+		}
 	}
 }
 
