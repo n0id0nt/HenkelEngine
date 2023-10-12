@@ -11,7 +11,7 @@
 #include "Resourse\TileSheet.h"
 
 //Entity* cube, *cube2;
-float x = -0.95f, y = 1.f, z = 32.f;
+float x = 0.f, y = 0.f, z = 32.f;
 
 Scene::Scene(Window* window, const std::string& fileDir, const std::string& levelFile) : m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 0.0f))), m_window(window), m_dockingEnviromentInited(false), m_name("Scene")
 {
@@ -91,8 +91,11 @@ void Scene::Update()
 	for (auto& entity : m_entities)
 	{
 		entity->Update();
-		entity->GetTransform()->SetPosition({ x, y, 0.f });
-		entity->GetTransform()->SetScale({ z, z, 1.f });
+		if (!entity->HasComponent<SpriteComponent>())
+		{
+			entity->GetTransform()->SetPosition({ x, y, 0.f });
+			entity->GetTransform()->SetScale({ z, z, 1.f });
+		}
 	}
 	//cube->GetTransform()->SetPosition({ x, y, z });
 	//cube2->GetTransform()->SetPosition({ x, y, 0.f });
@@ -101,8 +104,8 @@ void Scene::Update()
 void Scene::Render()
 {
 	ImGui::Begin("My First Tool");
-	ImGui::SliderFloat("x", &x, -3.0f, 3.f);
-	ImGui::SliderFloat("y", &y, -3.0f, 3.0f);
+	ImGui::SliderFloat("x", &x, -1000.0f, 1000.0f);
+	ImGui::SliderFloat("y", &y, -1000.0f, 1000.0f);
 	ImGui::SliderFloat("Scale", &z, 1.0f, 100.0f);
 
 	ImGui::End();

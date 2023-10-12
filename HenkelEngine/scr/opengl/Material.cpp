@@ -30,5 +30,5 @@ void Material::SetColor(glm::vec4 color)
 void Material::SetWorldMatrices(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
     m_Shader->SetUniformMat4f("U_Model", model);
-    m_Shader->SetUniformMat4f("U_ViewProjection", projection);
+    m_Shader->SetUniformMat4f("U_ViewProjection", projection * view);
 }
