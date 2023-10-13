@@ -5,8 +5,8 @@
 #include "../Window.h"
 #include "../opengl/Texture.h"
 
-RenderComponent::RenderComponent(Entity* entity, bool stretchToImageSize, unsigned int QuadCound, std::string texture)
-    : Component(entity), m_Renderer(new Material(texture, "res/shaders/vertex.shader", "res/shaders/fragment.shader"), stretchToImageSize, QuadCound)
+RenderComponent::RenderComponent(Entity* entity, unsigned int QuadCound, std::string texture)
+    : Component(entity), m_Renderer(new Material(texture, "res/shaders/vertex.shader", "res/shaders/fragment.shader"), QuadCound)
 {
 }
 

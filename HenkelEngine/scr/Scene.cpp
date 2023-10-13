@@ -11,7 +11,7 @@
 #include "Resourse\TileSheet.h"
 
 //Entity* cube, *cube2;
-float x = 0.f, y = 0.f, z = 32.f;
+float x = 0.f, y = 0.f, z = 2.f;
 
 Scene::Scene(Window* window, const std::string& fileDir, const std::string& levelFile) : m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 0.0f))), m_window(window), m_dockingEnviromentInited(false), m_name("Scene")
 {
@@ -69,18 +69,20 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
 			timemap->AddComponent(new TileMapComponent(timemap, width, height, levelArray, tileSheet));
-			//timemap->GetTransform()->SetScale({ 32.f, 32.f, 1.f });
+			timemap->GetTransform()->SetScale({ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f});
 		}
 		else if (name == "objectgroup")
 		{
 			// create tilemap component
 			Entity* objectGroup = CreateEntity(layer.attribute("name").as_string());
+			objectGroup->GetTransform()->SetPosition({ layer.attribute("offsetx").as_float(), layer.attribute("offsety").as_float(), 0.f });
 			for (auto& object : layer.children("object"))
 			{
 				Entity* gameObject = CreateEntity(object.attribute("name").as_string());
-				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint()));
+				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint() - 1));
 				gameObject->GetTransform()->SetParent(objectGroup->GetTransform());
 				gameObject->GetTransform()->SetPosition({ object.attribute("x").as_float(), object.attribute("y").as_float(), 0.f });
+				gameObject->GetTransform()->SetScale({ object.attribute("width").as_float(), object.attribute("height").as_float(), 1.f });
 			}
 		}
 	}
@@ -91,22 +93,17 @@ void Scene::Update()
 	for (auto& entity : m_entities)
 	{
 		entity->Update();
-		if (!entity->HasComponent<SpriteComponent>())
-		{
-			entity->GetTransform()->SetPosition({ x, y, 0.f });
-			entity->GetTransform()->SetScale({ z, z, 1.f });
-		}
 	}
-	//cube->GetTransform()->SetPosition({ x, y, z });
-	//cube2->GetTransform()->SetPosition({ x, y, 0.f });
+	m_camera->SetPosition({ x, y, 0.f });
+	m_camera->SetZoom(z);
 }
 
 void Scene::Render()
 {
-	ImGui::Begin("My First Tool");
-	ImGui::SliderFloat("x", &x, -1000.0f, 1000.0f);
-	ImGui::SliderFloat("y", &y, -1000.0f, 1000.0f);
-	ImGui::SliderFloat("Scale", &z, 1.0f, 100.0f);
+	ImGui::Begin("Camera Controls");
+	ImGui::SliderFloat("X", &x, -300.0f, 300.0f);
+	ImGui::SliderFloat("Y", &y, -300.0f, 300.0f);
+	ImGui::SliderFloat("Zoom", &z, 0.5f, 20.0f);
 
 	ImGui::End();
 

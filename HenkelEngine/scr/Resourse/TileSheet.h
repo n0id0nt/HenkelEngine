@@ -6,7 +6,7 @@
 class TileSheet
 {
 public:
-	TileSheet(std::string dir, std::string tileMapFile);
+	TileSheet(std::string dir, std::string tileMapFile, int indexOffset = 0);
 	
 	//void LoadTileSheet(std::string name, std::string imageFile, unsigned int tileWidth, unsigned int tileHeight, unsigned int tileCount, unsigned int columns, unsigned int imageWidth, unsigned int imageHeight, unsigned int paddingX = 0, unsigned int paddingY = 0, unsigned int borderX = 0, unsigned int borderY = 0);
 
@@ -14,6 +14,9 @@ public:
 	glm::vec4 GetSpriteRectAtIndex(unsigned int index);
 
 	std::string GetTileSetImagePath();
+
+	unsigned int GetTileWidth();
+	unsigned int GetTileHeight();
 
 private:
 
@@ -29,5 +32,7 @@ private:
 	std::string m_imageFile;
 	std::string m_dir;
 	std::string m_name;
+
+	int m_indexOffset;
 };
 

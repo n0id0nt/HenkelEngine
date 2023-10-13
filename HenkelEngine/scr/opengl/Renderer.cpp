@@ -5,18 +5,18 @@
 #include "../Window.h"
 #include "Mesh/Mesh.h"
 
-Renderer::Renderer(Material* material, bool stretchToImageSize, unsigned int quads) : m_Material(material), m_StretchToImageSize(stretchToImageSize), m_Quads(quads)
+Renderer::Renderer(Material* material, unsigned int quads) : m_Material(material), m_Quads(quads)
 {
     // ensure renderer will actually draw something
     ASSERT(quads > 0);
-    initRenderData();
+    InitRenderData();
 }
 
 void Renderer::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
     bool isBatching = IsBatching();
     // Bind Material
-    m_Material->Bind(model, view, projection, m_StretchToImageSize);
+    m_Material->Bind(model, view, projection);
 
     GLCall(glBindVertexArray(m_VAO));
 
@@ -24,11 +24,9 @@ void Renderer::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
     int batchesToDraw = glm::ceil((float)m_Vertices.size() / (m_Quads * QUAD_SIZE));
     for (int i = 0; i < batchesToDraw; i++)
     {
-        if (isBatching)
-        {
-            GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
-            GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(m_Quads * QUAD_SIZE, m_Vertices.size()), m_Vertices.data()));
-        }
+
+        GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
+        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(m_Quads * QUAD_SIZE, m_Vertices.size()), m_Vertices.data()));
 
         GLCall(glDrawElements(GL_TRIANGLES, m_Indexes.size(), GL_UNSIGNED_INT, 0));
 
@@ -59,7 +57,7 @@ void Renderer::SetQuadUVs(const glm::vec4& rect)
     Mesh::setQuadData(m_Vertices, { 0.f, 0.f }, rect);
 }
 
-void Renderer::initRenderData()
+void Renderer::InitRenderData()
 {
     GLuint IBO;    
     Mesh::setQuadData(m_Vertices, m_Indexes, m_Quads);
@@ -71,16 +69,9 @@ void Renderer::initRenderData()
     GLCall(glGenBuffers(1, &m_VBO));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
 
-    // only bother with batching when more than one quad needs to ne drawn
-    if (IsBatching())
-    {
-        GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * QUAD_SIZE * m_Quads, nullptr, GL_DYNAMIC_DRAW));
-    }
-    else
-    {
-        GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), m_Vertices.data(), GL_STATIC_DRAW));
-    }
-
+    // only bother with batching when more than one quad needs to be drawn
+    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * QUAD_SIZE * m_Quads, nullptr, GL_DYNAMIC_DRAW));
+    //GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), m_Vertices.data(), GL_STATIC_DRAW));
 
     GLCall(glGenBuffers(1, &IBO));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO));

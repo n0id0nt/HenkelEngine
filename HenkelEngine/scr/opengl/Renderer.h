@@ -16,7 +16,7 @@ struct Vertex
 class Renderer
 {
 public:
-	Renderer(Material* material, bool stretchToImageSize = false, unsigned int quads = 1);
+	Renderer(Material* material, unsigned int quads = 1);
 
 	void Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 
@@ -25,8 +25,7 @@ public:
 	void SetQuadUVs(const glm::vec4& rect);
 
 private:
-
-	void initRenderData();
+	void InitRenderData();
 
 	bool IsBatching();
 
@@ -35,8 +34,6 @@ private:
 	std::unique_ptr<Material> m_Material;
 
 	GLuint m_VAO, m_VBO; 
-
-	bool m_StretchToImageSize;
 
 	unsigned int m_Quads; // the size of the batch
 

@@ -9,13 +9,10 @@ Material::Material(std::string texture, std::string vertexShader, std::string fr
     m_Texture = std::make_unique<Texture>(texture);
 }
 
-void Material::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection, bool stretchToImageSize)
+void Material::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
     m_Shader->Bind();
     m_Texture->Bind();
-
-    if (stretchToImageSize)
-        model = glm::scale(model, {m_Texture->GetWidth(), m_Texture->GetHeight(), 1.f});
 
     SetWorldMatrices(model, view, projection);
 

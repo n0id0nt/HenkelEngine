@@ -15,6 +15,12 @@ public:
 	void SetOrthographic(bool value);
 	bool GetOrthographic();
 
+	void SetZoom(float zoom);
+	float GetZoom();
+
+	void SetPosition(glm::vec3 position);
+	glm::vec3 GetPosition();
+
 	glm::mat4 CalculateProjection(float width, float height);
 
 private:
@@ -25,5 +31,6 @@ private:
 	bool m_Orthographic;
 	float m_Near = 0.1f;
 	float m_Far = 1000.f;
+	float m_zoom = 1.f;
 };
 

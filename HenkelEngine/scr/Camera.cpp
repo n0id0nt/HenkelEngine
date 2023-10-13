@@ -30,12 +30,31 @@ bool Camera::GetOrthographic()
 	return m_Orthographic;
 }
 
+void Camera::SetZoom(float zoom)
+{
+	m_zoom = zoom;
+}
+
+float Camera::GetZoom()
+{
+	return m_zoom;
+}
+
+void Camera::SetPosition(glm::vec3 position)
+{
+	m_Postition = position;
+}
+
+glm::vec3 Camera::GetPosition()
+{
+	return m_Postition;
+}
+
 glm::mat4 Camera::CalculateProjection(float width, float height)
 {
 	if (m_Orthographic)
 	{
-		//return glm::ortho(m_Postition.x - width, m_Postition.x + width, m_Postition.y + height, m_Postition.y - height);
-		return glm::ortho(0.f, width, height, 0.f);
+		return glm::ortho(m_Postition.x - width / m_zoom, m_Postition.x + width / m_zoom, m_Postition.y + height / m_zoom, m_Postition.y - height / m_zoom);
 	}
 	else
 	{

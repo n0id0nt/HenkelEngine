@@ -3,7 +3,7 @@
 #include "pugixml.hpp"
 #include "..\opengl\openglHelper.h"
 
-TileSheet::TileSheet(std::string dir, std::string tileMapFile) : m_dir(dir)
+TileSheet::TileSheet(std::string dir, std::string tileMapFile, int indexOffset) : m_dir(dir), m_indexOffset(indexOffset)
 {
 	LoadFile(dir + tileMapFile);
 }
@@ -37,7 +37,7 @@ glm::vec2 TileSheet::GetSpriteAtIndex(unsigned int index)
 
 glm::vec4 TileSheet::GetSpriteRectAtIndex(unsigned int index)
 {
-	int x = (index % m_columns) * m_tileWidth;
+	int x = ((index - m_indexOffset) % m_columns) * m_tileWidth;
 	int y = glm::floor(index / m_columns) * m_tileHeight;
 	float perX = x / (float)m_imageWidth;
 	float perY = y / (float)m_imageHeight;
@@ -49,4 +49,14 @@ glm::vec4 TileSheet::GetSpriteRectAtIndex(unsigned int index)
 std::string TileSheet::GetTileSetImagePath()
 {
 	return m_dir + m_imageFile;
+}
+
+unsigned int TileSheet::GetTileWidth()
+{
+	return m_tileWidth;
+}
+
+unsigned int TileSheet::GetTileHeight()
+{
+	return m_tileHeight;
 }

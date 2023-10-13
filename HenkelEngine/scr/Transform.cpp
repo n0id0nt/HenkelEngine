@@ -51,21 +51,23 @@ Transform* Transform::GetParent()
 
 glm::mat4 Transform::GetLocalMatrix()
 {
-	glm::mat4 matrix = glm::translate(glm::mat4(1.f), m_Position);
+	glm::mat4 scale = glm::scale(glm::mat4(1.0f), m_Scale);
 
-	matrix = glm::rotate(matrix, glm::radians(m_Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-	matrix = glm::rotate(matrix, glm::radians(m_Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-	matrix = glm::rotate(matrix, glm::radians(m_Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(m_Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+	rotation = glm::rotate(rotation, glm::radians(m_Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+	rotation = glm::rotate(rotation, glm::radians(m_Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_Position);
 
-	matrix = glm::scale(matrix, m_Scale);
+	glm::mat4 modelMatrix = translation * rotation * scale;
 
-	return matrix;
+	return modelMatrix;
 }
 
 glm::mat4 Transform::GetWorldMatrix()
 {
 	if (m_Parent)
-		return GetLocalMatrix() * m_Parent->GetWorldMatrix();
+		return m_Parent->GetWorldMatrix() * GetLocalMatrix();
 	else
 		return GetLocalMatrix();
 }
