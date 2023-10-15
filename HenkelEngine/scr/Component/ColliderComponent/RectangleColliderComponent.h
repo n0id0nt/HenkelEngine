@@ -11,5 +11,7 @@ public:
 private:
 
 	b2PolygonShape m_collisionShape;
+
+	float m_width, m_height;
 };
 

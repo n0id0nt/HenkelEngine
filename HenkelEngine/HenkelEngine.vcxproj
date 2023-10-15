@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\opengl\DebugRenderer.cpp" />
     <ClCompile Include="scr\Component\ColliderComponent\RectangleColliderComponent.cpp" />
     <ClCompile Include="scr\Component\ColliderComponent\CircleColliderComponent.cpp" />
     <ClCompile Include="scr\Component\ColliderComponent\ColliderComponent.cpp" />
@@ -188,6 +189,7 @@
     <None Include="res\shaders\vertex.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\opengl\DebugRenderer.h" />
     <ClInclude Include="scr\Component\ColliderComponent\RectangleColliderComponent.h" />
     <ClInclude Include="scr\Component\ColliderComponent\CircleColliderComponent.h" />
     <ClInclude Include="scr\Component\ColliderComponent\ColliderComponent.h" />

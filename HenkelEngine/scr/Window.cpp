@@ -4,6 +4,7 @@
 #include "opengl\openglHelper.h"
 #include "Input.h"
 #include <imgui_internal.h>
+#include "opengl\DebugRenderer.h"
 
 Window::Window(std::string name, int x, int y, int w, int h)
 	: m_running(true), Width(w), Height(h), m_clearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f))
@@ -96,6 +97,8 @@ void Window::Loop(float deltaTime)
 
 	// Render
 	m_scene->Render();
+
+	DebugRenderer::Render();
 
 	// Render ImGui
 	ImGui::Render();

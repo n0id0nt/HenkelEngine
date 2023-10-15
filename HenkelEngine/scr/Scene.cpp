@@ -10,6 +10,7 @@
 #include "HelperFunctions.h"
 #include "zlib.h"
 #include "Resourse\TileSheet.h"
+#include "Component\ColliderComponent\RectangleColliderComponent.h"
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
@@ -89,6 +90,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				if (name == "Player")
 				{
 					gameObject->AddComponent(new PlayerMovementComponent(gameObject));
+					gameObject->AddComponent(new RectangleColliderComponent(gameObject, object.attribute("width").as_float(), object.attribute("height").as_float()));
 				}
 				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint() - 1));
 				gameObject->GetTransform()->SetParent(objectGroup->GetTransform());
