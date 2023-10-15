@@ -13,7 +13,7 @@ class Entity
 public:
 	Entity(Scene* scene, std::string name);
 
-	void Update();
+	void Update(float deltaTime);
 
 	void SetName(std::string name);
 	std::string GetName() const;

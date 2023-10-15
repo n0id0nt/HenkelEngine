@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Component\SpriteComponent.h"
 #include "Component\TileMapComponent.h"
+#include "Component\PlayerMovementComponent.h"
 #include "Window.h"
 #include "pugixml.hpp"
 #include <fstream>
@@ -12,8 +13,13 @@
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
+const float timeStep = 1.0f / 60.0f;
+const int32 velocityIterations = 6;
+const int32 positionIterations = 2;
 
-Scene::Scene(Window* window, const std::string& fileDir, const std::string& levelFile) : m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 0.0f))), m_window(window), m_dockingEnviromentInited(false), m_name("Scene")
+
+Scene::Scene(Window* window, const std::string& fileDir, const std::string& levelFile) 
+	: m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 0.0f))), m_window(window), m_dockingEnviromentInited(false), m_name("Scene"), m_world({0.f,0.f})
 {
 	// create the rubiks cube and respective components
 	//cube = CreateEntity("Cube");
@@ -79,20 +85,26 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			for (auto& object : layer.children("object"))
 			{
 				Entity* gameObject = CreateEntity(object.attribute("name").as_string());
+				std::string name = object.attribute("name").as_string();
+				if (name == "Player")
+				{
+					gameObject->AddComponent(new PlayerMovementComponent(gameObject));
+				}
 				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint() - 1));
 				gameObject->GetTransform()->SetParent(objectGroup->GetTransform());
-				gameObject->GetTransform()->SetPosition({ object.attribute("x").as_float(), object.attribute("y").as_float(), 0.f });
+				gameObject->GetTransform()->SetPosition({ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f });
 				gameObject->GetTransform()->SetScale({ object.attribute("width").as_float(), object.attribute("height").as_float(), 1.f });
 			}
 		}
 	}
 }
 
-void Scene::Update()
+void Scene::Update(float deltaTime)
 {
+	m_world.Step(timeStep, velocityIterations, positionIterations);
 	for (auto& entity : m_entities)
 	{
-		entity->Update();
+		entity->Update(deltaTime);
 	}
 	m_camera->SetPosition({ x, y, 0.f });
 	m_camera->SetZoom(z);

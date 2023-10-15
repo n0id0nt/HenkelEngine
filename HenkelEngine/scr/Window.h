@@ -29,7 +29,7 @@ public:
 
 	void Input();
 
-	void Loop();
+	void Loop(float deltaTime);
 
 	void OnClose();
 	void OnResize(int w, int h);

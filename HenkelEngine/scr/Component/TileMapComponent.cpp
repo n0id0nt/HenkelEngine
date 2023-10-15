@@ -6,7 +6,7 @@ TileMapComponent::TileMapComponent(Entity* entity, unsigned int width, unsigned 
 	ASSERT(width * height == levelArray.size());
 }
 
-void TileMapComponent::Update()
+void TileMapComponent::Update(float deltaTime)
 {
 	
 }

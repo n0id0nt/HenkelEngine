@@ -5,13 +5,13 @@ class Entity;
 class Component
 {
 public:
-	Component(Entity* entity) : p_entity(entity) {}
+	Component(Entity* entity) : m_entity(entity) {}
 
-	virtual void Update() = 0;
+	virtual void Update(float deltaTime) = 0;
 
-	Entity* GetEntity() const { return p_entity; }
+	Entity* GetEntity() const { return m_entity; }
 
 private:
-	Entity* p_entity;
+	Entity* m_entity;
 };
 

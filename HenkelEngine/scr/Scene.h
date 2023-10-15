@@ -5,6 +5,7 @@
 #include <memory>
 #include "Camera.h"
 #include <string>
+#include "box2d.h"
 
 class Window;
 
@@ -16,7 +17,7 @@ public :
 
 	void LoadScene(const std::string& fileDir, const std::string& levelFile);
 
-	void Update();
+	void Update(float deltaTime);
 	void Render();
 
 	Entity* CreateEntity(std::string name);
@@ -33,5 +34,7 @@ private:
 	bool m_dockingEnviromentInited;
 
 	std::string m_name;
+
+	b2World m_world;
 };
 

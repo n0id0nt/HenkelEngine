@@ -7,7 +7,7 @@ class TileMapComponent : public RenderComponent
 public:
 	TileMapComponent(Entity* entity, unsigned int width, unsigned int height, std::vector<unsigned> levelArray, TileSheet tileSheet);
 
-	void Update() override;
+	void Update(float deltaTime) override;
 	void Render() override;
 
 private:

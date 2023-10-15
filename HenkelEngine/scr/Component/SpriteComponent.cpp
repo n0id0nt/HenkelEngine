@@ -6,6 +6,6 @@ SpriteComponent::SpriteComponent(Entity* entity, TileSheet tileSheet, unsigned i
 	m_Renderer.SetQuadUVs(m_tilesheet.GetSpriteRectAtIndex(m_index));
 }
 
-void SpriteComponent::Update()
+void SpriteComponent::Update(float deltaTime)
 {
 }

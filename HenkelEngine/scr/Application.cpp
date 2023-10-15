@@ -8,16 +8,18 @@ Application::Application(std::string name)
 
 void Application::Loop()
 {
+	float deltaTime = 0.f;
 	while (m_window->IsRunning())
 	{
 		m_frameStart = SDL_GetTicks();
 
-		m_window->Loop();
+		m_window->Loop(deltaTime);
 
 		m_frameTime = SDL_GetTicks() - m_frameStart;
 		if (FRAME_DELAY > m_frameTime)
 		{
 			SDL_Delay(FRAME_DELAY - m_frameTime);
 		}
+		deltaTime = (SDL_GetTicks() - m_frameStart) / 1000.f;
 	}
 }

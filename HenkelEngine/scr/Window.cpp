@@ -76,7 +76,7 @@ void Window::Input()
 		OnClose();
 }
 
-void Window::Loop()
+void Window::Loop(float deltaTime)
 {
 	Input();
 
@@ -86,7 +86,7 @@ void Window::Loop()
 	ImGui::NewFrame();
 
 	// Update
-	m_scene->Update();
+	m_scene->Update(deltaTime);
 
 	// Define the viewport dimensions
 	glViewport(0, 0, Width, Height);

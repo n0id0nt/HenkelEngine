@@ -7,11 +7,11 @@ Entity::Entity(Scene* scene, std::string name)
 
 }
 
-void Entity::Update()
+void Entity::Update(float deltaTime)
 {
 	for (auto& component : m_components)
 	{
-		component.get()->Update();
+		component.get()->Update(deltaTime);
 	}
 }
 
