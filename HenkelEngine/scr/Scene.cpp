@@ -1,6 +1,6 @@
 #include "Scene.h"
-#include "Component\SpriteComponent.h"
-#include "Component\TileMapComponent.h"
+#include "Component\RenderComponents\SpriteComponent.h"
+#include "Component\RenderComponents\TileMapComponent.h"
 #include "Component\PlayerMovementComponent.h"
 #include "Window.h"
 #include "pugixml.hpp"
@@ -14,6 +14,7 @@
 #include "opengl\DebugRenderer.h"
 #include "Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
 #include "Component\PhysicsBodyComponents\StaticBodyComponent.h"
+#include "Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
@@ -43,7 +44,6 @@ Scene::Scene(Window* window, const std::string& fileDir, const std::string& leve
 
 Scene::~Scene()
 {
-	
 }
 
 void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
@@ -78,8 +78,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
-			timemap->AddComponent(new TileMapComponent(timemap, width, height, levelArray, tileSheet));
 			timemap->GetTransform()->SetScale({ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f});
+			timemap->AddComponent(new TileMapComponent(timemap, width, height, levelArray, tileSheet));
+			timemap->AddComponent(new TileMapCollisionBodyComponent(timemap, m_world.get()));
 		}
 		else if (name == "objectgroup")
 		{

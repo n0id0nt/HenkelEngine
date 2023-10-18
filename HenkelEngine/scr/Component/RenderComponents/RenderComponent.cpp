@@ -1,9 +1,9 @@
 #include "RenderComponent.h"
-#include "..\Camera.h"
-#include "../Entity/Entity.h"
-#include "../Scene.h"
-#include "../Window.h"
-#include "../opengl/Texture.h"
+#include "..\..\Camera.h"
+#include "../../Entity/Entity.h"
+#include "../../Scene.h"
+#include "../../Window.h"
+#include "../../opengl/Texture.h"
 
 RenderComponent::RenderComponent(Entity* entity, unsigned int QuadCound, std::string texture)
     : Component(entity), m_Renderer(new Material(texture, "res/shaders/sprite.vert", "res/shaders/sprite.frag"), QuadCound)

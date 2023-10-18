@@ -168,7 +168,7 @@
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\Color.cpp" />
     <ClCompile Include="scr\Component\Component.cpp" />
-    <ClCompile Include="scr\Component\RenderComponent.cpp" />
+    <ClCompile Include="scr\Component\RenderComponents\RenderComponent.cpp" />
     <ClCompile Include="scr\opengl\Renderer.cpp" />
     <ClCompile Include="scr\Entity\Entity.cpp" />
     <ClCompile Include="scr\Input.cpp" />
@@ -181,11 +181,11 @@
     <ClCompile Include="scr\Scene.cpp" />
     <ClCompile Include="scr\Transform.cpp" />
     <ClCompile Include="scr\Window.cpp" />
-    <ClCompile Include="scr\Component\SpriteComponent.cpp" />
-    <ClCompile Include="scr\Component\TileMapComponent.cpp" />
+    <ClCompile Include="scr\Component\RenderComponents\SpriteComponent.cpp" />
+    <ClCompile Include="scr\Component\RenderComponents\TileMapComponent.cpp" />
     <ClCompile Include="scr\Resourse\TileSheet.cpp" />
     <ClCompile Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.cpp" />
-    <ClCompile Include="scr\Component\ColliderComponent\TileMapColliderComponent.cpp" />
+    <ClCompile Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\debug.frag" />
@@ -262,7 +262,7 @@
     <ClInclude Include="scr\Camera.h" />
     <ClInclude Include="scr\Color.h" />
     <ClInclude Include="scr\Component\Component.h" />
-    <ClInclude Include="scr\Component\RenderComponent.h" />
+    <ClInclude Include="scr\Component\RenderComponents\RenderComponent.h" />
     <ClInclude Include="scr\opengl\Renderer.h" />
     <ClInclude Include="scr\Entity\Entity.h" />
     <ClInclude Include="scr\Event.h" />
@@ -275,11 +275,11 @@
     <ClInclude Include="scr\Scene.h" />
     <ClInclude Include="scr\Transform.h" />
     <ClInclude Include="scr\Window.h" />
-    <ClInclude Include="scr\Component\SpriteComponent.h" />
-    <ClInclude Include="scr\Component\TileMapComponent.h" />
+    <ClInclude Include="scr\Component\RenderComponents\SpriteComponent.h" />
+    <ClInclude Include="scr\Component\RenderComponents\TileMapComponent.h" />
     <ClInclude Include="scr\Resourse\TileSheet.h" />
     <ClInclude Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.h" />
-    <ClInclude Include="scr\Component\ColliderComponent\TileMapColliderComponent.h" />
+    <ClInclude Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

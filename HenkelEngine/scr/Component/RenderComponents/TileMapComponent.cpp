@@ -8,7 +8,6 @@ TileMapComponent::TileMapComponent(Entity* entity, unsigned int width, unsigned 
 
 void TileMapComponent::Update(float deltaTime)
 {
-	
 }
 
 void TileMapComponent::Render()
@@ -25,6 +24,31 @@ void TileMapComponent::Render()
 	}
 
 	RenderComponent::Render();
+}
+
+unsigned int TileMapComponent::GetTileWidth()
+{
+	return m_tileSheet.GetTileWidth();
+}
+
+unsigned int TileMapComponent::GetTileHeight()
+{
+	return m_tileSheet.GetTileHeight();
+}
+
+std::vector<glm::vec2> TileMapComponent::GetTilePositions()
+{
+	std::vector<glm::vec2> tilePositions;
+	for (unsigned int row = 0; row < m_Height; row++)
+	{
+		for (unsigned int col = 0; col < m_Width; col++)
+		{
+			unsigned int tile = GetTile(row, col);
+			if (tile != 0)
+				tilePositions.push_back({ col * GetTileWidth(), row * GetTileHeight() });
+		}
+	}
+	return tilePositions;
 }
 
 unsigned int TileMapComponent::GetTile(unsigned int row, unsigned int col)

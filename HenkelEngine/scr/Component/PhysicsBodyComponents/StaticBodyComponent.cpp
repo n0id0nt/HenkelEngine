@@ -18,6 +18,7 @@ StaticBodyComponent::StaticBodyComponent(Entity* entity, b2World* world) : Compo
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = GetEntity()->GetComponent<ColliderComponent>()->GetCollider();
+	fixtureDef.friction = 0.f;
 	m_body->CreateFixture(&fixtureDef);
 }
 

@@ -61,7 +61,8 @@ bool PlayerMovementComponent::CheckGrounded()
 			b2Vec2 normal = contact->GetManifold()->localNormal;
 			//glm::vec3 pos = GetEntity()->GetTransform()->GetWorldPosition();
 			//DebugRenderer::DrawLine(pos, glm::vec3{ normal.x * 8.f, normal.y * 8.f, 0.f } + pos, {1.f,0.f,0.f});
-			float angle = glm::degrees(glm::angle(glm::vec2{ 0.f,1.f }, glm::vec2{ normal.x, normal.y }));
+			bool isFixtureA = contact->GetFixtureA()->GetBody()->GetUserData().pointer == reinterpret_cast<uintptr_t>(GetEntity());
+			float angle = glm::degrees(glm::angle(glm::vec2{ 0.f,1.f }, (isFixtureA ? 1.f : -1.f)* glm::vec2{ normal.x, normal.y }));
 			if (angle < groundAngle)
 			{
 				return true;

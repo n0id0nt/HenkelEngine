@@ -87,16 +87,16 @@
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\SpriteComponent.cpp">
+    <ClCompile Include="scr\Component\RenderComponents\SpriteComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\RenderComponent.cpp">
+    <ClCompile Include="scr\Component\RenderComponents\RenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\opengl\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\TileMapComponent.cpp">
+    <ClCompile Include="scr\Component\RenderComponents\TileMapComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\pugixml\pugixml.cpp">
@@ -129,7 +129,7 @@
     <ClCompile Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\ColliderComponent\TileMapColliderComponent.cpp">
+    <ClCompile Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,16 +221,16 @@
     <ClInclude Include="dependencies\nlohmann\json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\SpriteComponent.h">
+    <ClInclude Include="scr\Component\RenderComponents\SpriteComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\RenderComponent.h">
+    <ClInclude Include="scr\Component\RenderComponents\RenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\opengl\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\TileMapComponent.h">
+    <ClInclude Include="scr\Component\RenderComponents\TileMapComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\pugixml\pugiconfig.hpp">
@@ -395,7 +395,7 @@
     <ClInclude Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\ColliderComponent\TileMapColliderComponent.h">
+    <ClInclude Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,7 @@
 #include <glm\ext\scalar_constants.hpp>
 #include <glm\trigonometric.hpp>
 
-#define DEBUG_BUFFER_SIZE 1000 * 2
+#define DEBUG_BUFFER_SIZE 2000
 
 GLuint DebugRenderer::s_VAO;
 GLuint DebugRenderer::s_VBO;
@@ -18,11 +18,22 @@ void DebugRenderer::Render(glm::mat4 viewProjection)
 
 	GLCall(glBindVertexArray(s_VAO));
 
-	GLCall(glBindBuffer(GL_ARRAY_BUFFER, s_VBO));
-	GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(DebugVertex) * s_Vertices.size(), s_Vertices.data()));
+	// loop to ensure no more than the max batch size is rendered
+	int batchesToDraw = glm::ceil((float)s_Vertices.size() / DEBUG_BUFFER_SIZE);
+	for (int i = 0; i < batchesToDraw; i++)
+	{
 
-	GLCall(glDrawArrays(GL_LINES, 0, s_Vertices.size()));
+		GLCall(glBindBuffer(GL_ARRAY_BUFFER, s_VBO));
+		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(DebugVertex) * glm::min((size_t)DEBUG_BUFFER_SIZE, s_Vertices.size()), s_Vertices.data()));
 
+		GLCall(glDrawArrays(GL_LINES, 0, s_Vertices.size()));
+
+		if (i != batchesToDraw - 1)
+		{
+			s_Vertices.erase(s_Vertices.begin(), s_Vertices.begin() + DEBUG_BUFFER_SIZE);
+		}
+
+	}
 	GLCall(glBindVertexArray(0));
 
 	s_Vertices.clear();

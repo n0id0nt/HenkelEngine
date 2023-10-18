@@ -1,7 +1,7 @@
 #pragma once
-#include "Component.h"
+#include "../Component.h"
 #include "RenderComponent.h"
-#include "..\Resourse\TileSheet.h"
+#include "..\..\Resourse\TileSheet.h"
 
 class SpriteComponent : public RenderComponent
 {

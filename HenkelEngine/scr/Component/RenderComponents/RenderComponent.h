@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../opengl/Renderer.h"
-#include "Component.h"
+#include "../../opengl/Renderer.h"
+#include "../Component.h"
 
 class RenderComponent : public Component
 {
