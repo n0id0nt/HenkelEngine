@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glm\glm.hpp"
-#include "..\opengl\openglHelper.h"
+#include "openglHelper.h"
 #include "Material.h"
 #include <array>
 #include <memory>
@@ -17,6 +17,7 @@ class Renderer
 {
 public:
 	Renderer(Material* material, unsigned int quads = 1);
+	~Renderer();
 
 	void Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 
@@ -33,7 +34,7 @@ private:
 	std::vector<GLuint> m_Indexes;
 	std::unique_ptr<Material> m_Material;
 
-	GLuint m_VAO, m_VBO; 
+	GLuint m_VAO, m_VBO, m_IBO; 
 
 	unsigned int m_Quads; // the size of the batch
 

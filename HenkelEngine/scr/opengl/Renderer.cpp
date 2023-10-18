@@ -12,6 +12,13 @@ Renderer::Renderer(Material* material, unsigned int quads) : m_Material(material
     InitRenderData();
 }
 
+Renderer::~Renderer()
+{
+    GLCall(glDeleteVertexArrays(1, &m_VAO));
+    GLCall(glDeleteBuffers(1, &m_VBO));
+    GLCall(glDeleteBuffers(1, &m_IBO));
+}
+
 void Renderer::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
     bool isBatching = IsBatching();
@@ -36,6 +43,7 @@ void Renderer::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
         }
     }
     GLCall(glBindVertexArray(0));
+    m_Material->Unbind();
 
     if (isBatching)
     {
@@ -59,7 +67,6 @@ void Renderer::SetQuadUVs(const glm::vec4& rect)
 
 void Renderer::InitRenderData()
 {
-    GLuint IBO;    
     Mesh::setQuadData(m_Vertices, m_Indexes, m_Quads);
 
     // init the VAO and VBO
@@ -73,8 +80,8 @@ void Renderer::InitRenderData()
     GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * QUAD_SIZE * m_Quads, nullptr, GL_DYNAMIC_DRAW));
     //GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * m_Vertices.size(), m_Vertices.data(), GL_STATIC_DRAW));
 
-    GLCall(glGenBuffers(1, &IBO));
-    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO));
+    GLCall(glGenBuffers(1, &m_IBO));
+    GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO));
     GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * m_Indexes.size(), m_Indexes.data(), GL_STATIC_DRAW));
 
     // Position attribute

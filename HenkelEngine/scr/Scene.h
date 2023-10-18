@@ -27,6 +27,8 @@ public :
 	Camera* GetCamera() const { return m_camera.get(); }
 	Window* GetWindow() const { return m_window; }
 
+	b2World* GetWorld() const { return m_world.get(); }
+
 private:
 	std::vector<std::unique_ptr<Entity>> m_entities;
 	std::unique_ptr<Camera> m_camera;
@@ -35,6 +37,6 @@ private:
 
 	std::string m_name;
 
-	b2World m_world;
+	std::unique_ptr<b2World> m_world;
 };
 

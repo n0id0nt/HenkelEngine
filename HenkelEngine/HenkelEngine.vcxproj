@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.cpp" />
     <ClCompile Include="scr\opengl\DebugRenderer.cpp" />
     <ClCompile Include="scr\Component\ColliderComponent\RectangleColliderComponent.cpp" />
     <ClCompile Include="scr\Component\ColliderComponent\CircleColliderComponent.cpp" />
@@ -183,12 +184,17 @@
     <ClCompile Include="scr\Component\SpriteComponent.cpp" />
     <ClCompile Include="scr\Component\TileMapComponent.cpp" />
     <ClCompile Include="scr\Resourse\TileSheet.cpp" />
+    <ClCompile Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.cpp" />
+    <ClCompile Include="scr\Component\ColliderComponent\TileMapColliderComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\fragment.shader" />
-    <None Include="res\shaders\vertex.shader" />
+    <None Include="res\shaders\debug.frag" />
+    <None Include="res\shaders\debug.vert" />
+    <None Include="res\shaders\sprite.frag" />
+    <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.h" />
     <ClInclude Include="scr\opengl\DebugRenderer.h" />
     <ClInclude Include="scr\Component\ColliderComponent\RectangleColliderComponent.h" />
     <ClInclude Include="scr\Component\ColliderComponent\CircleColliderComponent.h" />
@@ -272,6 +278,8 @@
     <ClInclude Include="scr\Component\SpriteComponent.h" />
     <ClInclude Include="scr\Component\TileMapComponent.h" />
     <ClInclude Include="scr\Resourse\TileSheet.h" />
+    <ClInclude Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.h" />
+    <ClInclude Include="scr\Component\ColliderComponent\TileMapColliderComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

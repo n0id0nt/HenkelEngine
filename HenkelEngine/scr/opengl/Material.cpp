@@ -19,6 +19,12 @@ void Material::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
     SetColor({ 1.f,1.f,1.f,1.f });
 }
 
+void Material::Unbind()
+{
+    m_Shader->Unbind();
+    m_Texture->Unbind();
+}
+
 void Material::SetColor(glm::vec4 color)
 {
     //m_Shader->SetUniform4f("spriteColor", color);

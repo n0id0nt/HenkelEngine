@@ -9,6 +9,7 @@ public:
 	Material(std::string texture, std::string vertexShader, std::string fragmentShader);
 	
 	void Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
+	void Unbind();
 	void SetColor(glm::vec4 color);
 	void SetWorldMatrices(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 

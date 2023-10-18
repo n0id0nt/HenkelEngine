@@ -19,7 +19,7 @@ Window::Window(std::string name, int x, int y, int w, int h)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
-	m_window = SDL_CreateWindow("Rubik's Cube", x, y, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	m_window = SDL_CreateWindow("Henkel Engine", x, y, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	m_context = SDL_GL_CreateContext(m_window);
 
 	// Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
@@ -53,6 +53,8 @@ Window::Window(std::string name, int x, int y, int w, int h)
 	// Setup Platform/Renderer backends
 	ImGui_ImplSDL2_InitForOpenGL(m_window, m_context);
 	ImGui_ImplOpenGL3_Init();
+
+	DebugRenderer::InitDebugRenderer();
 }
 
 Window::~Window()
@@ -61,6 +63,8 @@ Window::~Window()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+
+	DebugRenderer::ExitDebugRenderer();
 
 	SDL_GL_DeleteContext(m_context);
 	SDL_DestroyWindow(m_window);
@@ -97,8 +101,6 @@ void Window::Loop(float deltaTime)
 
 	// Render
 	m_scene->Render();
-
-	DebugRenderer::Render();
 
 	// Render ImGui
 	ImGui::Render();

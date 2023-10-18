@@ -11,6 +11,9 @@
 #include "zlib.h"
 #include "Resourse\TileSheet.h"
 #include "Component\ColliderComponent\RectangleColliderComponent.h"
+#include "opengl\DebugRenderer.h"
+#include "Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
+#include "Component\PhysicsBodyComponents\StaticBodyComponent.h"
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
@@ -20,7 +23,7 @@ const int32 positionIterations = 2;
 
 
 Scene::Scene(Window* window, const std::string& fileDir, const std::string& levelFile) 
-	: m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 0.0f))), m_window(window), m_dockingEnviromentInited(false), m_name("Scene"), m_world({0.f,0.f})
+	: m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 0.0f))), m_window(window), m_dockingEnviromentInited(false), m_name("Scene"), m_world(new b2World({0.f,0.f}))
 {
 	// create the rubiks cube and respective components
 	//cube = CreateEntity("Cube");
@@ -87,15 +90,20 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			{
 				Entity* gameObject = CreateEntity(object.attribute("name").as_string());
 				std::string name = object.attribute("name").as_string();
-				if (name == "Player")
-				{
-					gameObject->AddComponent(new PlayerMovementComponent(gameObject));
-					gameObject->AddComponent(new RectangleColliderComponent(gameObject, object.attribute("width").as_float(), object.attribute("height").as_float()));
-				}
-				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint() - 1));
+				gameObject->GetTransform()->SetScale({ object.attribute("width").as_float(), object.attribute("height").as_float(), 1.f });
 				gameObject->GetTransform()->SetParent(objectGroup->GetTransform());
 				gameObject->GetTransform()->SetPosition({ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f });
-				gameObject->GetTransform()->SetScale({ object.attribute("width").as_float(), object.attribute("height").as_float(), 1.f });
+				gameObject->AddComponent(new RectangleColliderComponent(gameObject, object.attribute("width").as_float(), object.attribute("height").as_float()));
+				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint() - 1));
+				if (name == "Player")
+				{
+					gameObject->AddComponent(new PhysicsBodyComponent(gameObject, m_world.get()));
+					gameObject->AddComponent(new PlayerMovementComponent(gameObject));
+				}
+				else
+				{
+					gameObject->AddComponent(new StaticBodyComponent(gameObject, m_world.get()));
+				}
 			}
 		}
 	}
@@ -103,13 +111,26 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 void Scene::Update(float deltaTime)
 {
-	m_world.Step(timeStep, velocityIterations, positionIterations);
+	m_world->Step(timeStep, velocityIterations, positionIterations);
+
+	for (auto& entity : m_entities)
+	{
+		if (entity->HasComponent<PhysicsBodyComponent>())
+		{
+			entity->GetComponent<PhysicsBodyComponent>()->UpdatePos();
+		}
+	}
+
 	for (auto& entity : m_entities)
 	{
 		entity->Update(deltaTime);
 	}
 	m_camera->SetPosition({ x, y, 0.f });
 	m_camera->SetZoom(z);
+
+
+
+	m_world->ClearForces();
 }
 
 void Scene::Render()
@@ -120,6 +141,12 @@ void Scene::Render()
 	ImGui::SliderFloat("Zoom", &z, 0.5f, 20.0f);
 
 	ImGui::End();
+
+	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f*8.f, 0.f }, 30.f*16.f, 20.f*16.f, {0.5f,0.5f,0.5f});
+
+	glm::mat4 projection = m_camera->CalculateProjection(GetWindow()->Width, GetWindow()->Height);
+	glm::mat4 view = m_camera->GetViewMatrix();
+	DebugRenderer::Render(projection * view);
 
 	for (auto& entity : m_entities)
 	{

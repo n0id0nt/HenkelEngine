@@ -1,7 +1,8 @@
 #include "Transform.h"
+#include "glm\gtx\matrix_decompose.hpp"
 
 Transform::Transform(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
-	: m_Position(position), m_Rotation(rotation), m_Scale(scale), m_Parent(nullptr)
+	: m_position(position), m_Rotation(rotation), m_Scale(scale), m_Parent(nullptr)
 {
 }
 
@@ -11,12 +12,28 @@ Transform::~Transform()
 
 void Transform::SetPosition(glm::vec3 position)
 {
-	m_Position = position;
+	m_position = position;
 }
 
 glm::vec3 Transform::GetPosition()
 {
-	return m_Position;
+	return m_position;
+}
+
+void Transform::SetWorldPosition(glm::vec3 position)
+{
+	m_position = position - m_Parent->GetWorldPosition();
+}
+
+glm::vec3 Transform::GetWorldPosition()
+{
+	glm::vec3 scale;
+	glm::quat rotation{};
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(GetWorldMatrix(), scale, rotation, translation, skew, perspective);
+	return translation;
 }
 
 void Transform::SetRotation(glm::vec3 rotation)
@@ -57,7 +74,7 @@ glm::mat4 Transform::GetLocalMatrix()
 	rotation = glm::rotate(rotation, glm::radians(m_Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 	rotation = glm::rotate(rotation, glm::radians(m_Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	
-	glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_Position);
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_position);
 
 	glm::mat4 modelMatrix = translation * rotation * scale;
 

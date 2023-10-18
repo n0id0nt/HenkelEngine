@@ -1,11 +1,10 @@
 #pragma once
 #include "ColliderComponent.h"
-
-class RectangleColliderComponent :
+class TileMapColliderComponent :
     public ColliderComponent
 {
 public:
-	RectangleColliderComponent(Entity* entity, float width, float height);
+	TileMapColliderComponent(Entity* entity);
 
 	void Update(float deltaTime) override;
 

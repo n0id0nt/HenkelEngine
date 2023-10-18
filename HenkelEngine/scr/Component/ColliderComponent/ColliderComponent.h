@@ -7,5 +7,7 @@ class ColliderComponent :
 {
 public:
     ColliderComponent(Entity* entity);
+
+    virtual b2Shape* GetCollider() = 0;
 };
 

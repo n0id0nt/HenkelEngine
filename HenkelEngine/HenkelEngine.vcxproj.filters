@@ -123,10 +123,21 @@
     <ClCompile Include="scr\opengl\DebugRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\Component\ColliderComponent\TileMapColliderComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\fragment.shader" />
-    <None Include="res\shaders\vertex.shader" />
+    <None Include="res\shaders\sprite.frag" />
+    <None Include="res\shaders\sprite.vert" />
+    <None Include="res\shaders\debug.frag" />
+    <None Include="res\shaders\debug.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scr\Application.h">
@@ -376,6 +387,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\opengl\DebugRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\Component\ColliderComponent\TileMapColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

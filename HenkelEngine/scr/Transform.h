@@ -11,6 +11,8 @@ public:
 
 	void SetPosition(glm::vec3 position);
 	glm::vec3 GetPosition();
+	void SetWorldPosition(glm::vec3 position);
+	glm::vec3 GetWorldPosition();
 
 	void SetRotation(glm::vec3 rotation);
 	glm::vec3 GetRotation();
@@ -24,7 +26,7 @@ public:
 	glm::mat4 GetLocalMatrix();
 	glm::mat4 GetWorldMatrix();
 private:
-	glm::vec3 m_Position;
+	glm::vec3 m_position;
 	glm::vec3 m_Rotation;
 	glm::vec3 m_Scale;
 
