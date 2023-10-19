@@ -8,10 +8,10 @@
 const unsigned int FPS = 60;
 const unsigned int FRAME_DELAY = 1000 / FPS;
 
-class Application
+class Engine
 {
 public:
-	Application(std::string name);
+	Engine(std::string name);
 
 	void Loop();
 

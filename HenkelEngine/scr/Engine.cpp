@@ -1,12 +1,11 @@
-#include "Application.h"
+#include "Engine.h"
 
-
-Application::Application(std::string name)
+Engine::Engine(std::string name)
 {
 	m_window = std::make_unique<Window>(name, 100, 100, 640, 420);
 }
 
-void Application::Loop()
+void Engine::Loop()
 {
 	float deltaTime = 0.f;
 	while (m_window->IsRunning())

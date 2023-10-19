@@ -164,7 +164,7 @@
     <ClCompile Include="dependencies\pugixml\pugixml.cpp" />
     <ClCompile Include="scr\Component\PlayerMovementComponent.cpp" />
     <ClCompile Include="scr\opengl\Material.cpp" />
-    <ClCompile Include="scr\Application.cpp" />
+    <ClCompile Include="scr\Engine.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\Color.cpp" />
     <ClCompile Include="scr\Component\Component.cpp" />
@@ -258,7 +258,7 @@
     <ClInclude Include="scr\Component\PlayerMovementComponent.h" />
     <ClInclude Include="scr\HelperFunctions.h" />
     <ClInclude Include="scr\opengl\Material.h" />
-    <ClInclude Include="scr\Application.h" />
+    <ClInclude Include="scr\Engine.h" />
     <ClInclude Include="scr\Camera.h" />
     <ClInclude Include="scr\Color.h" />
     <ClInclude Include="scr\Component\Component.h" />
