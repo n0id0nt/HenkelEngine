@@ -18,9 +18,6 @@
     <ClCompile Include="scr\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="scr\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,13 +36,13 @@
     <ClCompile Include="scr\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\Component.cpp">
+    <ClCompile Include="scr\ECS\Component\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\opengl\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Entity\Entity.cpp">
+    <ClCompile Include="scr\ECS\Entity\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\opengl\FrameBuffer.cpp">
@@ -87,16 +84,16 @@
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\RenderComponents\SpriteComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\RenderComponents\SpriteComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\RenderComponents\RenderComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\RenderComponents\RenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\opengl\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\RenderComponents\TileMapComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\RenderComponents\TileMapComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\pugixml\pugixml.cpp">
@@ -108,28 +105,34 @@
     <ClCompile Include="scr\Resourse\TileSheet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\PlayerMovementComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\PlayerMovementComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\ColliderComponent\ColliderComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\ColliderComponent\ColliderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\ColliderComponent\CircleColliderComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\ColliderComponent\CircleColliderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\ColliderComponent\RectangleColliderComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\ColliderComponent\RectangleColliderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\opengl\DebugRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\Physics\PhysicsWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,9 +143,6 @@
     <None Include="res\shaders\debug.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="scr\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="scr\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -164,13 +164,13 @@
     <ClInclude Include="scr\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\Component.h">
+    <ClInclude Include="scr\ECS\Component\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\opengl\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Entity\Entity.h">
+    <ClInclude Include="scr\ECS\Entity\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\opengl\FrameBuffer.h">
@@ -221,16 +221,16 @@
     <ClInclude Include="dependencies\nlohmann\json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\RenderComponents\SpriteComponent.h">
+    <ClInclude Include="scr\ECS\Component\RenderComponents\SpriteComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\RenderComponents\RenderComponent.h">
+    <ClInclude Include="scr\ECS\Component\RenderComponents\RenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\opengl\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\RenderComponents\TileMapComponent.h">
+    <ClInclude Include="scr\ECS\Component\RenderComponents\TileMapComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\pugixml\pugiconfig.hpp">
@@ -254,7 +254,7 @@
     <ClInclude Include="scr\Resourse\TileSheet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\PlayerMovementComponent.h">
+    <ClInclude Include="scr\ECS\Component\PlayerMovementComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\box2d\include\box2d\b2_api.h">
@@ -377,25 +377,34 @@
     <ClInclude Include="dependencies\box2d\include\box2d\box2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\ColliderComponent\ColliderComponent.h">
+    <ClInclude Include="scr\ECS\Component\ColliderComponent\ColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\ColliderComponent\CircleColliderComponent.h">
+    <ClInclude Include="scr\ECS\Component\ColliderComponent\CircleColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\ColliderComponent\RectangleColliderComponent.h">
+    <ClInclude Include="scr\ECS\Component\ColliderComponent\RectangleColliderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\opengl\DebugRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.h">
+    <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.h">
+    <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h">
+    <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\Engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\Physics\PhysicsWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\HenkelEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

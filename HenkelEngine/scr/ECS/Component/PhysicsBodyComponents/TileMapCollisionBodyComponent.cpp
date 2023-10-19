@@ -1,8 +1,8 @@
 #include "TileMapCollisionBodyComponent.h"
-#include "../../Entity/Entity.h"
-#include "..\..\opengl\DebugRenderer.h"
+#include "ECS/Entity/Entity.h"
+#include "opengl\DebugRenderer.h"
 
-TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(Entity* entity, b2World* world) : Component(entity), m_world(world)
+TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(Entity* entity, PhysicsWorld* world) : Component(entity), m_world(world)
 {
 	ASSERT(GetEntity()->HasComponent<TileMapComponent>());
 

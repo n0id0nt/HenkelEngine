@@ -18,37 +18,44 @@ public:
 		Right
 	};
 
-	static Window* window;
+	Input();
+	~Input();
 
-	static void Update();
+	void Update();
 
-	static glm::vec2 GetArrowDir();
+	glm::vec2 GetArrowDir();
 
 	/// Handling Mouse Event
-	static void onMouseButtonDown(SDL_Event& event);
-	static void onMouseMove(SDL_Event& event);
-	static void onMouseButtonUp(SDL_Event& event);
-	static bool getMouseButtonState(int buttonNumber);
-	static glm::vec2* getMousePosition();
+	void onMouseButtonDown(SDL_Event& event);
+	void onMouseMove(SDL_Event& event);
+	void onMouseButtonUp(SDL_Event& event);
+	bool getMouseButtonState(int buttonNumber);
+	glm::vec2* getMousePosition();
 
 	///Handling Keyboard Event
-	static void onKeyDown(SDL_Event& event);
-	static void onKeyUp(SDL_Event& event);
-	static bool isKeyDown(SDL_Keycode key);
-	static bool isKeyJustPressed(SDL_Keycode key);
-	static bool isKeyJustReleased(SDL_Keycode key);
+	void onKeyDown(SDL_Event& event);
+	void onKeyUp(SDL_Event& event);
+	bool isKeyDown(SDL_Keycode key);
+	bool isKeyJustPressed(SDL_Keycode key);
+	bool isKeyJustReleased(SDL_Keycode key);
 
 	//Handling Window Event
-	static bool Quit();
-	static void onWindowEvent(SDL_Event& event);
+	bool Quit() const;
+	void onWindowEvent(SDL_Event& event);
+
+	bool WasWindowResized() const;
+	void ClearWindowResizedFlag();
+	glm::vec2 WindowSize() const;
 
 private:
 
-	static std::vector<bool> m_mouseButtonStates;
-	static glm::vec2 m_mousePosition;
-	static std::set<SDL_Keycode> m_keysDown;
-	static std::set<SDL_Keycode> m_keysPressed;
-	static std::set<SDL_Keycode> m_keysReleased;
-	static bool m_quit;
+	std::vector<bool> m_mouseButtonStates;
+	glm::vec2 m_mousePosition;
+	std::set<SDL_Keycode> m_keysDown;
+	std::set<SDL_Keycode> m_keysPressed;
+	std::set<SDL_Keycode> m_keysReleased;
+	bool m_quit;
+	glm::vec2 m_windowSize;
+	bool m_windowResized;
 };
 

@@ -81,7 +81,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -99,7 +99,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\box2d\include\box2d</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,11 +147,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.cpp" />
+    <ClCompile Include="scr\Physics\PhysicsWorld.cpp" />
+    <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.cpp" />
     <ClCompile Include="scr\opengl\DebugRenderer.cpp" />
-    <ClCompile Include="scr\Component\ColliderComponent\RectangleColliderComponent.cpp" />
-    <ClCompile Include="scr\Component\ColliderComponent\CircleColliderComponent.cpp" />
-    <ClCompile Include="scr\Component\ColliderComponent\ColliderComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\ColliderComponent\RectangleColliderComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\ColliderComponent\CircleColliderComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\ColliderComponent\ColliderComponent.cpp" />
     <ClCompile Include="dependencies\base64\base64.cpp" />
     <ClCompile Include="dependencies\imgui\imgui.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
@@ -162,15 +163,15 @@
     <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\pugixml\pugixml.cpp" />
-    <ClCompile Include="scr\Component\PlayerMovementComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\PlayerMovementComponent.cpp" />
     <ClCompile Include="scr\opengl\Material.cpp" />
     <ClCompile Include="scr\Engine.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\Color.cpp" />
-    <ClCompile Include="scr\Component\Component.cpp" />
-    <ClCompile Include="scr\Component\RenderComponents\RenderComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\Component.cpp" />
+    <ClCompile Include="scr\ECS\Component\RenderComponents\RenderComponent.cpp" />
     <ClCompile Include="scr\opengl\Renderer.cpp" />
-    <ClCompile Include="scr\Entity\Entity.cpp" />
+    <ClCompile Include="scr\ECS\Entity\Entity.cpp" />
     <ClCompile Include="scr\Input.cpp" />
     <ClCompile Include="scr\Main.cpp" />
     <ClCompile Include="scr\opengl\FrameBuffer.cpp" />
@@ -181,11 +182,11 @@
     <ClCompile Include="scr\Scene.cpp" />
     <ClCompile Include="scr\Transform.cpp" />
     <ClCompile Include="scr\Window.cpp" />
-    <ClCompile Include="scr\Component\RenderComponents\SpriteComponent.cpp" />
-    <ClCompile Include="scr\Component\RenderComponents\TileMapComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\RenderComponents\SpriteComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\RenderComponents\TileMapComponent.cpp" />
     <ClCompile Include="scr\Resourse\TileSheet.cpp" />
-    <ClCompile Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.cpp" />
-    <ClCompile Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\debug.frag" />
@@ -194,11 +195,13 @@
     <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="scr\Component\PhysicsBodyComponents\PhysicsBodyComponent.h" />
+    <ClInclude Include="scr\HenkelEngine.h" />
+    <ClInclude Include="scr\Physics\PhysicsWorld.h" />
+    <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h" />
     <ClInclude Include="scr\opengl\DebugRenderer.h" />
-    <ClInclude Include="scr\Component\ColliderComponent\RectangleColliderComponent.h" />
-    <ClInclude Include="scr\Component\ColliderComponent\CircleColliderComponent.h" />
-    <ClInclude Include="scr\Component\ColliderComponent\ColliderComponent.h" />
+    <ClInclude Include="scr\ECS\Component\ColliderComponent\RectangleColliderComponent.h" />
+    <ClInclude Include="scr\ECS\Component\ColliderComponent\CircleColliderComponent.h" />
+    <ClInclude Include="scr\ECS\Component\ColliderComponent\ColliderComponent.h" />
     <ClInclude Include="dependencies\base64\base64.h" />
     <ClInclude Include="dependencies\box2d\include\box2d\b2_api.h" />
     <ClInclude Include="dependencies\box2d\include\box2d\b2_block_allocator.h" />
@@ -255,16 +258,16 @@
     <ClInclude Include="dependencies\pugixml\pugixml.hpp" />
     <ClInclude Include="dependencies\zlib\include\zconf.h" />
     <ClInclude Include="dependencies\zlib\include\zlib.h" />
-    <ClInclude Include="scr\Component\PlayerMovementComponent.h" />
+    <ClInclude Include="scr\ECS\Component\PlayerMovementComponent.h" />
     <ClInclude Include="scr\HelperFunctions.h" />
     <ClInclude Include="scr\opengl\Material.h" />
     <ClInclude Include="scr\Engine.h" />
     <ClInclude Include="scr\Camera.h" />
     <ClInclude Include="scr\Color.h" />
-    <ClInclude Include="scr\Component\Component.h" />
-    <ClInclude Include="scr\Component\RenderComponents\RenderComponent.h" />
+    <ClInclude Include="scr\ECS\Component\Component.h" />
+    <ClInclude Include="scr\ECS\Component\RenderComponents\RenderComponent.h" />
     <ClInclude Include="scr\opengl\Renderer.h" />
-    <ClInclude Include="scr\Entity\Entity.h" />
+    <ClInclude Include="scr\ECS\Entity\Entity.h" />
     <ClInclude Include="scr\Event.h" />
     <ClInclude Include="scr\Input.h" />
     <ClInclude Include="scr\opengl\FrameBuffer.h" />
@@ -275,11 +278,11 @@
     <ClInclude Include="scr\Scene.h" />
     <ClInclude Include="scr\Transform.h" />
     <ClInclude Include="scr\Window.h" />
-    <ClInclude Include="scr\Component\RenderComponents\SpriteComponent.h" />
-    <ClInclude Include="scr\Component\RenderComponents\TileMapComponent.h" />
+    <ClInclude Include="scr\ECS\Component\RenderComponents\SpriteComponent.h" />
+    <ClInclude Include="scr\ECS\Component\RenderComponents\TileMapComponent.h" />
     <ClInclude Include="scr\Resourse\TileSheet.h" />
-    <ClInclude Include="scr\Component\PhysicsBodyComponents\StaticBodyComponent.h" />
-    <ClInclude Include="scr\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h" />
+    <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h" />
+    <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

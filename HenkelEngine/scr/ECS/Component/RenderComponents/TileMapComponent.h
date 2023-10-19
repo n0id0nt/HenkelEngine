@@ -1,12 +1,12 @@
 #pragma once
 #include "RenderComponent.h"
-#include "../../Resourse/TileSheet.h"
+#include "Resourse/TileSheet.h"
 #include <vector>
 
 class TileMapComponent : public RenderComponent
 {
 public:
-	TileMapComponent(Entity* entity, unsigned int width, unsigned int height, std::vector<unsigned> levelArray, TileSheet tileSheet);
+	TileMapComponent(Entity* entity, Engine* engine, unsigned int width, unsigned int height, std::vector<unsigned> levelArray, TileSheet tileSheet);
 
 	void Update(float deltaTime) override;
 	void Render() override;

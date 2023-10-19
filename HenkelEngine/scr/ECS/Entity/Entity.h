@@ -2,8 +2,8 @@
 
 #include <vector>
 #include <memory>
-#include "../Transform.h"
-#include "../Component/Component.h"
+#include "Transform.h"
+#include "ECS/Component/Component.h"
 #include <string>
 
 class Scene;

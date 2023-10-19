@@ -1,5 +1,5 @@
 #include "Entity.h"
-#include "../Scene.h"
+#include "Scene.h"
 
 Entity::Entity(Scene* scene, std::string name) 
 	: m_scene(scene), m_name(name), m_components(), m_transform(std::make_unique<Transform>())

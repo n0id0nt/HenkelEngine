@@ -1,10 +1,10 @@
 #include "StaticBodyComponent.h"
-#include "..\..\opengl\openglHelper.h"
+#include "opengl\openglHelper.h"
 #include "glm\glm.hpp"
 #include "../../Entity/Entity.h"
 #include "../ColliderComponent/ColliderComponent.h"
 
-StaticBodyComponent::StaticBodyComponent(Entity* entity, b2World* world) : Component(entity), m_world(world)
+StaticBodyComponent::StaticBodyComponent(Entity* entity, PhysicsWorld* world) : Component(entity), m_world(world)
 {
 	ASSERT(GetEntity()->HasComponent<ColliderComponent>());
 	b2BodyDef bodyDef;

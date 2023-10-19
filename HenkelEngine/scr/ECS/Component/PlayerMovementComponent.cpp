@@ -1,10 +1,11 @@
 #include "PlayerMovementComponent.h"
-#include "../Input.h"
-#include "../Entity/Entity.h"
-#include "..\opengl\openglHelper.h"
-#include "../Scene.h"
-#include "../opengl/DebugRenderer.h"
+#include "Input.h"
+#include "ECS/Entity/Entity.h"
+#include "opengl\openglHelper.h"
+#include "Scene.h"
+#include "opengl/DebugRenderer.h"
 #include "glm/gtx/vector_angle.hpp"
+#include "Engine.h"
 
 const float speed = 80.f;
 const float jumpSpeed = 100.f;
@@ -12,7 +13,7 @@ const float fallSpeed = 500.f;
 const float gravity = 160.f;
 const float groundAngle = 40;
 
-PlayerMovementComponent::PlayerMovementComponent(Entity* entity) : Component(entity)
+PlayerMovementComponent::PlayerMovementComponent(Entity* entity, Engine* engine) : Component(entity), m_engine(engine)
 {
 	ASSERT(GetEntity()->HasComponent<PhysicsBodyComponent>());
 	m_physicsBody = GetEntity()->GetComponent<PhysicsBodyComponent>();
@@ -25,7 +26,7 @@ void PlayerMovementComponent::Update(float deltaTime)
 
 	// horrizontal speed
 	{
-		float horrizontalDir = Input::GetArrowDir().x;
+		float horrizontalDir = m_engine->GetInput()->GetArrowDir().x;
 		horrizontalSpeed = horrizontalDir * speed;// *deltaTime;
 	}
 	
@@ -41,9 +42,9 @@ void PlayerMovementComponent::Update(float deltaTime)
 		}
 	}
 
-	// jump
+	// jump 
 	{
-		if (Input::isKeyJustPressed(SDLK_SPACE) && m_isGrounded)
+		if (m_engine->GetInput()->isKeyJustPressed(SDLK_SPACE) && m_isGrounded)
 		{
 			m_verticalSpeed = -jumpSpeed;
 		}

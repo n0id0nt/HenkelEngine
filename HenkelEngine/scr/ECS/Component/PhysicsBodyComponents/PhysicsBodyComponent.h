@@ -1,14 +1,15 @@
 #pragma once
-#include "../Component.h"
-#include <box2d.h>
+#include "ECS/Component/Component.h"
+#include "HenkelEngine.h"
 #include "glm\glm.hpp"
 #include <vector>
+#include "Physics\PhysicsWorld.h"
 
 class PhysicsBodyComponent :
     public Component
 {
 public:
-    PhysicsBodyComponent(Entity* entity, b2World* world);
+    PhysicsBodyComponent(Entity* entity, PhysicsWorld* world);
     ~PhysicsBodyComponent();
 
     void Update(float deltaTime) override {}
@@ -23,6 +24,6 @@ public:
 private:
 
     b2Body* m_body;
-    b2World* m_world;
+    PhysicsWorld* m_world;
 };
 

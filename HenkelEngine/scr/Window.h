@@ -7,47 +7,38 @@
 #include <iostream>
 
 #include <GL\glew.h>
-#include <vector>
 #include <SDL_opengl.h>
-
-#include "glm\glm.hpp"
-#include "Input.h"
-
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_opengl3.h"
-
-#include "Event.h"
-
+#include <SDL.h>
 
 class Window
 {
 public:
 
-	Window(std::string name, int x, int y, int w, int h);
+	Window(std::string name, int x, int y, int w, int h, bool resizeWindow, bool fullscreen);
 	~Window();
 
-	void Input();
+	void SetFullscreen(bool fullscreen);
+	void SetResizable(bool resizableWindow);
 
-	void Loop(float deltaTime);
+	bool IsRunning();
 
 	void OnClose();
-	void OnResize(int w, int h);
+	void Resize(glm::uvec2 size);
 
-	bool IsRunning() const { return m_running; }
+	int GetWidth();
+	int GetHeight();
 
-	int Width, Height;
+	void SwapBuffers();
 
-	SDL_Window* GetSDLWindow() const { return m_window; }
-	SDL_GLContext* GetSDLContext() { return &m_context; }
+	void SetUpImGuiForWindow();
 
 private:
-	SDL_Window* m_window;
-	SDL_GLContext m_context;
 
 	bool m_running;
-	std::unique_ptr<Scene> m_scene;
 
-	glm::vec4 m_clearColor;
+	int m_width, m_height;
+
+	SDL_Window* m_window;
+	SDL_GLContext m_context;
 };
 

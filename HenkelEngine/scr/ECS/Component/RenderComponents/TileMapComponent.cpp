@@ -1,7 +1,7 @@
 #include "TileMapComponent.h"
 
-TileMapComponent::TileMapComponent(Entity* entity, unsigned int width, unsigned int height, std::vector<unsigned> levelArray, TileSheet tileSheet)
-	: RenderComponent(entity, width * height, tileSheet.GetTileSetImagePath()), m_Width(width), m_Height(height), m_LevelArray(levelArray), m_tileSheet(tileSheet)
+TileMapComponent::TileMapComponent(Entity* entity, Engine* engine, unsigned int width, unsigned int height, std::vector<unsigned> levelArray, TileSheet tileSheet)
+	: RenderComponent(entity, engine, width * height, tileSheet.GetTileSetImagePath()), m_Width(width), m_Height(height), m_LevelArray(levelArray), m_tileSheet(tileSheet)
 {
 	ASSERT(width * height == levelArray.size());
 }

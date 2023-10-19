@@ -3,8 +3,8 @@
 
 int main(int argc, char* argv[])
 {
-	std::unique_ptr<Engine> app = std::make_unique<Engine>("Henkel Engine");
-	app->Loop();
+	std::unique_ptr<Engine> engine = std::make_unique<Engine>();
+	engine->Loop();
 
 	return 0;
 }

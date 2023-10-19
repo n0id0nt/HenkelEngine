@@ -2,13 +2,14 @@
 #include <imgui_impl_sdl2.h>
 #include "Window.h"
 
-std::vector<bool> Input::m_mouseButtonStates { false, false, false };
-glm::vec2 Input::m_mousePosition(0,0);
-bool Input::m_quit = false;
-std::set<SDL_Keycode> Input::m_keysDown {};
-std::set<SDL_Keycode> Input::m_keysPressed {};
-std::set<SDL_Keycode> Input::m_keysReleased {};
-Window* Input::window;
+Input::Input() 
+    : m_mouseButtonStates{ false, false, false }, m_mousePosition(0, 0), m_keysDown{}, m_keysPressed{}, m_keysReleased{}, m_windowSize{0u,0u}, m_windowResized(false), m_quit(false)
+{
+}
+
+Input::~Input()
+{
+}
 
 void Input::Update()
 {
@@ -91,7 +92,7 @@ void Input::onKeyUp(SDL_Event& event)
     m_keysReleased.insert(key);
 }
 
-bool Input::Quit()
+bool Input::Quit() const
 {
     return m_quit;
 }
@@ -101,9 +102,25 @@ void Input::onWindowEvent(SDL_Event& event)
     switch (event.window.event)
     {
     case SDL_WINDOWEVENT_SIZE_CHANGED:
-        window->OnResize(event.window.data1, event.window.data2);
+        m_windowSize = { event.window.data1, event.window.data2 };
+        m_windowResized = true;
         break;
     }
+}
+
+bool Input::WasWindowResized() const
+{
+    return m_windowResized;
+}
+
+void Input::ClearWindowResizedFlag()
+{
+    m_windowResized = false;
+}
+
+glm::vec2 Input::WindowSize() const
+{
+    return m_windowSize;
 }
 
 void Input::onMouseButtonDown(SDL_Event& event)

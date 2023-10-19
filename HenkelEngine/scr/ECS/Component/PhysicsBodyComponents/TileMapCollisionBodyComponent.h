@@ -1,15 +1,16 @@
 #pragma once
 #include "../Component.h"
-#include "box2d.h"
-#include "../../Resourse/TileSheet.h"
+#include "HenkelEngine.h"
+#include "Resourse/TileSheet.h"
 #include <vector>
 #include "../RenderComponents/TileMapComponent.h"
+#include "Physics\PhysicsWorld.h"
 
 class TileMapCollisionBodyComponent :
     public Component
 {
 public:
-    TileMapCollisionBodyComponent(Entity* entity, b2World* world);
+    TileMapCollisionBodyComponent(Entity* entity, PhysicsWorld* world);
     ~TileMapCollisionBodyComponent();
 
     void Update(float deltaTime) override;
@@ -17,7 +18,7 @@ public:
 private:
 
     std::vector<b2Body*> m_bodies;
-    b2World* m_world;
+    PhysicsWorld* m_world;
     TileMapComponent* m_tilemap;
 };
 

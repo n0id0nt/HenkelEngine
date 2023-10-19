@@ -1,8 +1,8 @@
 #include "Scene.h"
-#include "Component\RenderComponents\SpriteComponent.h"
-#include "Component\RenderComponents\TileMapComponent.h"
-#include "Component\PlayerMovementComponent.h"
-#include "Window.h"
+#include "ECS\Component\RenderComponents\SpriteComponent.h"
+#include "ECS\Component\RenderComponents\TileMapComponent.h"
+#include "ECS\Component\PlayerMovementComponent.h"
+#include "Engine.h"
 #include "pugixml.hpp"
 #include <fstream>
 #include <iostream>
@@ -10,35 +10,25 @@
 #include "HelperFunctions.h"
 #include "zlib.h"
 #include "Resourse\TileSheet.h"
-#include "Component\ColliderComponent\RectangleColliderComponent.h"
+#include "ECS\Component\ColliderComponent\RectangleColliderComponent.h"
 #include "opengl\DebugRenderer.h"
-#include "Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
-#include "Component\PhysicsBodyComponents\StaticBodyComponent.h"
-#include "Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
+#include <imgui.h>
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
 const float timeStep = 1.0f / 60.0f;
-const int32 velocityIterations = 6;
-const int32 positionIterations = 2;
+const int velocityIterations = 6;
+const int positionIterations = 2;
 
 
-Scene::Scene(Window* window, const std::string& fileDir, const std::string& levelFile) 
-	: m_entities(), m_camera(new Camera(glm::vec3(0.0f, 0.0f, 0.0f))), m_window(window), m_dockingEnviromentInited(false), m_name("Scene"), m_world(new b2World({0.f,0.f}))
+Scene::Scene(Engine* engine, const std::string& fileDir, const std::string& levelFile) 
+	: m_entities(), m_engine(engine), m_dockingEnviromentInited(false), m_name("Scene")
 {
-	// create the rubiks cube and respective components
-	//cube = CreateEntity("Cube");
-	//cube->AddComponent(new SpriteComponent(cube));
-	//cube->GetTransform()->SetScale({ 3.f, 3.f, 1.f });
-	//cube->GetTransform()->SetRotation({ 30.5f, 0.f, 0.f });
-	//
-	//cube2 = CreateEntity("Cube2");
-	//cube2->AddComponent(new SpriteComponent(cube2));
-	//cube2->GetTransform()->SetScale({ 10.f, 10.f, 1.f });
-	//cube2->GetTransform()->SetPosition({ -50.5f, -50.5f, 1.f });
-
-	m_camera->SetOrthographic(true);
-
+	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f,0.f }, timeStep, velocityIterations, positionIterations);
 	LoadScene(fileDir, levelFile);
 }
 
@@ -79,7 +69,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
 			timemap->GetTransform()->SetScale({ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f});
-			timemap->AddComponent(new TileMapComponent(timemap, width, height, levelArray, tileSheet));
+			timemap->AddComponent(new TileMapComponent(timemap, m_engine, width, height, levelArray, tileSheet));
 			timemap->AddComponent(new TileMapCollisionBodyComponent(timemap, m_world.get()));
 		}
 		else if (name == "objectgroup")
@@ -95,11 +85,11 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				gameObject->GetTransform()->SetParent(objectGroup->GetTransform());
 				gameObject->GetTransform()->SetPosition({ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f });
 				gameObject->AddComponent(new RectangleColliderComponent(gameObject, object.attribute("width").as_float(), object.attribute("height").as_float()));
-				gameObject->AddComponent(new SpriteComponent(gameObject, tileSheet, object.attribute("gid").as_uint() - 1));
+				gameObject->AddComponent(new SpriteComponent(gameObject, m_engine, tileSheet, object.attribute("gid").as_uint() - 1));
 				if (name == "Player")
 				{
 					gameObject->AddComponent(new PhysicsBodyComponent(gameObject, m_world.get()));
-					gameObject->AddComponent(new PlayerMovementComponent(gameObject));
+					gameObject->AddComponent(new PlayerMovementComponent(gameObject, m_engine));
 				}
 				else
 				{
@@ -112,7 +102,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 void Scene::Update(float deltaTime)
 {
-	m_world->Step(timeStep, velocityIterations, positionIterations);
+	m_world->Step();
 
 	for (auto& entity : m_entities)
 	{
@@ -143,9 +133,9 @@ void Scene::Render()
 
 	ImGui::End();
 
-	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f*8.f, 0.f }, 30.f*16.f, 20.f*16.f, {0.5f,0.5f,0.5f});
+	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
 
-	glm::mat4 projection = m_camera->CalculateProjection(GetWindow()->Width, GetWindow()->Height);
+	glm::mat4 projection = m_camera->CalculateProjection(m_engine->GetWindow()->GetWidth(), m_engine->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
 

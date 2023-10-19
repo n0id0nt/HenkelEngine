@@ -1,12 +1,12 @@
 #pragma once
 #include "../Component.h"
 #include "RenderComponent.h"
-#include "..\..\Resourse\TileSheet.h"
+#include "Resourse\TileSheet.h"
 
 class SpriteComponent : public RenderComponent
 {
 public:
-	SpriteComponent(Entity* entity, TileSheet tileSheet, unsigned int index);
+	SpriteComponent(Entity* entity, Engine* engine, TileSheet tileSheet, unsigned int index);
 	
 	void Update(float deltaTime) override;
 private:
