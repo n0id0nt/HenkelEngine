@@ -51,12 +51,12 @@ std::string TileSheet::GetTileSetImagePath()
 	return m_dir + m_imageFile;
 }
 
-unsigned int TileSheet::GetTileWidth()
+unsigned int TileSheet::GetTileWidth() const
 {
 	return m_tileWidth;
 }
 
-unsigned int TileSheet::GetTileHeight()
+unsigned int TileSheet::GetTileHeight() const
 {
 	return m_tileHeight;
 }

@@ -15,8 +15,8 @@ public:
 
 	std::string GetTileSetImagePath();
 
-	unsigned int GetTileWidth();
-	unsigned int GetTileHeight();
+	unsigned int GetTileWidth() const;
+	unsigned int GetTileHeight() const;
 
 private:
 

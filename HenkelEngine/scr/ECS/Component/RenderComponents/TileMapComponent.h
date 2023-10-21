@@ -2,25 +2,22 @@
 #include "RenderComponent.h"
 #include "Resourse/TileSheet.h"
 #include <vector>
+#include <array>
 
-class TileMapComponent : public RenderComponent
+struct TileMapComponent
 {
-public:
-	TileMapComponent(Entity* entity, Engine* engine, unsigned int width, unsigned int height, std::vector<unsigned> levelArray, TileSheet tileSheet);
+	unsigned int width, height;
+	std::vector<unsigned> levelArray;
+	TileSheet tileSheet;
 
-	void Update(float deltaTime) override;
-	void Render() override;
+	unsigned int GetTileWidth() const;
+	unsigned int GetTileHeight() const;
 
-	unsigned int GetTileWidth();
-	unsigned int GetTileHeight();
+	std::vector<glm::vec2> GetTilePositions() const;
+	// TODO no check for camera pos need to ensure that the tile map is trimmed for the camera
+	std::vector<std::array<glm::vec2, 3>> GetTileVertices();
 
-	std::vector<glm::vec2> GetTilePositions();
+	unsigned int GetTile(unsigned int row, unsigned int col) const;
 
-private:
-	unsigned int GetTile(unsigned int row, unsigned int col);
-
-	unsigned int m_Width, m_Height;
-	std::vector<unsigned> m_LevelArray;
-	TileSheet m_tileSheet;
 };
 

@@ -1,36 +1,18 @@
 #include "PhysicsBodyComponent.h"
-#include "ECS/Entity/Entity.h"
 #include "opengl/openglHelper.h"
-#include "../ColliderComponent/ColliderComponent.h"
+#include <glm\gtx\vector_angle.hpp>
 
-PhysicsBodyComponent::PhysicsBodyComponent(Entity* entity, PhysicsWorld* world) : Component(entity), m_world(world)
+PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef) : m_world(world)
 {
-	ASSERT(GetEntity()->HasComponent<ColliderComponent>());
-	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	glm::vec2 position = GetEntity()->GetTransform()->GetWorldPosition();
-	bodyDef.position = b2Vec2(position.x, position.y);
-	bodyDef.fixedRotation = true;
-	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(entity);
 
 	m_body = m_world->CreateBody(&bodyDef);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = GetEntity()->GetComponent<ColliderComponent>()->GetCollider();
-	fixtureDef.density = 1.f;
-	fixtureDef.friction = 0.f;
 	m_body->CreateFixture(&fixtureDef);
 }
 
 PhysicsBodyComponent::~PhysicsBodyComponent()
 {
 	m_world->DestroyBody(m_body);
-}
-
-void PhysicsBodyComponent::UpdatePos()
-{
-	b2Vec2 vec = m_body->GetPosition();
-	GetEntity()->GetTransform()->SetWorldPosition({vec.x, vec.y, 0.f});
 }
 
 void PhysicsBodyComponent::SetVelocity(glm::vec2 velocity)
@@ -42,6 +24,32 @@ glm::vec2 PhysicsBodyComponent::GetVelocity()
 {
 	b2Vec2 vec = m_body->GetLinearVelocity();
 	return glm::vec2(vec.x, vec.y);
+}
+
+glm::vec2 PhysicsBodyComponent::GetPosition()
+{
+	b2Vec2 pos = m_body->GetPosition();
+	return glm::vec2(pos.x, pos.y);
+}
+
+bool PhysicsBodyComponent::CheckGrounded(float groundAngle)
+{
+	for (auto& contact : GetContacts())
+	{
+		if (contact->IsTouching())
+		{
+			b2Vec2 normal = contact->GetManifold()->localNormal;
+			//glm::vec3 pos = GetEntity()->GetTransform()->GetWorldPosition();
+			//DebugRenderer::DrawLine(pos, glm::vec3{ normal.x * 8.f, normal.y * 8.f, 0.f } + pos, {1.f,0.f,0.f});
+			bool isFixtureA = contact->GetFixtureA()->GetBody() == m_body;
+			float angle = glm::degrees(glm::angle(glm::vec2{ 0.f, 1.f }, (isFixtureA ? 1.f : -1.f)* glm::vec2{ normal.x, normal.y }));
+			if (angle < groundAngle)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 std::vector<b2Contact*> PhysicsBodyComponent::GetContacts()

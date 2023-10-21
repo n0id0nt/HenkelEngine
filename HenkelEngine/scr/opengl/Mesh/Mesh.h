@@ -2,11 +2,16 @@
 
 #include <vector>
 #include "glm\glm.hpp"
-#include "..\..\opengl\openglHelper.h"
+#include "opengl\openglHelper.h"
 
 #define QUAD_SIZE 4
 
-struct Vertex;
+struct Vertex
+{
+	glm::vec3 pos;
+	glm::vec4 color;
+	glm::vec2 texCoord;
+};
 
 class Mesh
 {

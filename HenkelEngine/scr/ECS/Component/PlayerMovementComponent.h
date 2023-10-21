@@ -1,18 +1,14 @@
 #pragma once
-#include "Component.h"
 #include "PhysicsBodyComponents\PhysicsBodyComponent.h"
 
 class Engine;
 
-class PlayerMovementComponent :
-    public Component
+class PlayerMovementComponent 
 {
 public:
-    PlayerMovementComponent(Entity* entity, Engine* engine);
+    PlayerMovementComponent(Engine* engine, PhysicsBodyComponent* physicsBody);
 
-    void Update(float deltaTime) override;
-
-    bool CheckGrounded();
+    void Update(float deltaTime);
 
 private:
 

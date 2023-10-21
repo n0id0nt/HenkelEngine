@@ -1,5 +1,4 @@
 #include "Mesh.h"
-#include "../../opengl/Renderer.h"
 
 void Mesh::setCubeData(std::vector<Vertex>& vertices)
 {

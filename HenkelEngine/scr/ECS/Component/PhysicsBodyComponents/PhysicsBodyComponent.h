@@ -1,23 +1,21 @@
 #pragma once
-#include "ECS/Component/Component.h"
 #include "HenkelEngine.h"
 #include "glm\glm.hpp"
 #include <vector>
 #include "Physics\PhysicsWorld.h"
 
-class PhysicsBodyComponent :
-    public Component
+class PhysicsBodyComponent
 {
 public:
-    PhysicsBodyComponent(Entity* entity, PhysicsWorld* world);
+    PhysicsBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef);
     ~PhysicsBodyComponent();
-
-    void Update(float deltaTime) override {}
-
-    void UpdatePos();
     
     void SetVelocity(glm::vec2 velocity);
     glm::vec2 GetVelocity();
+
+    glm::vec2 GetPosition();
+
+    bool CheckGrounded(float groundAngle);
 
     std::vector<b2Contact*> GetContacts();
 

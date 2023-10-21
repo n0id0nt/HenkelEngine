@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "ECS\Component\RenderComponents\SpriteComponent.h"
 #include "ECS\Component\RenderComponents\TileMapComponent.h"
+#include "ECS\Component\RenderComponents\RenderComponent.h"
 #include "ECS\Component\PlayerMovementComponent.h"
 #include "Engine.h"
 #include "pugixml.hpp"
@@ -10,12 +11,12 @@
 #include "HelperFunctions.h"
 #include "zlib.h"
 #include "Resourse\TileSheet.h"
-#include "ECS\Component\ColliderComponent\RectangleColliderComponent.h"
 #include "opengl\DebugRenderer.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 #include <imgui.h>
+#include <ECS\Component\TransformComponent.h>
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
@@ -25,7 +26,8 @@ const int positionIterations = 2;
 
 
 Scene::Scene(Engine* engine, const std::string& fileDir, const std::string& levelFile) 
-	: m_entities(), m_engine(engine), m_dockingEnviromentInited(false), m_name("Scene")
+	: m_engine(engine), m_dockingEnviromentInited(false), m_name("Scene"), 
+	m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry, engine), m_renderSystem(&m_registry, engine), m_scriptSystem(&m_registry)
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f,0.f }, timeStep, velocityIterations, positionIterations);
@@ -55,9 +57,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 		if (name == "layer")
 		{
 			// create tilemap component
-			Entity* timemap = CreateEntity(layer.attribute("name").as_string());
-			int width = layer.attribute("width").as_int();
-			int height = layer.attribute("height").as_int();
+			entt::entity tilemapEntity = m_registry.create();
+			unsigned int width = layer.attribute("width").as_uint();
+			unsigned int height = layer.attribute("height").as_uint();
 
 			// retrieve level data
 			ASSERT(std::string(layer.child("data").attribute("encoding").as_string()) == "base64");
@@ -68,32 +70,45 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
-			timemap->GetTransform()->SetScale({ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f});
-			timemap->AddComponent(new TileMapComponent(timemap, m_engine, width, height, levelArray, tileSheet));
-			timemap->AddComponent(new TileMapCollisionBodyComponent(timemap, m_world.get()));
+			m_registry.emplace<TileMapComponent>(tilemapEntity, width, height, levelArray, tileSheet);
+			m_registry.emplace<RenderComponent>(tilemapEntity, new Material(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag"), width * height);
+			m_registry.emplace<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
 		}
 		else if (name == "objectgroup")
 		{
 			// create tilemap component
-			Entity* objectGroup = CreateEntity(layer.attribute("name").as_string());
-			objectGroup->GetTransform()->SetPosition({ layer.attribute("offsetx").as_float(), layer.attribute("offsety").as_float(), 0.f });
+			entt::entity objectGroupEntity = m_registry.create();
+			auto& objectGroupTransform = m_registry.emplace<TransformComponent>(objectGroupEntity, glm::vec3{ layer.attribute("offsetx").as_float(), layer.attribute("offsety").as_float(), 0.f }, glm::vec3(), glm::vec3{1.f,1.f,1.f});
+
 			for (auto& object : layer.children("object"))
 			{
-				Entity* gameObject = CreateEntity(object.attribute("name").as_string());
+				entt::entity gameObjectEntity = m_registry.create();
 				std::string name = object.attribute("name").as_string();
-				gameObject->GetTransform()->SetScale({ object.attribute("width").as_float(), object.attribute("height").as_float(), 1.f });
-				gameObject->GetTransform()->SetParent(objectGroup->GetTransform());
-				gameObject->GetTransform()->SetPosition({ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f });
-				gameObject->AddComponent(new RectangleColliderComponent(gameObject, object.attribute("width").as_float(), object.attribute("height").as_float()));
-				gameObject->AddComponent(new SpriteComponent(gameObject, m_engine, tileSheet, object.attribute("gid").as_uint() - 1));
+
+				m_registry.emplace<RenderComponent>(gameObjectEntity, new Material(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag"), 1u);
+				m_registry.emplace<SpriteComponent>(gameObjectEntity, tileSheet, object.attribute("gid").as_uint() - 1);
+				auto& transform = m_registry.emplace<TransformComponent>(gameObjectEntity, glm::vec3{ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f }, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
+				transform.SetParent(objectGroupEntity);
+				transform.SetParent(&objectGroupTransform);
+
+				b2BodyDef bodyDef;
+				glm::vec2 position = transform.GetWorldPosition();
+				bodyDef.position = b2Vec2(position.x, position.y);
+				//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
+
+				b2FixtureDef fixtureDef;
+				b2PolygonShape shape;
+				shape.SetAsBox(object.attribute("width").as_float() / 2.f, object.attribute("height").as_float() / 2.f);
+				fixtureDef.shape = &shape;
+				fixtureDef.friction = 0.f;
+
 				if (name == "Player")
 				{
-					gameObject->AddComponent(new PhysicsBodyComponent(gameObject, m_world.get()));
-					gameObject->AddComponent(new PlayerMovementComponent(gameObject, m_engine));
+					m_registry.emplace<PhysicsBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
 				}
 				else
 				{
-					gameObject->AddComponent(new StaticBodyComponent(gameObject, m_world.get()));
+					m_registry.emplace<StaticBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
 				}
 			}
 		}
@@ -102,26 +117,10 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 void Scene::Update(float deltaTime)
 {
-	m_world->Step();
+	m_physicsSystem.Update(m_world.get());
 
-	for (auto& entity : m_entities)
-	{
-		if (entity->HasComponent<PhysicsBodyComponent>())
-		{
-			entity->GetComponent<PhysicsBodyComponent>()->UpdatePos();
-		}
-	}
-
-	for (auto& entity : m_entities)
-	{
-		entity->Update(deltaTime);
-	}
 	m_camera->SetPosition({ x, y, 0.f });
 	m_camera->SetZoom(z);
-
-
-
-	m_world->ClearForces();
 }
 
 void Scene::Render()
@@ -139,22 +138,6 @@ void Scene::Render()
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
 
-	for (auto& entity : m_entities)
-	{
-		if (entity->HasComponent<RenderComponent>())
-		{
-			entity->GetComponent<RenderComponent>()->Render();
-		}
-	}
-}
-
-Entity* Scene::CreateEntity(std::string name)
-{
-	m_entities.push_back(std::make_unique<Entity>(this, name));
-	return m_entities.back().get();
-}
-
-void Scene::RemoveEntity(Entity* entity)
-{
+	m_renderSystem.Update();
 }
 

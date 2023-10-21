@@ -1,24 +1,19 @@
 #pragma once
-#include "../Component.h"
 #include "HenkelEngine.h"
 #include "Resourse/TileSheet.h"
 #include <vector>
 #include "../RenderComponents/TileMapComponent.h"
 #include "Physics\PhysicsWorld.h"
 
-class TileMapCollisionBodyComponent :
-    public Component
+class TileMapCollisionBodyComponent 
 {
 public:
-    TileMapCollisionBodyComponent(Entity* entity, PhysicsWorld* world);
+    TileMapCollisionBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef, const TileMapComponent& tilemap);
     ~TileMapCollisionBodyComponent();
-
-    void Update(float deltaTime) override;
 
 private:
 
     std::vector<b2Body*> m_bodies;
     PhysicsWorld* m_world;
-    TileMapComponent* m_tilemap;
 };
 

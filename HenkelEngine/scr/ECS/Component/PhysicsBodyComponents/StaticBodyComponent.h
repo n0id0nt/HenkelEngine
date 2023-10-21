@@ -1,16 +1,12 @@
 #pragma once
-#include "../Component.h"
 #include "box2d.h"
 #include "Physics\PhysicsWorld.h"
 
-class StaticBodyComponent :
-    public Component
+class StaticBodyComponent 
 {
 public:
-    StaticBodyComponent(Entity* entity, PhysicsWorld* world);
+    StaticBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef);
     ~StaticBodyComponent();
-
-    void Update(float deltaTime) override {}
 
 private:
 

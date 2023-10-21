@@ -1,30 +1,17 @@
 #include "TileMapCollisionBodyComponent.h"
-#include "ECS/Entity/Entity.h"
-#include "opengl\DebugRenderer.h"
 
-TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(Entity* entity, PhysicsWorld* world) : Component(entity), m_world(world)
+TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef, const TileMapComponent& tilemap) 
+	: m_world(world), m_bodies()
 {
-	ASSERT(GetEntity()->HasComponent<TileMapComponent>());
-
-	m_tilemap = GetEntity()->GetComponent<TileMapComponent>();
-
-	b2PolygonShape shape;
-	shape.SetAsBox(m_tilemap->GetTileWidth() / 2.f, m_tilemap->GetTileHeight() / 2.f);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &shape;
-	fixtureDef.friction = 0.f;
-
-	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
 
-	bodyDef.fixedRotation = true;
-	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(entity);
+	//m_body = m_world->CreateBody(&bodyDef);
+	//m_body->CreateFixture(&fixtureDef);
+	b2Vec2 entityPos = bodyDef.position;
 
-	for (auto& pos : m_tilemap->GetTilePositions())
+	for (auto& pos : tilemap.GetTilePositions())
 	{
-		glm::vec2 position = GetEntity()->GetTransform()->GetWorldPosition();
-		bodyDef.position = b2Vec2(position.x + pos.x, position.y + pos.y);
+		bodyDef.position = b2Vec2(entityPos.x + pos.x, entityPos.y + pos.y);
 		b2Body* body = m_world->CreateBody(&bodyDef);
 
 		body->CreateFixture(&fixtureDef);
@@ -36,13 +23,4 @@ TileMapCollisionBodyComponent::~TileMapCollisionBodyComponent()
 {
 	for (auto& body : m_bodies)
 		m_world->DestroyBody(body);
-}
-
-void TileMapCollisionBodyComponent::Update(float deltaTime)
-{
-	for (auto& body : m_bodies)
-	{
-		b2Vec2 vec = body->GetPosition();
-		DebugRenderer::DrawRectangle({ vec.x,vec.y,0.f }, m_tilemap->GetTileWidth(), m_tilemap->GetTileHeight());
-	}
 }
