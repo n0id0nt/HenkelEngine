@@ -5,14 +5,9 @@
 class ScriptSystem
 {
 public:
-	ScriptSystem(entt::registry* registry) : m_registry(registry)
-	{
-	}
+	ScriptSystem(entt::registry* registry);
 
-	void Update()
-	{
-
-	}
+	void Update(float deltaTime);
 
 private:
 

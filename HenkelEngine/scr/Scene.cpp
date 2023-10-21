@@ -104,7 +104,8 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 				if (name == "Player")
 				{
-					m_registry.emplace<PhysicsBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
+					auto& physicsBody = m_registry.emplace<PhysicsBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
+					m_registry.emplace<PlayerMovementComponent>(gameObjectEntity, m_engine, &physicsBody);
 				}
 				else
 				{
@@ -118,6 +119,8 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 void Scene::Update(float deltaTime)
 {
 	m_physicsSystem.Update(m_world.get());
+
+	m_scriptSystem.Update(deltaTime);
 
 	m_camera->SetPosition({ x, y, 0.f });
 	m_camera->SetZoom(z);
