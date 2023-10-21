@@ -94,6 +94,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				b2BodyDef bodyDef;
 				glm::vec2 position = transform.GetWorldPosition();
 				bodyDef.position = b2Vec2(position.x, position.y);
+				bodyDef.fixedRotation = true;
 				//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
 
 				b2FixtureDef fixtureDef;
@@ -101,6 +102,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				shape.SetAsBox(object.attribute("width").as_float() / 2.f, object.attribute("height").as_float() / 2.f);
 				fixtureDef.shape = &shape;
 				fixtureDef.friction = 0.f;
+				fixtureDef.density = 1.f;
 
 				if (name == "Player")
 				{

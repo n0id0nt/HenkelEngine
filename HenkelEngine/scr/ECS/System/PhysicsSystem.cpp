@@ -12,14 +12,17 @@ PhysicsSystem::PhysicsSystem(entt::registry* registry, Engine* engine)
 
 void PhysicsSystem::Update(PhysicsWorld* world)
 {
+	world->Step();
+	world->ClearForces();
+
 	//Draw debug shapes
 	{
 		auto view = m_registry->view<StaticBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
-			auto& transform = view.get<TransformComponent>(entity);
+			auto& staticBody = view.get<StaticBodyComponent>(entity);
 			//auto staticBody = view.get<StaticBodyComponent>(entity);
-			DebugRenderer::DrawRectangle(transform.GetWorldPosition(), 16.f, 16.f);
+			DebugRenderer::DrawRectangle(glm::vec3{staticBody.GetPosition(), 0.f}, 16.f, 16.f, { 0.f, 0.5f, 0.8f });
 		}
 	}
 	{
@@ -28,11 +31,10 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 		{
 			auto& transform = view.get<TransformComponent>(entity);
 			auto& tileMap = view.get<TileMapCollisionBodyComponent>(entity);
-			DebugRenderer::DrawRectangle(transform.GetWorldPosition(), 16.f, 16.f);
+			DebugRenderer::DrawRectangle(transform.GetWorldPosition(), 16.f, 16.f, { 0.8f, 0.5f, 0.f });
 		}
 	}
 	{
-		world->Step();
 		auto view = m_registry->view<PhysicsBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
@@ -41,8 +43,7 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 
 			transform.SetWorldPosition(physicsBody.GetPosition());
 
-			DebugRenderer::DrawRectangle(transform.GetWorldPosition(), 16.f, 16.f);
+			DebugRenderer::DrawRectangle(glm::vec3{physicsBody.GetPosition(), 0.f}, 16.f, 16.f);
 		}
-		world->ClearForces();
 	}
 }

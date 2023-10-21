@@ -14,3 +14,9 @@ StaticBodyComponent::~StaticBodyComponent()
 {
 	m_world->DestroyBody(m_body);
 }
+
+glm::vec2 StaticBodyComponent::GetPosition()
+{
+	b2Vec2 pos = m_body->GetPosition();
+	return glm::vec2(pos.x, pos.y);
+}

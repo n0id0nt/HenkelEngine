@@ -8,6 +8,8 @@ public:
     StaticBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef);
     ~StaticBodyComponent();
 
+    glm::vec2 GetPosition();
+
 private:
 
     b2Body* m_body;

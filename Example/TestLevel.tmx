@@ -12,7 +12,7 @@
   </data>
  </layer>
  <objectgroup id="6" name="Player" offsetx="-6" offsety="-33.3333">
-  <object id="3" name="Player" gid="5" x="217.167" y="146" width="16" height="16"/>
+  <object id="3" name="Player" gid="5" x="220.167" y="216.5" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="4" name="Item" offsetx="-186.645" offsety="-16.0269">
   <object id="4" name="Wand" gid="3" x="434" y="215.394" width="16" height="16"/>
@@ -23,7 +23,7 @@
  </objectgroup>
  <layer id="7" name="ForeGround" width="30" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMFgB+yCznx2PHDJgQlPDhEVuFIyC4QwAjOAAKg==
+   eJxjYBgFo2AUjALqAvaBdsAIArQKazYi7aOG/bjsGgWjYCgDAJZ8ACk=
   </data>
  </layer>
 </map>
