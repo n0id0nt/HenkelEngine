@@ -30,6 +30,9 @@ Scene::Scene(Engine* engine, const std::string& fileDir, const std::string& leve
 	m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry, engine), m_renderSystem(&m_registry, engine), m_scriptSystem(&m_registry)
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
+
+	m_scriptSystem.BindToLua(*m_engine->GetInput());
+
 	LoadScene(fileDir, levelFile);
 }
 
@@ -132,6 +135,16 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				fixtureDef.shape = &shape;
 				fixtureDef.friction = 0.f;
 				fixtureDef.density = 1.f;
+
+				for (auto& property : object.child("properties").children())
+				{
+					std::string name(property.attribute("name").as_string());
+					if (name == "Script")
+					{
+						std::string script = property.attribute("value").as_string();
+						m_scriptSystem.CreateScriptComponent(gameObjectEntity, fileDir + script);
+					}
+				}
 
 				if (name == "Player")
 				{

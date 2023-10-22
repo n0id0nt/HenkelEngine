@@ -7,10 +7,11 @@
 #include <tuple>
 #include <unordered_map>
 #include <string>
+#include "LUABindable.h"
 
 class Window;
 
-class Input
+class Input : public LUABindable
 {
 public:
 	enum MouseButtons
@@ -56,6 +57,8 @@ public:
 	bool isInputDown(const std::string& input);
 	bool isInputJustPressed(const std::string& input);
 	bool isInputJustReleased(const std::string& input);
+
+	void LUABind(sol::state& lua) override;
 
 private:
 

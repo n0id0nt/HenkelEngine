@@ -174,6 +174,13 @@ bool Input::isInputJustReleased(const std::string& input)
     return false;
 }
 
+void Input::LUABind(sol::state& lua)
+{
+    lua.new_usertype<Input>("Input",
+        "isInputDown", &Input::isInputDown);
+    lua.set("Input", this);
+}
+
 void Input::onMouseButtonDown(SDL_Event& event)
 {
     if (event.button.button == SDL_BUTTON_LEFT)
