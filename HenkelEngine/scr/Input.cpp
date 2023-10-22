@@ -1,9 +1,11 @@
 #include "Input.h"
 #include <imgui_impl_sdl2.h>
 #include "Window.h"
+#include "pugixml.hpp"
+#include <opengl\openglHelper.h>
 
 Input::Input() 
-    : m_mouseButtonStates{ false, false, false }, m_mousePosition(0, 0), m_keysDown{}, m_keysPressed{}, m_keysReleased{}, m_windowSize{0u,0u}, m_windowResized(false), m_quit(false)
+    : m_mouseButtonStates{ false, false, false }, m_mousePosition(0, 0), m_keysDown{}, m_keysPressed{}, m_keysReleased{}, m_windowSize{0u,0u}, m_windowResized(false), m_quit(false), m_bindings()
 {
 }
 
@@ -121,6 +123,55 @@ void Input::ClearWindowResizedFlag()
 glm::vec2 Input::WindowSize() const
 {
     return m_windowSize;
+}
+
+void Input::LoadInputBindings(const std::string& file)
+{
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_file(file.c_str());
+    ASSERT(result);
+}
+
+void Input::CreateBinding(const std::string& input, SDL_Keycode code)
+{
+    auto it = m_bindings.find(input);
+    if (it == m_bindings.end())
+        m_bindings[input] = std::set{ code };
+    else
+        m_bindings[input].insert(code);
+}
+
+bool Input::isInputDown(const std::string& input)
+{
+    auto& keys = m_bindings[input];
+    for (auto it = keys.begin(); it != keys.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            return true;
+    }
+    return false;
+}
+
+bool Input::isInputJustPressed(const std::string& input)
+{
+    auto& keys = m_bindings[input];
+    for (auto it = keys.begin(); it != keys.end(); ++it)
+    {
+        if (isKeyJustPressed(*it))
+            return true;
+    }
+    return false;
+}
+
+bool Input::isInputJustReleased(const std::string& input)
+{
+    auto& keys = m_bindings[input];
+    for (auto it = keys.begin(); it != keys.end(); ++it)
+    {
+        if (isKeyJustReleased(*it))
+            return true;
+    }
+    return false;
 }
 
 void Input::onMouseButtonDown(SDL_Event& event)

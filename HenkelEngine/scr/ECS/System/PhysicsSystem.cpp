@@ -31,7 +31,9 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 		{
 			auto& transform = view.get<TransformComponent>(entity);
 			auto& tileMap = view.get<TileMapCollisionBodyComponent>(entity);
-			DebugRenderer::DrawRectangle(transform.GetWorldPosition(), 16.f, 16.f, { 0.8f, 0.5f, 0.f });
+			auto positions = tileMap.tilePositions();
+			for (auto& position : positions)
+				DebugRenderer::DrawRectangle(glm::vec3{position, 0.f}, 16.f, 16.f, { 0.8f, 0.5f, 0.f });
 		}
 	}
 	{

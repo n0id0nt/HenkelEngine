@@ -5,7 +5,7 @@
 class PhysicsWorld
 {
 public:
-	PhysicsWorld(glm::vec2 gravity, float timeStep, int velocityIterations, int positionIterations);
+	PhysicsWorld(glm::vec2 gravity, float timeStep, int velocityIterations, int positionIterations, float pixelsPerMeter);
 
 	void Step();
 
@@ -14,7 +14,11 @@ public:
 	b2Body* CreateBody(const b2BodyDef* bodyDef);
 	void DestroyBody(b2Body* body);
 
+	float GetPixelsPerMeter() const;
+
 private:
+
+	float m_pixelsPerMeter;
 
 	b2World m_world;
 

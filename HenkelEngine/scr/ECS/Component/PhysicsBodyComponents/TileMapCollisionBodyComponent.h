@@ -11,6 +11,8 @@ public:
     TileMapCollisionBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef, const TileMapComponent& tilemap);
     ~TileMapCollisionBodyComponent();
 
+    std::vector<glm::vec2> tilePositions();
+
 private:
 
     std::vector<b2Body*> m_bodies;

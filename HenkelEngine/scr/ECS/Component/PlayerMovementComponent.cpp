@@ -42,7 +42,7 @@ void PlayerMovementComponent::Update(float deltaTime)
 
 	// jump 
 	{
-		if (m_engine->GetInput()->isKeyJustPressed(SDLK_SPACE) && m_isGrounded)
+		if (m_engine->GetInput()->isInputDown("Jump") && m_isGrounded)
 		{
 			m_verticalSpeed = -jumpSpeed;
 		}

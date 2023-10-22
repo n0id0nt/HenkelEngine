@@ -26,9 +26,13 @@ void Engine::InitEngine()
 {
 	m_input = std::make_unique<Input>();
 
-	m_resourcePool = std::make_unique<ResourcePool>();
+	m_input->CreateBinding("Jump", SDLK_SPACE);
+	m_input->CreateBinding("Jump", SDLK_w);
+	m_input->CreateBinding("Jump", SDLK_UP);
 
+	m_resourcePool = std::make_unique<ResourcePool>();
 	SDL_Init(SDL_INIT_EVERYTHING);
+
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);

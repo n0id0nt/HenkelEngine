@@ -30,7 +30,6 @@ Scene::Scene(Engine* engine, const std::string& fileDir, const std::string& leve
 	m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry, engine), m_renderSystem(&m_registry, engine), m_scriptSystem(&m_registry)
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f,0.f }, timeStep, velocityIterations, positionIterations);
 	LoadScene(fileDir, levelFile);
 }
 
@@ -48,6 +47,20 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	m_name = doc.child("map").attribute("class").as_string();
 	ASSERT(std::string(doc.child("map").attribute("orientation").as_string()) == "orthogonal");
 	ASSERT(std::string(doc.child("map").attribute("renderorder").as_string()) == "right-down");
+
+	// Custom Properties
+	float pixelsPerMeter = 1.f;
+	for (auto& property : doc.child("map").child("properties").children())
+	{
+		std::string name(property.attribute("name").as_string());
+		if (name == "Pixels Per Meter")
+		{
+			pixelsPerMeter = property.attribute("value").as_float();
+		}
+	}
+
+	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f, 0.f }, timeStep, velocityIterations, positionIterations, pixelsPerMeter);
+
 
 	TileSheet tileSheet(fileDir, doc.child("map").child("tileset").attribute("source").as_string());
 
@@ -70,10 +83,24 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
-			m_registry.emplace<MaterialComponent>(tilemapEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
+			m_registry.emplace<MaterialComponent>(tilemapEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
 			m_registry.emplace<RenderComponent>(tilemapEntity, width * height);
-			m_registry.emplace<TileMapComponent>(tilemapEntity, width, height, levelArray, tileSheet);
-			m_registry.emplace<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
+			auto& tilemap = m_registry.emplace<TileMapComponent>(tilemapEntity, width, height, levelArray, tileSheet);
+			auto& transform = m_registry.emplace<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
+			
+			b2BodyDef bodyDef;
+			glm::vec2 position = transform.GetWorldPosition();
+			bodyDef.position = b2Vec2(position.x, position.y);
+			bodyDef.fixedRotation = true;
+			//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
+
+			b2FixtureDef fixtureDef;
+			b2PolygonShape shape;
+			shape.SetAsBox(tileSheet.GetTileWidth() / (2.f * m_world->GetPixelsPerMeter()), tileSheet.GetTileHeight() / (2.f * m_world->GetPixelsPerMeter()));
+			fixtureDef.shape = &shape;
+			fixtureDef.friction = 0.f;
+			fixtureDef.density = 1.f;
+			m_registry.emplace<TileMapCollisionBodyComponent>(tilemapEntity, m_world.get(), fixtureDef, bodyDef, tilemap);
 		}
 		else if (name == "objectgroup")
 		{
@@ -86,7 +113,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				entt::entity gameObjectEntity = m_registry.create();
 				std::string name = object.attribute("name").as_string();
 
-				m_registry.emplace<MaterialComponent>(gameObjectEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
+				m_registry.emplace<MaterialComponent>(gameObjectEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
 				m_registry.emplace<RenderComponent>(gameObjectEntity, 1u);
 				m_registry.emplace<SpriteComponent>(gameObjectEntity, tileSheet, object.attribute("gid").as_uint() - 1);
 				auto& transform = m_registry.emplace<TransformComponent>(gameObjectEntity, glm::vec3{ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f }, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
@@ -101,7 +128,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 				b2FixtureDef fixtureDef;
 				b2PolygonShape shape;
-				shape.SetAsBox(object.attribute("width").as_float() / 2.f, object.attribute("height").as_float() / 2.f);
+				shape.SetAsBox(object.attribute("width").as_float() / ( 2.f * m_world->GetPixelsPerMeter()), object.attribute("height").as_float() / (2.f * m_world->GetPixelsPerMeter()));
 				fixtureDef.shape = &shape;
 				fixtureDef.friction = 0.f;
 				fixtureDef.density = 1.f;

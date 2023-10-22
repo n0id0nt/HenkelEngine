@@ -5,6 +5,7 @@
 PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef) : m_world(world)
 {
 	bodyDef.type = b2_dynamicBody;
+	bodyDef.position = b2Vec2(bodyDef.position.x / m_world->GetPixelsPerMeter(), bodyDef.position.y / m_world->GetPixelsPerMeter());
 
 	m_body = m_world->CreateBody(&bodyDef);
 	m_body->CreateFixture(&fixtureDef);
@@ -17,19 +18,19 @@ PhysicsBodyComponent::~PhysicsBodyComponent()
 
 void PhysicsBodyComponent::SetVelocity(glm::vec2 velocity)
 {
-	m_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+	m_body->SetLinearVelocity(b2Vec2(velocity.x / m_world->GetPixelsPerMeter(), velocity.y / m_world->GetPixelsPerMeter()));
 }
 
 glm::vec2 PhysicsBodyComponent::GetVelocity()
 {
 	b2Vec2 vec = m_body->GetLinearVelocity();
-	return glm::vec2(vec.x, vec.y);
+	return glm::vec2(vec.x * m_world->GetPixelsPerMeter(), vec.y * m_world->GetPixelsPerMeter());
 }
 
 glm::vec2 PhysicsBodyComponent::GetPosition()
 {
 	b2Vec2 pos = m_body->GetPosition();
-	return glm::vec2(pos.x, pos.y);
+	return glm::vec2(pos.x * m_world->GetPixelsPerMeter(), pos.y * m_world->GetPixelsPerMeter());
 }
 
 bool PhysicsBodyComponent::CheckGrounded(float groundAngle)
