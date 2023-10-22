@@ -26,6 +26,8 @@ void Engine::InitEngine()
 {
 	m_input = std::make_unique<Input>();
 
+	m_resourcePool = std::make_unique<ResourcePool>();
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -131,4 +133,9 @@ Scene* Engine::GetCurrentScene() const
 Input* Engine::GetInput() const
 {
 	return m_input.get();
+}
+
+ResourcePool* Engine::GetResourcePool() const
+{
+	return m_resourcePool.get();
 }

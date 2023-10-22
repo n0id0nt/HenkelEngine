@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
-#include "Shader.h"
-#include "Texture.h"
+#include "opengl/Shader.h"
+#include "opengl/Texture.h"
 
-class Material
+class MaterialComponent
 {
 public:
-	Material(std::string texture, std::string vertexShader, std::string fragmentShader);
+	MaterialComponent(std::string texture, std::string vertexShader, std::string fragmentShader);
 	
 	void Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	void Unbind();

@@ -70,8 +70,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
+			m_registry.emplace<MaterialComponent>(tilemapEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
+			m_registry.emplace<RenderComponent>(tilemapEntity, width * height);
 			m_registry.emplace<TileMapComponent>(tilemapEntity, width, height, levelArray, tileSheet);
-			m_registry.emplace<RenderComponent>(tilemapEntity, new Material(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag"), width * height);
 			m_registry.emplace<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
 		}
 		else if (name == "objectgroup")
@@ -85,7 +86,8 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				entt::entity gameObjectEntity = m_registry.create();
 				std::string name = object.attribute("name").as_string();
 
-				m_registry.emplace<RenderComponent>(gameObjectEntity, new Material(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag"), 1u);
+				m_registry.emplace<MaterialComponent>(gameObjectEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
+				m_registry.emplace<RenderComponent>(gameObjectEntity, 1u);
 				m_registry.emplace<SpriteComponent>(gameObjectEntity, tileSheet, object.attribute("gid").as_uint() - 1);
 				auto& transform = m_registry.emplace<TransformComponent>(gameObjectEntity, glm::vec3{ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f }, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
 				transform.SetParent(objectGroupEntity);

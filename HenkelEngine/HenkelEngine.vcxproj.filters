@@ -78,7 +78,7 @@
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\opengl\Material.cpp">
+    <ClCompile Include="scr\ECS\Component\RenderComponents\MaterialComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\ECS\Component\RenderComponents\TileMapComponent.cpp">
@@ -124,6 +124,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scr\ECS\System\AnimationSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\ResourcePool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,7 +209,7 @@
     <ClInclude Include="dependencies\nlohmann\json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\opengl\Material.h">
+    <ClInclude Include="scr\ECS\Component\RenderComponents\MaterialComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\ECS\Component\RenderComponents\TileMapComponent.h">
@@ -390,6 +393,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\ECS\Component\RenderComponents\SpriteComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\ResourcePool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

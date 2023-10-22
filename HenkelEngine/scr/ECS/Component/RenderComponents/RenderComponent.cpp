@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "Window.h"
 
-RenderComponent::RenderComponent(Material* material, unsigned int quads) : m_Material(material), m_Quads(quads)
+RenderComponent::RenderComponent(unsigned int quads) : m_Quads(quads)
 {
     // ensure renderer will actually draw something
     ASSERT(quads > 0);
@@ -17,11 +17,10 @@ RenderComponent::~RenderComponent()
     GLCall(glDeleteBuffers(1, &m_IBO));
 }
 
-void RenderComponent::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
+void RenderComponent::Render()
 {
     bool isBatching = IsBatching();
     // Bind Material
-    m_Material->Bind(model, view, projection);
 
     GLCall(glBindVertexArray(m_VAO));
 
@@ -41,7 +40,6 @@ void RenderComponent::Render(glm::mat4 model, glm::mat4 view, glm::mat4 projecti
         }
     }
     GLCall(glBindVertexArray(0));
-    m_Material->Unbind();
 
     if (isBatching)
     {

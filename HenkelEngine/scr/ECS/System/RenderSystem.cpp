@@ -1,17 +1,19 @@
 #include "RenderSystem.h"
 #include "ECS/Component/RenderComponents/SpriteComponent.h"
 #include "ECS/Component/RenderComponents/TileMapComponent.h"
+#include "ECS/Component/RenderComponents/MaterialComponent.h"
 #include "ECS/Component/TransformComponent.h"
 #include "Engine.h"
 #include "Scene.h"
 
 void RenderSystem::Update()
 {
-	auto view = m_registry->view<RenderComponent, TransformComponent>();
+	auto view = m_registry->view<RenderComponent, TransformComponent, MaterialComponent>();
 	for (auto& entity : view)
 	{
 		auto& renderComponent = view.get<RenderComponent>(entity);
 		auto& transformComponent = view.get<TransformComponent>(entity);
+		auto& materialComponent = view.get<MaterialComponent>(entity);
 		auto* tilemapComponent = m_registry->try_get<TileMapComponent>(entity);
 		auto* spriteComponent = m_registry->try_get<SpriteComponent>(entity);
 
@@ -34,6 +36,8 @@ void RenderSystem::Update()
 		glm::mat4 projection = m_engine->GetCurrentScene()->GetCamera()->CalculateProjection(m_engine->GetWindow()->GetWidth(), m_engine->GetWindow()->GetHeight());
 		glm::mat4 view = m_engine->GetCurrentScene()->GetCamera()->GetViewMatrix();
 		glm::mat4 model = transformComponent.GetWorldMatrix();
-		renderComponent.Render(model, view, projection);
+		materialComponent.Bind(model, view, projection);
+		renderComponent.Render();
+		materialComponent.Unbind();
 	}
 }

@@ -1,7 +1,7 @@
-#include "Material.h"
+#include "MaterialComponent.h"
 #include <glm\ext\matrix_transform.hpp>
 
-Material::Material(std::string texture, std::string vertexShader, std::string fragmentShader)
+MaterialComponent::MaterialComponent(std::string texture, std::string vertexShader, std::string fragmentShader)
 {
     m_Shader = std::make_unique<Shader>(vertexShader, fragmentShader);
     m_Shader->Bind();
@@ -9,7 +9,7 @@ Material::Material(std::string texture, std::string vertexShader, std::string fr
     m_Texture = std::make_unique<Texture>(texture);
 }
 
-void Material::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
+void MaterialComponent::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
     m_Shader->Bind();
     m_Texture->Bind();
@@ -19,18 +19,18 @@ void Material::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
     SetColor({ 1.f,1.f,1.f,1.f });
 }
 
-void Material::Unbind()
+void MaterialComponent::Unbind()
 {
     m_Shader->Unbind();
     m_Texture->Unbind();
 }
 
-void Material::SetColor(glm::vec4 color)
+void MaterialComponent::SetColor(glm::vec4 color)
 {
     //m_Shader->SetUniform4f("spriteColor", color);
 }
 
-void Material::SetWorldMatrices(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
+void MaterialComponent::SetWorldMatrices(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
     m_Shader->SetUniformMat4f("U_Model", model);
     m_Shader->SetUniformMat4f("U_ViewProjection", projection * view);

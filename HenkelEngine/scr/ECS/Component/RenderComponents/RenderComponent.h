@@ -2,7 +2,7 @@
 
 #include "glm\glm.hpp"
 #include "opengl/openglHelper.h"
-#include "opengl/Material.h"
+#include "ECS/Component/RenderComponents/MaterialComponent.h"
 #include <array>
 #include <memory>
 #include "opengl/Mesh/Mesh.h"
@@ -10,10 +10,10 @@
 class RenderComponent
 {
 public:
-	RenderComponent(Material* material, unsigned int quads = 1);
+	RenderComponent(unsigned int quads = 1);
 	~RenderComponent();
 
-	void Render(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
+	void Render();
 
 	void AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize);
 
@@ -26,7 +26,6 @@ private:
 
 	std::vector<Vertex> m_Vertices;
 	std::vector<GLuint> m_Indexes;
-	std::unique_ptr<Material> m_Material;
 
 	GLuint m_VAO, m_VBO, m_IBO; 
 

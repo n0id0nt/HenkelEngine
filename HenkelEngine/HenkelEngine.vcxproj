@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\ResourcePool.cpp" />
     <ClCompile Include="scr\ECS\System\AnimationSystem.cpp" />
     <ClCompile Include="scr\ECS\System\ScriptSystem.cpp" />
     <ClCompile Include="scr\ECS\System\RenderSystem.cpp" />
@@ -165,7 +166,7 @@
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\pugixml\pugixml.cpp" />
     <ClCompile Include="scr\ECS\Component\PlayerMovementComponent.cpp" />
-    <ClCompile Include="scr\opengl\Material.cpp" />
+    <ClCompile Include="scr\ECS\Component\RenderComponents\MaterialComponent.cpp" />
     <ClCompile Include="scr\Engine.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
     <ClCompile Include="scr\Color.cpp" />
@@ -192,6 +193,7 @@
     <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\ResourcePool.h" />
     <ClInclude Include="scr\ECS\Component\RenderComponents\SpriteComponent.h" />
     <ClInclude Include="scr\ECS\System\AnimationSystem.h" />
     <ClInclude Include="scr\ECS\System\ScriptSystem.h" />
@@ -259,7 +261,7 @@
     <ClInclude Include="dependencies\zlib\include\zlib.h" />
     <ClInclude Include="scr\ECS\Component\PlayerMovementComponent.h" />
     <ClInclude Include="scr\HelperFunctions.h" />
-    <ClInclude Include="scr\opengl\Material.h" />
+    <ClInclude Include="scr\ECS\Component\RenderComponents\MaterialComponent.h" />
     <ClInclude Include="scr\Engine.h" />
     <ClInclude Include="scr\Camera.h" />
     <ClInclude Include="scr\Color.h" />
