@@ -8,19 +8,23 @@
 class ScriptComponent
 {
 public:
-	ScriptComponent(const std::string& script, sol::state& lua);
+	ScriptComponent(const std::string& script, sol::state& lua, entt::entity entt, entt::registry* registry);
 
 	void Update(float deltaTime);
+
+	static void LUABind(sol::state& lua);
 
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);
 
-	std::string SetVelocity(float x, float y);
+	std::string Test() { return "test"; }
 
 private:
 	sol::protected_function m_update;
 
 	entt::entity m_enity;
-	entt::registry m_registry;
+	entt::registry* m_registry;
+
+	sol::table m_this;
 };
 

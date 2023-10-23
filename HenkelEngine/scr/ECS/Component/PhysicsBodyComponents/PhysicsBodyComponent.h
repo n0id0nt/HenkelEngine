@@ -3,6 +3,7 @@
 #include "glm\glm.hpp"
 #include <vector>
 #include "Physics\PhysicsWorld.h"
+#include <sol\sol.hpp>
 
 class PhysicsBodyComponent
 {
@@ -16,6 +17,8 @@ public:
     glm::vec2 GetPosition();
 
     bool CheckGrounded(float groundAngle);
+
+    static void LUABind(sol::state& lua);
 
     std::vector<b2Contact*> GetContacts();
 

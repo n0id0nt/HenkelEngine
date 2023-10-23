@@ -5,5 +5,5 @@
 class LUABindable
 {
 public:
-	virtual void LUABind(sol::state& lua) = 0;
+	  virtual void LUABind(sol::state& lua) = 0;
 };

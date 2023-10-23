@@ -3,6 +3,7 @@
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
 #include "entt.hpp"
+#include <sol\sol.hpp>
 
 class TransformComponent
 {
@@ -31,7 +32,13 @@ public:
 	glm::mat4 GetLocalMatrix();
 	glm::mat4 GetWorldMatrix();
 	glm::mat4 GetWorldMatrix(entt::registry& registry);
+
+	static void LUABind(sol::state& lua);
+
 private:
+
+	void LUASetPosition(glm::vec2 position);
+
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;
 	glm::vec3 m_scale;

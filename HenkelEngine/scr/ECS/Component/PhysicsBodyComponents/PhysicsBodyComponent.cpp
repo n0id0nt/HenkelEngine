@@ -53,6 +53,13 @@ bool PhysicsBodyComponent::CheckGrounded(float groundAngle)
 	return false;
 }
 
+void PhysicsBodyComponent::LUABind(sol::state& lua)
+{
+	lua.new_usertype<PhysicsBodyComponent>("physicsBody",
+		"setVelocity", &PhysicsBodyComponent::SetVelocity,
+		"getVelocity", &PhysicsBodyComponent::GetVelocity);
+}
+
 std::vector<b2Contact*> PhysicsBodyComponent::GetContacts()
 {
 	std::vector<b2Contact*> contacts;

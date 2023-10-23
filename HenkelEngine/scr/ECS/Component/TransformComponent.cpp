@@ -114,3 +114,20 @@ glm::mat4 TransformComponent::GetWorldMatrix(entt::registry& registry)
 	else
 		return GetLocalMatrix();
 }
+
+void TransformComponent::LUABind(sol::state& lua)
+{
+	lua.new_usertype<TransformComponent>("transform",
+		"setPosition", &TransformComponent::LUASetPosition,
+		"getPosition", &TransformComponent::GetPosition,
+		"setRotation", &TransformComponent::SetRotation,
+		"getRotation", &TransformComponent::GetRotation,
+		"setScale", &TransformComponent::SetScale,
+		"getScale", &TransformComponent::GetScale
+	);
+}
+
+void TransformComponent::LUASetPosition(glm::vec2 position)
+{
+	SetPosition(position);
+}
