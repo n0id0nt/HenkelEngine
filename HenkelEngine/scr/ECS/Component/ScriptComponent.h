@@ -5,6 +5,9 @@
 #include <iostream>
 #include <entt.hpp>
 
+#include "ECS\Component\TransformComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
+
 class ScriptComponent
 {
 public:
@@ -19,6 +22,9 @@ public:
 
 	std::string Test() { return "test"; }
 
+	TransformComponent* GetTransform();
+	PhysicsBodyComponent* GetPhysicsBody();
+
 private:
 	sol::protected_function m_update;
 
@@ -26,5 +32,6 @@ private:
 	entt::registry* m_registry;
 
 	sol::table m_this;
+
 };
 

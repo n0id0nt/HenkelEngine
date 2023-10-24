@@ -2,7 +2,6 @@
 #include "ECS\Component\RenderComponents\SpriteComponent.h"
 #include "ECS\Component\RenderComponents\TileMapComponent.h"
 #include "ECS\Component\RenderComponents\RenderComponent.h"
-#include "ECS\Component\PlayerMovementComponent.h"
 #include "Engine.h"
 #include "pugixml.hpp"
 #include <fstream>
@@ -148,8 +147,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 				if (name == "Player")
 				{
-					auto& physicsBody = m_registry.emplace<PhysicsBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
-					m_registry.emplace<PlayerMovementComponent>(gameObjectEntity, m_engine, &physicsBody);
+					m_registry.emplace<PhysicsBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
 				}
 				else
 				{

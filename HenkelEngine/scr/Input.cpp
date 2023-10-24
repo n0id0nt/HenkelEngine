@@ -177,7 +177,11 @@ bool Input::isInputJustReleased(const std::string& input)
 void Input::LUABind(sol::state& lua)
 {
     lua.new_usertype<Input>("Input",
-        "isInputDown", &Input::isInputDown);
+        "isInputDown", &Input::isInputDown,
+        "getArrowDir", &Input::GetArrowDir
+    );
+
+
     lua.set("Input", this);
 }
 

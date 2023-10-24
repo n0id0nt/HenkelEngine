@@ -57,7 +57,9 @@ void PhysicsBodyComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<PhysicsBodyComponent>("physicsBody",
 		"setVelocity", &PhysicsBodyComponent::SetVelocity,
-		"getVelocity", &PhysicsBodyComponent::GetVelocity);
+		"getVelocity", &PhysicsBodyComponent::GetVelocity,
+		"checkGrounded", &PhysicsBodyComponent::CheckGrounded
+	);
 }
 
 std::vector<b2Contact*> PhysicsBodyComponent::GetContacts()

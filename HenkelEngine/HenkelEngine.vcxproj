@@ -167,7 +167,6 @@
     <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="dependencies\pugixml\pugixml.cpp" />
-    <ClCompile Include="scr\ECS\Component\PlayerMovementComponent.cpp" />
     <ClCompile Include="scr\ECS\Component\RenderComponents\MaterialComponent.cpp" />
     <ClCompile Include="scr\Engine.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
@@ -262,7 +261,6 @@
     <ClInclude Include="dependencies\pugixml\pugixml.hpp" />
     <ClInclude Include="dependencies\zlib\include\zconf.h" />
     <ClInclude Include="dependencies\zlib\include\zlib.h" />
-    <ClInclude Include="scr\ECS\Component\PlayerMovementComponent.h" />
     <ClInclude Include="scr\HelperFunctions.h" />
     <ClInclude Include="scr\ECS\Component\RenderComponents\MaterialComponent.h" />
     <ClInclude Include="scr\Engine.h" />
