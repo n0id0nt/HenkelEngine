@@ -13,7 +13,7 @@ public:
 	glm::vec2 GetSpriteAtIndex(unsigned int index);
 	glm::vec4 GetSpriteRectAtIndex(unsigned int index);
 
-	std::string GetTileSetImagePath();
+	std::string GetTileSetImagePath() const;
 
 	unsigned int GetTileWidth() const;
 	unsigned int GetTileHeight() const;

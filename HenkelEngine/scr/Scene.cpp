@@ -3,13 +3,11 @@
 #include "ECS\Component\RenderComponents\TileMapComponent.h"
 #include "ECS\Component\RenderComponents\RenderComponent.h"
 #include "Engine.h"
-#include "pugixml.hpp"
 #include <fstream>
 #include <iostream>
 #include "base64.h"
 #include "HelperFunctions.h"
 #include "zlib.h"
-#include "Resourse\TileSheet.h"
 #include "opengl\DebugRenderer.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
@@ -112,48 +110,81 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 			for (auto& object : layer.children("object"))
 			{
-				entt::entity gameObjectEntity = m_registry.create();
-				std::string name = object.attribute("name").as_string();
-
-				m_registry.emplace<MaterialComponent>(gameObjectEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
-				m_registry.emplace<RenderComponent>(gameObjectEntity, 1u);
-				m_registry.emplace<SpriteComponent>(gameObjectEntity, tileSheet, object.attribute("gid").as_uint() - 1);
-				auto& transform = m_registry.emplace<TransformComponent>(gameObjectEntity, glm::vec3{ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f }, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
-				transform.SetParent(objectGroupEntity);
-				transform.SetParent(&objectGroupTransform);
-
-				b2BodyDef bodyDef;
-				glm::vec2 position = transform.GetWorldPosition();
-				bodyDef.position = b2Vec2(position.x, position.y);
-				bodyDef.fixedRotation = true;
-				//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
-
-				b2FixtureDef fixtureDef;
-				b2PolygonShape shape;
-				shape.SetAsBox(object.attribute("width").as_float() / ( 2.f * m_world->GetPixelsPerMeter()), object.attribute("height").as_float() / (2.f * m_world->GetPixelsPerMeter()));
-				fixtureDef.shape = &shape;
-				fixtureDef.friction = 0.f;
-				fixtureDef.density = 1.f;
-
-				for (auto& property : object.child("properties").children())
-				{
-					std::string name(property.attribute("name").as_string());
-					if (name == "Script")
-					{
-						std::string script = property.attribute("value").as_string();
-						m_scriptSystem.CreateScriptComponent(gameObjectEntity, fileDir + script);
-					}
-				}
-
-				if (name == "Player")
-				{
-					m_registry.emplace<PhysicsBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
-				}
-				else
-				{
-					m_registry.emplace<StaticBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
-				}
+				CreateObject(object, fileDir, tileSheet);
 			}
+		}
+	}
+}
+
+void Scene::LoadTemplate(const std::string& fileDir, const std::string& levelFile)
+{
+	// Get Working Dir of new file
+	std::string file = fileDir + levelFile;
+	std::string workingDir = HenkelEngine::GetFileDir(file);
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(file.c_str());
+	ASSERT(result);
+
+	TileSheet tileSheet(workingDir, doc.child("template").child("tileset").attribute("source").as_string());
+
+	for (auto& layer : doc.child("template").children())
+	{
+		std::string name(layer.name());
+		if (name == "object")
+		{
+			CreateObject(layer, workingDir, tileSheet);
+		}
+	}
+}
+
+void Scene::CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet)
+{
+	if (object.attribute("template"))
+	{
+		LoadTemplate(fileDir, object.attribute("template").as_string());
+	}
+	else
+	{
+		entt::entity gameObjectEntity = m_registry.create();
+		std::string name = object.attribute("name").as_string();
+
+		m_registry.emplace<MaterialComponent>(gameObjectEntity, tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
+		m_registry.emplace<RenderComponent>(gameObjectEntity, 1u);
+		m_registry.emplace<SpriteComponent>(gameObjectEntity, tileSheet, object.attribute("gid").as_uint() - 1);
+		auto& transform = m_registry.emplace<TransformComponent>(gameObjectEntity, glm::vec3{ object.attribute("x").as_float(), object.attribute("y").as_float() - object.attribute("height").as_float(), 0.f }, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
+		//transform.SetParent(objectGroupEntity);
+		//transform.SetParent(&objectGroupTransform);
+
+		b2BodyDef bodyDef;
+		glm::vec2 position = transform.GetWorldPosition();
+		bodyDef.position = b2Vec2(position.x, position.y);
+		bodyDef.fixedRotation = true;
+		//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
+
+		b2FixtureDef fixtureDef;
+		b2PolygonShape shape;
+		shape.SetAsBox(object.attribute("width").as_float() / (2.f * m_world->GetPixelsPerMeter()), object.attribute("height").as_float() / (2.f * m_world->GetPixelsPerMeter()));
+		fixtureDef.shape = &shape;
+		fixtureDef.friction = 0.f;
+		fixtureDef.density = 1.f;
+
+		for (auto& property : object.child("properties").children())
+		{
+			std::string name(property.attribute("name").as_string());
+			if (name == "Script")
+			{
+				std::string script = property.attribute("value").as_string();
+				m_scriptSystem.CreateScriptComponent(gameObjectEntity, fileDir + script);
+			}
+		}
+
+		if (name == "Player")
+		{
+			m_registry.emplace<PhysicsBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
+		}
+		else
+		{
+			m_registry.emplace<StaticBodyComponent>(gameObjectEntity, m_world.get(), fixtureDef, bodyDef);
 		}
 	}
 }

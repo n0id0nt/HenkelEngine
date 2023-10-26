@@ -46,7 +46,7 @@ glm::vec4 TileSheet::GetSpriteRectAtIndex(unsigned int index)
 	return glm::vec4({perX, perY, perWidth, perHeight});
 }
 
-std::string TileSheet::GetTileSetImagePath()
+std::string TileSheet::GetTileSetImagePath() const
 {
 	return m_dir + m_imageFile;
 }

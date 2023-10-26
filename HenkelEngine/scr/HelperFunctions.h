@@ -30,4 +30,11 @@ namespace HenkelEngine
             "y", &glm::vec3::y,
             "z", &glm::vec3::z);
     }
+
+    static std::string GetFileDir(const std::string& filePath)
+    {
+        std::string fileDir = filePath;
+        auto lastSlash = fileDir.find_last_of('/');
+        return fileDir.replace(fileDir.begin() + lastSlash + 1, fileDir.end(), "");
+    }
 }

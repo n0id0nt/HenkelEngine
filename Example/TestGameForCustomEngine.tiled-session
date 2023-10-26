@@ -13,8 +13,8 @@
             "scale": 2.5590625,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 132.4703871046526,
-                "y": 159.43338624984736
+                "x": 132.27500305287583,
+                "y": 159.04261814629385
             }
         },
         "TestLevel.tmj": {
@@ -38,8 +38,8 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 238.99999999999997,
-                "y": 71.33333333333331
+                "x": 237.66666666666666,
+                "y": 70
             }
         },
         "TestTiles.tsj": {
@@ -52,6 +52,7 @@
         }
     },
     "last.imagePath": "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/TiledBaseEngine/Tiles",
+    "last.objectTemplatePath": "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/HenkelEngine/HenkelEngine/Example/Template",
     "map.fixedSize": true,
     "map.height": 20,
     "map.lastUsedFormat": "json",
@@ -67,8 +68,8 @@
     "project": "TestGameForCustomEngine.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "Player.tmx",
         "TestLevel.tmx",
+        "Player.tmx",
         "TestTiles.tsj",
         "TestLevel.tmj",
         "TestTiles.tsx"

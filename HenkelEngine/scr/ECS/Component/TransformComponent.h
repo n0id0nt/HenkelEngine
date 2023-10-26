@@ -43,6 +43,6 @@ private:
 	glm::vec3 m_rotation;
 	glm::vec3 m_scale;
 
-	TransformComponent* m_Parent;
+	TransformComponent* m_Parent = nullptr;
 	entt::entity m_parent;
 };
