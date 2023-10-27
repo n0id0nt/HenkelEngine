@@ -15,6 +15,7 @@ public:
     glm::vec2 GetVelocity();
 
     glm::vec2 GetPosition();
+    void SetPosition(glm::vec2 pos);
 
     bool CheckGrounded(float groundAngle);
 

@@ -32,7 +32,9 @@ void TransformComponent::SetWorldPosition(glm::vec3 position)
 
 void TransformComponent::SetWorldPosition(glm::vec2 position)
 {
-	m_position = glm::vec3{ position, 0.f } - m_Parent->GetWorldPosition();
+	m_position = glm::vec3{ position, 0.f };
+	if (m_Parent)
+		m_position -= m_Parent->GetWorldPosition();
 }
 
 glm::vec3 TransformComponent::GetWorldPosition()

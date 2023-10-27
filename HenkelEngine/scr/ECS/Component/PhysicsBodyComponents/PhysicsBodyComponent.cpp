@@ -33,6 +33,11 @@ glm::vec2 PhysicsBodyComponent::GetPosition()
 	return glm::vec2(pos.x * m_world->GetPixelsPerMeter(), pos.y * m_world->GetPixelsPerMeter());
 }
 
+void PhysicsBodyComponent::SetPosition(glm::vec2 pos)
+{
+	m_body->SetTransform(b2Vec2(pos.x / m_world->GetPixelsPerMeter(), pos.y / m_world->GetPixelsPerMeter()), 0.f);
+}
+
 bool PhysicsBodyComponent::CheckGrounded(float groundAngle)
 {
 	for (auto& contact : GetContacts())

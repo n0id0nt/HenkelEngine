@@ -15,7 +15,7 @@
   </data>
  </layer>
  <objectgroup id="6" name="PlayerLayer" offsetx="-6" offsety="-33.3333">
-  <object id="3" template="Template/Player.tx" x="220.167" y="209.5"/>
+  <object id="3" template="Template/Player.tx" x="190" y="118.667" rotation="0"/>
  </objectgroup>
  <objectgroup id="4" name="Item" offsetx="-186.645" offsety="-16.0269">
   <object id="4" name="Wand" gid="3" x="434" y="215.394" width="16" height="16"/>

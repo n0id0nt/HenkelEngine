@@ -21,3 +21,8 @@ glm::vec2 StaticBodyComponent::GetPosition()
 	b2Vec2 pos = m_body->GetPosition();
 	return glm::vec2(pos.x * m_world->GetPixelsPerMeter(), pos.y * m_world->GetPixelsPerMeter());
 }
+
+void StaticBodyComponent::SetPosition(glm::vec2 pos)
+{
+	m_body->SetTransform(b2Vec2(pos.x / m_world->GetPixelsPerMeter(), pos.y / m_world->GetPixelsPerMeter()), 0.f);
+}

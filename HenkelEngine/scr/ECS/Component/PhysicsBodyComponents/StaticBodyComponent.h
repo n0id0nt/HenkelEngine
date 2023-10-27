@@ -9,6 +9,7 @@ public:
     ~StaticBodyComponent();
 
     glm::vec2 GetPosition();
+    void SetPosition(glm::vec2 pos);
 
 private:
 

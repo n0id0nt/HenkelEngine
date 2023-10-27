@@ -24,8 +24,8 @@ public :
 	~Scene();
 
 	void LoadScene(const std::string& fileDir, const std::string& levelFile);
-	void LoadTemplate(const std::string& fileDir, const std::string& levelFile);
-	void CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet);
+	entt::entity LoadTemplate(const std::string& fileDir, const std::string& levelFile);
+	entt::entity CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet);
 
 	void Update(float deltaTime);
 	void Render();

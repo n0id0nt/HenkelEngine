@@ -4,6 +4,7 @@
 #include "ECS/Component/PhysicsBodyComponents/TileMapCollisionBodyComponent.h"
 #include "ECS/Component/TransformComponent.h"
 #include "opengl\DebugRenderer.h"
+#include <iostream>
 
 PhysicsSystem::PhysicsSystem(entt::registry* registry, Engine* engine) 
 	: m_registry(registry), m_engine(engine)
@@ -40,11 +41,12 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 		auto view = m_registry->view<PhysicsBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
+			//std::cout << (int)entity << std::endl;
 			auto& transform = view.get<TransformComponent>(entity);
 			auto& physicsBody = view.get<PhysicsBodyComponent>(entity);
-
+			
 			transform.SetWorldPosition(physicsBody.GetPosition());
-
+			
 			DebugRenderer::DrawRectangle(glm::vec3{physicsBody.GetPosition(), 0.f}, 16.f, 16.f);
 		}
 	}
