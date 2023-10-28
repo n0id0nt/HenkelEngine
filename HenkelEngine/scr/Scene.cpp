@@ -117,6 +117,16 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 					transform->SetParent(objectGroupEntity);
 					transform->SetParent(&objectGroupTransform);
 				}
+				auto* physicsBody = m_registry.try_get<PhysicsBodyComponent>(gameObjectEntity);
+				auto* staticBody = m_registry.try_get<StaticBodyComponent>(gameObjectEntity);
+				if (physicsBody)
+				{
+					physicsBody->SetPosition(transform->GetWorldPosition());
+				}
+				if (staticBody)
+				{
+					staticBody->SetPosition(transform->GetWorldPosition());
+				}
 			}
 		}
 	}
