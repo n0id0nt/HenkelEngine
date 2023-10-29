@@ -2,7 +2,7 @@
 #include "glm\gtx\matrix_decompose.hpp"
 
 TransformComponent::TransformComponent(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
-	: m_position(position), m_rotation(rotation), m_scale(scale), m_Parent(nullptr)
+	: m_position(position), m_rotation(rotation), m_scale(scale), m_parent(nullptr)
 {
 }
 
@@ -27,14 +27,14 @@ void TransformComponent::SetPosition(glm::vec2 position)
 
 void TransformComponent::SetWorldPosition(glm::vec3 position)
 {
-	m_position = position - m_Parent->GetWorldPosition();
+	m_position = position - m_parent->GetWorldPosition();
 }
 
 void TransformComponent::SetWorldPosition(glm::vec2 position)
 {
 	m_position = glm::vec3{ position, 0.f };
-	if (m_Parent)
-		m_position -= m_Parent->GetWorldPosition();
+	if (m_parent)
+		m_position -= m_parent->GetWorldPosition();
 }
 
 glm::vec3 TransformComponent::GetWorldPosition()
@@ -70,17 +70,12 @@ glm::vec3 TransformComponent::GetScale()
 
 void TransformComponent::SetParent(TransformComponent* parent)
 {
-	m_Parent = parent;
-}
-
-void TransformComponent::SetParent(entt::entity parent)
-{
 	m_parent = parent;
 }
 
 TransformComponent* TransformComponent::GetParent()
 {
-	return m_Parent;
+	return m_parent;
 }
 
 glm::mat4 TransformComponent::GetLocalMatrix()
@@ -100,18 +95,17 @@ glm::mat4 TransformComponent::GetLocalMatrix()
 
 glm::mat4 TransformComponent::GetWorldMatrix()
 {
-	if (m_Parent)
-		return m_Parent->GetWorldMatrix() * GetLocalMatrix();
+	if (m_parent)
+		return m_parent->GetWorldMatrix() * GetLocalMatrix();
 	else
 		return GetLocalMatrix();
 }
 
 glm::mat4 TransformComponent::GetWorldMatrix(entt::registry& registry)
 {
-	TransformComponent* parentTransform = registry.try_get<TransformComponent>(m_parent);
-	if (parentTransform)
+	if (m_parent)
 	{
-		return parentTransform->GetWorldMatrix() * GetLocalMatrix();
+		return m_parent->GetWorldMatrix() * GetLocalMatrix();
 	}
 	else
 		return GetLocalMatrix();

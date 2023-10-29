@@ -180,8 +180,6 @@ void Input::LUABind(sol::state& lua)
         "isInputDown", &Input::isInputDown,
         "getArrowDir", &Input::GetArrowDir
     );
-
-
     lua.set("Input", this);
 }
 

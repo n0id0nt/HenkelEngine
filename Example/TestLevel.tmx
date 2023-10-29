@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" class="TestLevel" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.2" class="TestLevel" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="11">
  <properties>
   <property name="Pixels Per Meter" type="float" value="16"/>
  </properties>
@@ -16,6 +16,7 @@
  </layer>
  <objectgroup id="6" name="PlayerLayer" offsetx="-6" offsety="-33.3333">
   <object id="3" template="Template/Player.tx" x="190" y="118.667" rotation="0"/>
+  <object id="9" template="Template/Potion.tx" x="273.333" y="137.333"/>
  </objectgroup>
  <objectgroup id="4" name="Item" offsetx="-186.645" offsety="-16.0269">
   <object id="4" name="Wand" gid="3" x="434" y="215.394" width="16" height="16"/>

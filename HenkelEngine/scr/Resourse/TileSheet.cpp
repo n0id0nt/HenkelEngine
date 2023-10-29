@@ -5,7 +5,7 @@
 
 TileSheet::TileSheet(std::string dir, std::string tileMapFile, int indexOffset) : m_dir(dir), m_indexOffset(indexOffset)
 {
-	LoadFile(dir + tileMapFile);
+	LoadFile(tileMapFile);
 }
 
 void TileSheet::LoadFile(std::string tileMapFile)

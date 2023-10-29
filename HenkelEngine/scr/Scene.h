@@ -13,19 +13,22 @@
 #include "ECS\System\ScriptSystem.h"
 #include "pugixml.hpp"
 #include "Resourse\TileSheet.h"
-
+#include "sol\sol.hpp"
 
 class Engine;
 
-class Scene
+class Scene : public LUABindable
 {
 public :
 	Scene(Engine* engine, const std::string& fileDir, const std::string& levelFile);
 	~Scene();
 
 	void LoadScene(const std::string& fileDir, const std::string& levelFile);
-	entt::entity LoadTemplate(const std::string& fileDir, const std::string& levelFile);
-	entt::entity CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet);
+	Entity* LoadTemplate(const std::string& fileDir, const std::string& levelFile);
+	Entity* CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet);
+	Entity* CreateTemplatedObject(const std::string& levelFile);
+
+	Entity* CreateEntity(const std::string& name);
 
 	void Update(float deltaTime);
 	void Render();
@@ -34,11 +37,13 @@ public :
 
 	PhysicsWorld* GetPhysicsWorld() const { return m_world.get(); }
 
+	void LUABind(sol::state& lua);
+
 private:
 	Engine* m_engine;
 
 	std::unique_ptr<Camera> m_camera;
-	bool m_dockingEnviromentInited;
+	std::vector<Entity> m_entities;
 
 	std::string m_name;
 

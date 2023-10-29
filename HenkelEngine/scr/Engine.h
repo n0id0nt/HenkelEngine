@@ -27,6 +27,8 @@ public:
 	Input* GetInput() const;
 	ResourcePool* GetResourcePool() const;
 
+	std::string GetProjectDirectory() const;
+
 private:
 
 	std::unique_ptr<Window> m_window;
@@ -36,6 +38,8 @@ private:
 
 	std::unique_ptr<Input> m_input;
 	std::unique_ptr<ResourcePool> m_resourcePool;
+
+	std::string m_projectDirectory;
 
 	Uint32 m_frameStart;
 	unsigned int m_frameTime;

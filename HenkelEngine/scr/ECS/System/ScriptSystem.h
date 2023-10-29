@@ -4,6 +4,7 @@
 #include "sol\sol.hpp"
 #include "LUABindable.h"
 #include <string>
+#include "ECS\Entity\Entity.h"
 
 class ScriptSystem
 {
@@ -14,7 +15,7 @@ public:
 
 	void Update(float deltaTime);
 
-	void CreateScriptComponent(const entt::entity& entity, const std::string& file);
+	void CreateScriptComponent(Entity* entity, const std::string& file);
 
 private:
 

@@ -5,7 +5,7 @@
 #include "opengl\DebugRenderer.h"
 #include <imgui_impl_opengl3.h>
 
-Engine::Engine() : m_clearColor({ 0.2f, 0.3f, 0.3f, 1.0f })
+Engine::Engine() : m_clearColor({ 0.2f, 0.3f, 0.3f, 1.0f }), m_projectDirectory("../Example/")
 {
 	InitEngine();
 }
@@ -29,6 +29,8 @@ void Engine::InitEngine()
 	m_input->CreateBinding("Jump", SDLK_SPACE);
 	m_input->CreateBinding("Jump", SDLK_w);
 	m_input->CreateBinding("Jump", SDLK_UP);
+	m_input->CreateBinding("Shoot", SDLK_LSHIFT);
+	m_input->CreateBinding("Shoot", SDLK_RSHIFT);
 
 	m_resourcePool = std::make_unique<ResourcePool>();
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -70,7 +72,7 @@ void Engine::InitEngine()
 
 	DebugRenderer::InitDebugRenderer();
 
-	m_scene = std::make_unique<Scene>(this, "../Example/", "TestLevel.tmx");
+	m_scene = std::make_unique<Scene>(this, m_projectDirectory, "TestLevel.tmx");
 }
 
 void Engine::Loop()
@@ -142,4 +144,9 @@ Input* Engine::GetInput() const
 ResourcePool* Engine::GetResourcePool() const
 {
 	return m_resourcePool.get();
+}
+
+std::string Engine::GetProjectDirectory() const
+{
+	return m_projectDirectory;
 }
