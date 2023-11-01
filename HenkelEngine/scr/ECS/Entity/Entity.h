@@ -2,6 +2,7 @@
 
 #include "entt.hpp"
 #include <string>
+#include <optional>
 #include "sol\sol.hpp"
 #include <ECS\Component\TransformComponent.h>
 #include <ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h>
@@ -14,16 +15,26 @@ public:
 
 	entt::entity GetEntity() const;
 
-	template <typename Type, typename... Args>
-	Type* CreateComponent(Args &&...args)
+	template <typename ComponentType, typename... Args>
+	ComponentType* CreateComponent(Args&&... args)
 	{
-		return &m_registry->emplace<Type>(m_entity, std::forward<Args>(args)...);
+		return &m_registry->emplace<ComponentType>(m_entity, std::forward<Args>(args) ...);
 	}	
 	
-	template <typename Type>
-	Type* GetComponent()
+	template <typename ComponentType>
+	std::optional<ComponentType> GetComponent()
 	{
-		return m_registry->try_get<Type>(m_entity);
+		if (HasComponent<ComponentType>())
+		{
+			return std::optional<ComponentType>(m_registry->get<ComponentType>(m_entity));
+		}
+		return std::nullopt;
+	}
+
+	template <typename ComponentType>
+	bool HasComponent() 
+	{
+		return m_registry->all_of<ComponentType>(m_entity);
 	}
 
 	static void LUABind(sol::state& lua);

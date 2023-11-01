@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\ECS\Registry.cpp" />
     <ClCompile Include="scr\ECS\Entity\Entity.cpp" />
     <ClCompile Include="scr\ECS\Component\ScriptComponent.cpp" />
     <ClCompile Include="scr\LUABindable.h" />
@@ -195,6 +196,7 @@
     <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\ECS\Registry.h" />
     <ClInclude Include="scr\ECS\Entity\Entity.h" />
     <ClInclude Include="scr\ECS\Component\ScriptComponent.h" />
     <ClInclude Include="scr\ResourcePool.h" />

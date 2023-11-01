@@ -94,14 +94,14 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			bodyDef.position = b2Vec2(position.x, position.y);
 			bodyDef.fixedRotation = true;
 			//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
-
+			
 			b2FixtureDef fixtureDef;
 			b2PolygonShape shape;
 			shape.SetAsBox(tileSheet.GetTileWidth() / (2.f * m_world->GetPixelsPerMeter()), tileSheet.GetTileHeight() / (2.f * m_world->GetPixelsPerMeter()));
 			fixtureDef.shape = &shape;
 			fixtureDef.friction = 0.f;
 			fixtureDef.density = 1.f;
-			tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), fixtureDef, bodyDef, tilemap);
+			tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), fixtureDef, bodyDef, *tilemap);
 		}
 		else if (name == "objectgroup")
 		{
@@ -112,13 +112,13 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			for (auto& object : layer.children("object"))
 			{
 				auto* gameObjectEntity = CreateObject(object, fileDir, tileSheet);
-				auto* transform = tilemapEntity->GetComponent<TransformComponent>();
+				auto transform = gameObjectEntity->GetComponent<TransformComponent>();
 				if (transform)
 				{
 					transform->SetParent(objectGroupTransform);
 				}
-				auto* physicsBody = tilemapEntity->GetComponent<PhysicsBodyComponent>();
-				auto* staticBody = tilemapEntity->GetComponent<StaticBodyComponent>();
+				auto physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
+				auto staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
 				if (physicsBody)
 				{
 					physicsBody->SetPosition(transform->GetWorldPosition());
@@ -155,9 +155,9 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 	if (object.attribute("template"))
 	{
 		gameObjectEntity = LoadTemplate(fileDir, object.attribute("template").as_string());
-		auto* tranformComponent = gameObjectEntity->GetComponent<TransformComponent>();
-		auto* physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
-		auto* staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
+		auto tranformComponent = gameObjectEntity->GetComponent<TransformComponent>();
+		auto physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
+		auto staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
 		if (tranformComponent)
 		{
 			tranformComponent->SetPosition(objectPosition);

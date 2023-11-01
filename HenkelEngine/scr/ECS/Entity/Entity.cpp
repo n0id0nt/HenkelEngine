@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 Entity::Entity(const std::string& name, entt::registry* registry) 
-	: m_name(name), m_registry(m_registry)
+	: m_name(name), m_registry(registry)
 {
 	m_entity = m_registry->create();
 }
