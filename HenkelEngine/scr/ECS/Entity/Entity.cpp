@@ -1,12 +1,12 @@
 #include "Entity.h"
 
-Entity::Entity(const std::string& name, entt::registry* registry) 
+Entity::Entity(const std::string& name, Registry* registry) 
 	: m_name(name), m_registry(registry)
 {
-	m_entity = m_registry->create();
+	m_entity = m_registry->CreateEntity();
 }
 
-entt::entity Entity::GetEntity() const
+EntityId Entity::GetEntity() const
 {
 	return m_entity;
 }

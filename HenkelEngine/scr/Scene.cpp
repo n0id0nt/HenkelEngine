@@ -12,6 +12,7 @@
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
+#include "ECS\Component\ScriptComponent.h"
 #include <imgui.h>
 #include <ECS\Component\TransformComponent.h>
 
@@ -201,7 +202,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 			if (propertyName == "Script")
 			{
 				std::string script = property.attribute("value").as_string();
-				m_scriptSystem.CreateScriptComponent(gameObjectEntity, fileDir + script);
+				gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script);
 			}
 		}
 

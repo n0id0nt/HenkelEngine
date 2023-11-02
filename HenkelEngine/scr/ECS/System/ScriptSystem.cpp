@@ -7,7 +7,7 @@
 #include <opengl\openglHelper.h>
 #include "ECS\Entity\Entity.h"
 
-ScriptSystem::ScriptSystem(entt::registry* registry) : m_registry(registry), m_lua()
+ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 {
 	m_lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
 	HenkelEngine::LUABindLibraries(m_lua);
@@ -24,18 +24,13 @@ void ScriptSystem::BindToLua(LUABindable& luaBindable)
 void ScriptSystem::Update(float deltaTime)
 {
 	{
-		auto view = m_registry->view<ScriptComponent>();
+		auto view = m_registry->GetEntitiesWithComponent<ScriptComponent>();
 		for (auto& entity : view)
 		{
-			auto& script = view.get<ScriptComponent>(entity);
-			script.Bind(m_lua);
-			script.Update(deltaTime);
-			script.Unbind(m_lua);
+			auto* script = m_registry->GetComponent<ScriptComponent>(entity);
+			script->Bind(m_lua);
+			script->Update(deltaTime);
+			script->Unbind(m_lua);
 		}
 	}
-}
-
-void ScriptSystem::CreateScriptComponent(Entity* entity, const std::string& file)
-{
-	m_registry->emplace<ScriptComponent>(entity->GetEntity(), file, m_lua, entity, m_registry);
 }

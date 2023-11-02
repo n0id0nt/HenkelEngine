@@ -22,7 +22,7 @@ public:
     {
         std::unique_ptr<ComponentType> component = std::make_unique<ComponentType>(args...);
         ComponentType* componentRawPtr = component.get();
-        m_components[entityId][std::type_index(typeid(ComponentType))] = std::move(component);
+        m_components[std::type_index(typeid(ComponentType))][entityId] = component.get();
         return componentRawPtr;
     }
 
@@ -84,6 +84,7 @@ public:
 
         if (entityComponents != m_components.end()) 
         {
+            entitiesWithComponent.reserve(entityComponents->second.size());
             for (const auto& pair : entityComponents->second) 
             {
                 entitiesWithComponent.push_back(pair.first);
@@ -99,18 +100,25 @@ public:
     {
         std::vector<EntityId> matchingEntities;
 
-        // Check for each entity if it has all specified component types
-        for (const auto& entityComponents : m_components) 
-        {
-            //bool hasAllComponents = (HasAllComponents<ComponentTypes>(entityComponents.first)) && ...;
-            // uses fold expression???
 
-            bool hasAllComponents = HasAllComponents<ComponentTypes...>(entityComponents.first);
-            if (hasAllComponents) 
-            {
-                matchingEntities.push_back(entityComponents.first);
-            }
-        }
+
+
+
+
+
+		//// Check for each entity if it has all specified component types
+		//for (const auto& entityComponents : m_components) 
+		//{
+		//    //bool hasAllComponents = (HasAllComponents<ComponentTypes>(entityComponents.first) && ...);
+		//    // uses fold expression???
+		//
+		//    bool hasAllComponents = HasAllComponents<ComponentTypes>(entityComponents.second);
+		//    if (hasAllComponents) 
+		//    {
+		//        auto v = entityComponents.second
+		//        matchingEntities.push_back(v);
+		//    }
+		//}
 
         return matchingEntities;
     }
@@ -121,6 +129,10 @@ private:
     EntityId m_currentEntityId;
 
 	std::unordered_map<std::type_index, std::unordered_map<EntityId, void*>> m_components;
+
+
+
+
 
     // Helper function to check if an entity has all specified component types
     template <typename ComponentTypes, typename... Rest>

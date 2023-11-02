@@ -1,13 +1,13 @@
 #pragma once
 
-#include "entt.hpp"
+#include "ECS/Registry.h"
 
 class Engine;
 
 class RenderSystem
 {
 public:
-	RenderSystem(entt::registry* registry, Engine* engine) : m_registry(registry), m_engine(engine)
+	RenderSystem(Registry* registry, Engine* engine) : m_registry(registry), m_engine(engine)
 	{
 	}
 
@@ -15,7 +15,7 @@ public:
 
 private:
 
-	entt::registry* m_registry = nullptr;
+	Registry* m_registry = nullptr;
 	Engine* m_engine = nullptr;
 };
 

@@ -1,8 +1,8 @@
 #include "ScriptComponent.h"
 #include <opengl\openglHelper.h>
 
-ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Entity* entity, entt::registry* registry)
-	: m_this(), m_entity(entity), m_registry(registry)
+ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Entity* entity)
+	: m_this(), m_entity(entity)
 {
 	lua.script_file(script);
 

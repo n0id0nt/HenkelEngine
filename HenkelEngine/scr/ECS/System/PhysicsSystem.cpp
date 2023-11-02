@@ -6,7 +6,7 @@
 #include "opengl\DebugRenderer.h"
 #include <iostream>
 
-PhysicsSystem::PhysicsSystem(entt::registry* registry, Engine* engine) 
+PhysicsSystem::PhysicsSystem(Registry* registry, Engine* engine) 
 	: m_registry(registry), m_engine(engine)
 {
 }
@@ -18,36 +18,36 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 
 	//Draw debug shapes
 	{
-		auto view = m_registry->view<StaticBodyComponent, TransformComponent>();
+		auto view = m_registry->GetEntitiesWithComponents<StaticBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
-			auto& staticBody = view.get<StaticBodyComponent>(entity);
+			auto* staticBody = m_registry->GetComponent<StaticBodyComponent>(entity);
 			//auto staticBody = view.get<StaticBodyComponent>(entity);
-			DebugRenderer::DrawRectangle(glm::vec3{staticBody.GetPosition(), 0.f}, 16.f, 16.f, { 0.f, 0.5f, 0.8f });
+			DebugRenderer::DrawRectangle(glm::vec3{staticBody->GetPosition(), 0.f}, 16.f, 16.f, { 0.f, 0.5f, 0.8f });
 		}
 	}
 	{
-		auto view = m_registry->view<TileMapCollisionBodyComponent, TransformComponent>();
+		auto view = m_registry->GetEntitiesWithComponents<TileMapCollisionBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
-			auto& transform = view.get<TransformComponent>(entity);
-			auto& tileMap = view.get<TileMapCollisionBodyComponent>(entity);
-			auto positions = tileMap.tilePositions();
+			auto* transform = m_registry->GetComponent<TransformComponent>(entity);
+			auto* tileMap = m_registry->GetComponent<TileMapCollisionBodyComponent>(entity);
+			auto positions = tileMap->tilePositions();
 			for (auto& position : positions)
 				DebugRenderer::DrawRectangle(glm::vec3{position, 0.f}, 16.f, 16.f, { 0.8f, 0.5f, 0.f });
 		}
 	}
 	{
-		auto view = m_registry->view<PhysicsBodyComponent, TransformComponent>();
+		auto view = m_registry->GetEntitiesWithComponents<PhysicsBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
 			//std::cout << (int)entity << std::endl;
-			auto& transform = view.get<TransformComponent>(entity);
-			auto& physicsBody = view.get<PhysicsBodyComponent>(entity);
+			auto* transform = m_registry->GetComponent<TransformComponent>(entity);
+			auto* physicsBody = m_registry->GetComponent<PhysicsBodyComponent>(entity);
 			
-			transform.SetWorldPosition(physicsBody.GetPosition());
+			transform->SetWorldPosition(physicsBody->GetPosition());
 			
-			DebugRenderer::DrawRectangle(glm::vec3{physicsBody.GetPosition(), 0.f}, 16.f, 16.f);
+			DebugRenderer::DrawRectangle(glm::vec3{physicsBody->GetPosition(), 0.f}, 16.f, 16.f);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 #include <string>
 #include "box2d.h"
 #include "Physics\PhysicsWorld.h"
-#include "entt.hpp"
+#include "ECS\Registry.h"
 #include "ECS\System\AnimationSystem.h"
 #include "ECS\System\PhysicsSystem.h"
 #include "ECS\System\RenderSystem.h"
@@ -49,7 +49,7 @@ private:
 
 	std::unique_ptr<PhysicsWorld> m_world;
 
-	entt::registry m_registry;
+	Registry m_registry;
 
 	AnimationSystem m_animationSystem;
 	PhysicsSystem m_physicsSystem;

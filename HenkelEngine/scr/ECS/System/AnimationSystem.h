@@ -1,11 +1,11 @@
 #pragma once
 
-#include "entt.hpp"
+#include "ECS/Registry.h"
 
 class AnimationSystem
 {
 public:
-	AnimationSystem(entt::registry* registry) : m_registry(registry)
+	AnimationSystem(Registry* registry) : m_registry(registry)
 	{
 	}
 
@@ -16,6 +16,6 @@ public:
 
 private:
 
-	entt::registry* m_registry;
+	Registry* m_registry;
 };
 

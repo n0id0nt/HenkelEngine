@@ -8,14 +8,14 @@
 
 void RenderSystem::Update()
 {
-	auto view = m_registry->view<RenderComponent, TransformComponent, MaterialComponent>();
+	auto view = m_registry->GetEntitiesWithComponents<RenderComponent, TransformComponent, MaterialComponent>();
 	for (auto& entity : view)
 	{
-		auto& renderComponent = view.get<RenderComponent>(entity);
-		auto& transformComponent = view.get<TransformComponent>(entity);
-		auto& materialComponent = view.get<MaterialComponent>(entity);
-		auto* tilemapComponent = m_registry->try_get<TileMapComponent>(entity);
-		auto* spriteComponent = m_registry->try_get<SpriteComponent>(entity);
+		auto* renderComponent = m_registry->GetComponent<RenderComponent>(entity);
+		auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
+		auto* materialComponent = m_registry->GetComponent<MaterialComponent>(entity);
+		auto* tilemapComponent = m_registry->GetComponent<TileMapComponent>(entity);
+		auto* spriteComponent = m_registry->GetComponent<SpriteComponent>(entity);
 
 		ASSERT(tilemapComponent || spriteComponent);
 
@@ -24,20 +24,20 @@ void RenderSystem::Update()
 			auto tileVertices = tilemapComponent->GetTileVertices();
 			for (auto& vertice : tileVertices)
 			{
-				renderComponent.AddQuadToBatch(vertice[0], vertice[1], vertice[2]);
+				renderComponent->AddQuadToBatch(vertice[0], vertice[1], vertice[2]);
 			}
 		}
 
 		if (spriteComponent)
 		{
-			renderComponent.SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index));
+			renderComponent->SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index));
 		}
 
 		glm::mat4 projection = m_engine->GetCurrentScene()->GetCamera()->CalculateProjection(m_engine->GetWindow()->GetWidth(), m_engine->GetWindow()->GetHeight());
 		glm::mat4 view = m_engine->GetCurrentScene()->GetCamera()->GetViewMatrix();
-		glm::mat4 model = transformComponent.GetWorldMatrix();
-		materialComponent.Bind(model, view, projection);
-		renderComponent.Render();
-		materialComponent.Unbind();
+		glm::mat4 model = transformComponent->GetWorldMatrix();
+		materialComponent->Bind(model, view, projection);
+		renderComponent->Render();
+		materialComponent->Unbind();
 	}
 }

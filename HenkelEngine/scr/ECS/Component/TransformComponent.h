@@ -2,7 +2,6 @@
 
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
-#include "entt.hpp"
 #include <sol\sol.hpp>
 
 class TransformComponent
@@ -26,12 +25,10 @@ public:
 	glm::vec3 GetScale();
 
 	void SetParent(TransformComponent* parent);
-	void SetParent(entt::entity parent);
 	TransformComponent* GetParent();
 
 	glm::mat4 GetLocalMatrix();
 	glm::mat4 GetWorldMatrix();
-	glm::mat4 GetWorldMatrix(entt::registry& registry);
 
 	static void LUABind(sol::state& lua);
 

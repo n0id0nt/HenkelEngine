@@ -1,20 +1,21 @@
 #pragma once
 
-#include "entt.hpp"
 #include "Physics\PhysicsWorld.h"
+#include "ECS\Registry.h"
+
 
 class Engine;
 
 class PhysicsSystem
 {
 public:
-	PhysicsSystem(entt::registry* registry, Engine* engine);
+	PhysicsSystem(Registry* registry, Engine* engine);
 
 	void Update(PhysicsWorld* world);
 
 private:
 
-	entt::registry* m_registry = nullptr;
+	Registry* m_registry = nullptr;
 	Engine* m_engine = nullptr;
 };
 

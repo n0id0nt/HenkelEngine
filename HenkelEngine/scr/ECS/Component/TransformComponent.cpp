@@ -101,16 +101,6 @@ glm::mat4 TransformComponent::GetWorldMatrix()
 		return GetLocalMatrix();
 }
 
-glm::mat4 TransformComponent::GetWorldMatrix(entt::registry& registry)
-{
-	if (m_parent)
-	{
-		return m_parent->GetWorldMatrix() * GetLocalMatrix();
-	}
-	else
-		return GetLocalMatrix();
-}
-
 void TransformComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<TransformComponent>("transform",
