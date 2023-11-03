@@ -15,6 +15,7 @@ public:
 	Registry();
 
     EntityId CreateEntity();
+    void DeleteEntity(EntityId entityId);
 
     // Add a component to an entity
     template <typename ComponentType, typename... Args>
@@ -100,12 +101,17 @@ public:
     {
         std::vector<EntityId> matchingEntities;
 
+        for (auto& entityId : m_entities)
+        {
+			bool hasAllComponents = (HasComponent<ComponentTypes>(entityId) && ...);
+			// uses fold expression???
 
-
-
-
-
-
+			//bool hasAllComponents = HasAllComponents<ComponentTypes>(entityComponents.second);
+			if (hasAllComponents)
+			{
+		        matchingEntities.push_back(entityId);
+			}
+        }
 		//// Check for each entity if it has all specified component types
 		//for (const auto& entityComponents : m_components) 
 		//{
@@ -129,14 +135,12 @@ private:
     EntityId m_currentEntityId;
 
 	std::unordered_map<std::type_index, std::unordered_map<EntityId, void*>> m_components;
+	std::vector<EntityId> m_entities;
 
-
-
-
-
+    // TODO This is slow but I just chucked it in to get something working as proof of concept
     // Helper function to check if an entity has all specified component types
     template <typename ComponentTypes, typename... Rest>
-    bool HasAllComponents(const std::type_index& entityIndex) 
+    bool HasAllComponents(const EntityId& enityId)
     {
         auto componentIter = m_components.find(entityIndex);
 
