@@ -15,6 +15,8 @@ public:
 
 	void Update(float deltaTime);
 
+	sol::state& GetSolState();
+
 private:
 
 	Registry* m_registry;

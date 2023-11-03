@@ -202,7 +202,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 			if (propertyName == "Script")
 			{
 				std::string script = property.attribute("value").as_string();
-				gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script);
+				gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script, m_scriptSystem.GetSolState(), gameObjectEntity);
 			}
 		}
 
@@ -251,7 +251,7 @@ void Scene::Render()
 
 	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
 
-	glm::mat4 projection = m_camera->CalculateProjection(m_engine->GetWindow()->GetWidth(), m_engine->GetWindow()->GetHeight());
+	glm::mat4 projection = m_camera->CalculateProjection((float)m_engine->GetWindow()->GetWidth(), (float)m_engine->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
 

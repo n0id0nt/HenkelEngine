@@ -6,6 +6,7 @@
 #include <typeindex>
 #include <typeinfo>
 #include <memory>
+#include <any>
 
 typedef unsigned int EntityId;
 
@@ -19,12 +20,11 @@ public:
 
     // Add a component to an entity
     template <typename ComponentType, typename... Args>
-    ComponentType* AddComponent(EntityId entityId, Args... args)
+    ComponentType* AddComponent(EntityId entityId, Args&&... args)
     {
-        std::unique_ptr<ComponentType> component = std::make_unique<ComponentType>(args...);
-        ComponentType* componentRawPtr = component.get();
-        m_components[std::type_index(typeid(ComponentType))][entityId] = component.get();
-        return componentRawPtr;
+        m_components[std::type_index(typeid(ComponentType))][entityId] = ComponentType(args...);
+        ComponentType& newComponent = std::any_cast<ComponentType&>(m_components[std::type_index(typeid(ComponentType))][entityId]);
+        return &newComponent;
     }
 
     // Get a component from an entity
@@ -39,7 +39,8 @@ public:
             auto componentIter = entityComponents->second.find(entityId);
             if (componentIter != entityComponents->second.end()) 
             {
-                return static_cast<ComponentType*>(componentIter->second);
+                ComponentType& component = std::any_cast<ComponentType&>(componentIter->second);
+                return &component;
             }
         }
 
@@ -134,20 +135,20 @@ private:
 
     EntityId m_currentEntityId;
 
-	std::unordered_map<std::type_index, std::unordered_map<EntityId, void*>> m_components;
+	std::unordered_map<std::type_index, std::unordered_map<EntityId, std::any>> m_components;
 	std::vector<EntityId> m_entities;
 
     // TODO This is slow but I just chucked it in to get something working as proof of concept
     // Helper function to check if an entity has all specified component types
-    template <typename ComponentTypes, typename... Rest>
-    bool HasAllComponents(const EntityId& enityId)
-    {
-        auto componentIter = m_components.find(entityIndex);
-
-        return componentIter != m_components.end() &&
-            componentIter->second.find(std::type_index(typeid(ComponentTypes))) != componentIter->second.end() &&
-            HasAllComponents<Rest...>(entityIndex);
-    }
+    //template <typename ComponentTypes, typename... Rest>
+    //bool HasAllComponents(const EntityId& enityId)
+    //{
+    //    auto componentIter = m_components.find(entityIndex);
+    //
+    //    return componentIter != m_components.end() &&
+    //        componentIter->second.find(std::type_index(typeid(ComponentTypes))) != componentIter->second.end() &&
+    //        HasAllComponents<Rest...>(entityIndex);
+    //}
 
     // Base case for recursive template function
     bool HasAllComponents() { return true; }

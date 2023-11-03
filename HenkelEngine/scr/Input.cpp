@@ -201,8 +201,8 @@ void Input::onMouseButtonDown(SDL_Event& event)
 
 void Input::onMouseMove(SDL_Event& event)
 {
-    m_mousePosition.x = event.motion.x;
-    m_mousePosition.y = event.motion.y;
+    m_mousePosition.x = (float)event.motion.x;
+    m_mousePosition.y = (float)event.motion.y;
 }
 
 void Input::onMouseButtonUp(SDL_Event& event)

@@ -4,11 +4,10 @@
 #include <vector>
 #include <array>
 
-struct TileMapComponent
+class TileMapComponent
 {
-	unsigned int width, height;
-	std::vector<unsigned> levelArray;
-	TileSheet tileSheet;
+public:
+	TileMapComponent(unsigned int width, unsigned int height, std::vector<unsigned int> levelArray, TileSheet tileSheet);
 
 	unsigned int GetTileWidth() const;
 	unsigned int GetTileHeight() const;
@@ -19,5 +18,9 @@ struct TileMapComponent
 
 	unsigned int GetTile(unsigned int row, unsigned int col) const;
 
+private:
+	unsigned int m_width, m_height;
+	std::vector<unsigned int> m_levelArray;
+	TileSheet m_tileSheet;
 };
 

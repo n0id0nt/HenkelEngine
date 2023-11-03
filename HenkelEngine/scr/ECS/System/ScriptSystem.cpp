@@ -34,3 +34,8 @@ void ScriptSystem::Update(float deltaTime)
 		}
 	}
 }
+
+sol::state& ScriptSystem::GetSolState()
+{
+	return m_lua;
+}

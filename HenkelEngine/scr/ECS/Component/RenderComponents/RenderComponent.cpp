@@ -25,7 +25,7 @@ void RenderComponent::Render()
     GLCall(glBindVertexArray(m_VAO));
 
     // loop to ensure no more than the max batch size is rendered
-    int batchesToDraw = glm::ceil((float)m_Vertices.size() / (m_Quads * QUAD_SIZE));
+    int batchesToDraw = (int)glm::ceil((float)m_Vertices.size() / (m_Quads * QUAD_SIZE));
     for (int i = 0; i < batchesToDraw; i++)
     {
 
