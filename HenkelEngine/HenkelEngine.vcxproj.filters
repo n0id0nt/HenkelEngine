@@ -419,5 +419,8 @@
     <ClInclude Include="scr\ECS\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scr\Debug\GUIPanels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

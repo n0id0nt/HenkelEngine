@@ -15,6 +15,7 @@
 #include "ECS\Component\ScriptComponent.h"
 #include <imgui.h>
 #include <ECS\Component\TransformComponent.h>
+#include "Debug\GUIPanels.h"
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
@@ -88,7 +89,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			tilemapEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
 			tilemapEntity->CreateComponent<RenderComponent>(width * height);
 			auto* tilemap = tilemapEntity->CreateComponent<TileMapComponent>(width, height, levelArray, tileSheet);
-			auto* transform = tilemapEntity->CreateComponent<TransformComponent>(glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
+			auto* transform = tilemapEntity->CreateComponent<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
 			
 			b2BodyDef bodyDef;
 			glm::vec2 position = transform->GetWorldPosition();
@@ -107,17 +108,15 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 		else if (name == "objectgroup")
 		{
 			// create tilemap component
-			Entity* tilemapEntity = CreateEntity(layer.attribute("name").as_string());
-			auto* objectGroupTransform = tilemapEntity->CreateComponent<TransformComponent>(glm::vec3{ layer.attribute("offsetx").as_float(), layer.attribute("offsety").as_float(), 0.f }, glm::vec3(), glm::vec3{1.f,1.f,1.f});
+			auto* tilemapEntity = CreateEntity(layer.attribute("name").as_string());
+			tilemapEntity->CreateComponent<TransformComponent>(tilemapEntity, glm::vec3{ layer.attribute("offsetx").as_float(), layer.attribute("offsety").as_float(), 0.f }, glm::vec3(), glm::vec3{1.f,1.f,1.f});
 
 			for (auto& object : layer.children("object"))
 			{
 				auto* gameObjectEntity = CreateObject(object, fileDir, tileSheet);
+				gameObjectEntity->SetParent(tilemapEntity);
+
 				auto* transform = gameObjectEntity->GetComponent<TransformComponent>();
-				if (transform)
-				{
-					transform->SetParent(objectGroupTransform);
-				}
 				auto* physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
 				auto* staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
 				if (physicsBody)
@@ -180,7 +179,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		gameObjectEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
 		gameObjectEntity->CreateComponent<RenderComponent>(1u);
 		gameObjectEntity->CreateComponent<SpriteComponent>(tileSheet, object.attribute("gid").as_uint() - 1);
-		auto* transform = gameObjectEntity->CreateComponent<TransformComponent>(objectPosition, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
+		auto* transform = gameObjectEntity->CreateComponent<TransformComponent>(gameObjectEntity, objectPosition, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
 		
 
 		b2BodyDef bodyDef;
@@ -246,8 +245,9 @@ void Scene::Render()
 	ImGui::SliderFloat("X", &x, -300.0f, 300.0f);
 	ImGui::SliderFloat("Y", &y, -300.0f, 300.0f);
 	ImGui::SliderFloat("Zoom", &z, 0.5f, 20.0f);
-
 	ImGui::End();
+
+	GUIPanel::EntityHierarchy::Panel(m_entities);
 
 	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
 
