@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <optional>
 #include "sol\sol.hpp"
 #include "ECS\Registry.h"
 #include "ECS\Component\TransformComponent.h"
@@ -22,13 +21,9 @@ public:
 	}	
 	
 	template <typename ComponentType>
-	std::optional<ComponentType> GetComponent()
+	ComponentType* GetComponent()
 	{
-		if (HasComponent<ComponentType>())
-		{
-			return std::optional<ComponentType>(*m_registry->GetComponent<ComponentType>(m_entity));
-		}
-		return std::nullopt;
+		return m_registry->GetComponent<ComponentType>(m_entity);
 	}
 
 	template <typename ComponentType>

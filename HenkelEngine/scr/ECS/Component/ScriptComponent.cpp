@@ -16,7 +16,7 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 
 void ScriptComponent::Update(float deltaTime)
 {
-	if (m_update.valid())
+	if (!m_update.valid())
 	{
 		sol::protected_function updateScript = m_update;
 

@@ -4,6 +4,20 @@ Registry::Registry() : m_components(), m_currentEntityId(0u), m_entities()
 {
 }
 
+Registry::~Registry()
+{
+	for (auto& entityComponents : m_components)
+	{
+		for (auto& component : entityComponents.second)
+		{
+			std::free(component.second);
+		}
+		entityComponents.second.clear();
+	}
+	m_components.clear();
+	m_entities.clear();
+}
+
 EntityId Registry::CreateEntity()
 {
 	EntityId newEntityId = m_currentEntityId;
@@ -22,6 +36,7 @@ void Registry::DeleteEntity(EntityId entityId)
 
 		if (component != entityComponents.second.end())
 		{
+			std::free(component->second);
 			entityComponents.second.erase(entityId);
 		}
 	}

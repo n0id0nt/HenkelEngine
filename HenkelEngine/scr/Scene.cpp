@@ -113,13 +113,13 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			for (auto& object : layer.children("object"))
 			{
 				auto* gameObjectEntity = CreateObject(object, fileDir, tileSheet);
-				auto transform = gameObjectEntity->GetComponent<TransformComponent>();
+				auto* transform = gameObjectEntity->GetComponent<TransformComponent>();
 				if (transform)
 				{
 					transform->SetParent(objectGroupTransform);
 				}
-				auto physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
-				auto staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
+				auto* physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
+				auto* staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
 				if (physicsBody)
 				{
 					physicsBody->SetPosition(transform->GetWorldPosition());
@@ -156,9 +156,9 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 	if (object.attribute("template"))
 	{
 		gameObjectEntity = LoadTemplate(fileDir, object.attribute("template").as_string());
-		auto tranformComponent = gameObjectEntity->GetComponent<TransformComponent>();
-		auto physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
-		auto staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
+		auto* tranformComponent = gameObjectEntity->GetComponent<TransformComponent>();
+		auto* physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
+		auto* staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
 		if (tranformComponent)
 		{
 			tranformComponent->SetPosition(objectPosition);

@@ -14,6 +14,7 @@ class Registry
 {
 public:
 	Registry();
+    ~Registry();
 
     EntityId CreateEntity();
     void DeleteEntity(EntityId entityId);
@@ -22,9 +23,10 @@ public:
     template <typename ComponentType, typename... Args>
     ComponentType* AddComponent(EntityId entityId, Args&&... args)
     {
-        m_components[std::type_index(typeid(ComponentType))][entityId] = ComponentType(args...);
-        ComponentType& newComponent = std::any_cast<ComponentType&>(m_components[std::type_index(typeid(ComponentType))][entityId]);
-        return &newComponent;
+        void* componentRawPtr = std::malloc(sizeof(ComponentType));
+        componentRawPtr = new ComponentType(std::forward<Args>(args)...);
+        m_components[std::type_index(typeid(ComponentType))][entityId] = componentRawPtr;
+        return static_cast<ComponentType*>(componentRawPtr);
     }
 
     // Get a component from an entity
@@ -39,8 +41,8 @@ public:
             auto componentIter = entityComponents->second.find(entityId);
             if (componentIter != entityComponents->second.end()) 
             {
-                ComponentType& component = std::any_cast<ComponentType&>(componentIter->second);
-                return &component;
+                ComponentType* component = static_cast<ComponentType*>(componentIter->second);
+                return component;
             }
         }
 
@@ -56,6 +58,7 @@ public:
 
         if (entityComponents != m_components.end()) 
         {
+            std::free(entityComponents->second);
             entityComponents->second.erase(entityId);
         }
     }
@@ -105,7 +108,6 @@ public:
         for (auto& entityId : m_entities)
         {
 			bool hasAllComponents = (HasComponent<ComponentTypes>(entityId) && ...);
-			// uses fold expression???
 
 			//bool hasAllComponents = HasAllComponents<ComponentTypes>(entityComponents.second);
 			if (hasAllComponents)
@@ -113,19 +115,6 @@ public:
 		        matchingEntities.push_back(entityId);
 			}
         }
-		//// Check for each entity if it has all specified component types
-		//for (const auto& entityComponents : m_components) 
-		//{
-		//    //bool hasAllComponents = (HasAllComponents<ComponentTypes>(entityComponents.first) && ...);
-		//    // uses fold expression???
-		//
-		//    bool hasAllComponents = HasAllComponents<ComponentTypes>(entityComponents.second);
-		//    if (hasAllComponents) 
-		//    {
-		//        auto v = entityComponents.second
-		//        matchingEntities.push_back(v);
-		//    }
-		//}
 
         return matchingEntities;
     }
@@ -135,22 +124,7 @@ private:
 
     EntityId m_currentEntityId;
 
-	std::unordered_map<std::type_index, std::unordered_map<EntityId, std::any>> m_components;
+	std::unordered_map<std::type_index, std::unordered_map<EntityId, void*>> m_components;
 	std::vector<EntityId> m_entities;
-
-    // TODO This is slow but I just chucked it in to get something working as proof of concept
-    // Helper function to check if an entity has all specified component types
-    //template <typename ComponentTypes, typename... Rest>
-    //bool HasAllComponents(const EntityId& enityId)
-    //{
-    //    auto componentIter = m_components.find(entityIndex);
-    //
-    //    return componentIter != m_components.end() &&
-    //        componentIter->second.find(std::type_index(typeid(ComponentTypes))) != componentIter->second.end() &&
-    //        HasAllComponents<Rest...>(entityIndex);
-    //}
-
-    // Base case for recursive template function
-    bool HasAllComponents() { return true; }
 };
 

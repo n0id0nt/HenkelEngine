@@ -9,6 +9,7 @@ class PhysicsBodyComponent
 {
 public:
     PhysicsBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef);
+    PhysicsBodyComponent(const PhysicsBodyComponent&) = delete;
     ~PhysicsBodyComponent();
     
     void SetVelocity(glm::vec2 velocity);
