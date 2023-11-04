@@ -226,8 +226,8 @@ Entity* Scene::CreateTemplatedObject(const std::string& levelFile)
 
 Entity* Scene::CreateEntity(const std::string& name)
 {
-	m_entities.push_back(Entity(name, &m_registry));
-	return &m_entities.back();
+	m_entities.push_back(std::make_unique<Entity>(name, &m_registry));
+	return m_entities.back().get();
 }
 
 void Scene::Update(float deltaTime)

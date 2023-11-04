@@ -11,6 +11,8 @@ class Entity
 public:
 
 	Entity(const std::string& name, Registry* registry);
+	Entity(const Entity&) = delete;
+
 
 	EntityId GetEntity() const;
 

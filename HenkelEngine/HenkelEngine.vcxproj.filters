@@ -138,6 +138,9 @@
     <ClCompile Include="scr\ECS\Registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\ECS\EntityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\sprite.frag" />
@@ -411,6 +414,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\ECS\Registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\ECS\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

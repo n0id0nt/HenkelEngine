@@ -43,7 +43,7 @@ private:
 	Engine* m_engine;
 
 	std::unique_ptr<Camera> m_camera;
-	std::vector<Entity> m_entities;
+	std::vector<std::unique_ptr<Entity>> m_entities;
 
 	std::string m_name;
 

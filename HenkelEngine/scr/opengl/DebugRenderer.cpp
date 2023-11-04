@@ -19,7 +19,7 @@ void DebugRenderer::Render(glm::mat4 viewProjection)
 	GLCall(glBindVertexArray(s_VAO));
 
 	// loop to ensure no more than the max batch size is rendered
-	int batchesToDraw = glm::ceil((float)s_Vertices.size() / DEBUG_BUFFER_SIZE);
+	int batchesToDraw = (int)glm::ceil((float)s_Vertices.size() / DEBUG_BUFFER_SIZE);
 	for (int i = 0; i < batchesToDraw; i++)
 	{
 

@@ -67,7 +67,7 @@ void Mesh::setQuadData(std::vector<GLuint>& indexes, unsigned int quadsCount)
 
     indexes.clear();
     int offset = 0;
-    for (int i = 0; i < quadsCount; i++)
+    for (unsigned int i = 0; i < quadsCount; i++)
     {
         for (auto& index : _indexes)
         {

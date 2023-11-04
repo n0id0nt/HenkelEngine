@@ -18,8 +18,6 @@ public:
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);
 
-	std::string Test() { return "test"; }
-
 private:
 	sol::protected_function m_update;
 
