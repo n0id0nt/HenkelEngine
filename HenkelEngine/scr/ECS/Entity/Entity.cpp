@@ -13,6 +13,11 @@ EntityId Entity::GetEntity() const
 	return m_entity;
 }
 
+std::string Entity::GetName() const
+{
+	return m_name;
+}
+
 void Entity::SetChild(Entity* entity)
 {
 	if (entity->m_parent == this)
@@ -33,7 +38,7 @@ void Entity::SetParent(Entity* entity)
 		m_parent->RemoveChild(this);
 
 	m_parent = entity;
-	m_parent->m_children.push_back(entity);
+	m_parent->m_children.push_back(this);
 }
 
 void Entity::RemoveChild(Entity* entity)

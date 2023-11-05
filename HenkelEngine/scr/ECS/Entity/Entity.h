@@ -14,6 +14,8 @@ public:
 
 	EntityId GetEntity() const;
 
+	std::string GetName() const;
+
 	void SetChild(Entity* entity);
 	void SetParent(Entity* entity);
 

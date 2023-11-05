@@ -3,6 +3,7 @@
  <tileset firstgid="1" source="../TestTiles.tsx"/>
  <object name="Player" gid="5" width="16" height="16">
   <properties>
+   <property name="Collider" propertytype="Collider" value="Dynamic"/>
    <property name="Script" type="file" value="../Scripts/Player.lua"/>
   </properties>
  </object>

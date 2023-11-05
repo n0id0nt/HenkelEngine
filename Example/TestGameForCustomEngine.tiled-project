@@ -10,5 +10,16 @@
     "properties": [
     ],
     "propertyTypes": [
+        {
+            "id": 1,
+            "name": "Collider",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Static",
+                "Dynamic"
+            ],
+            "valuesAsFlags": false
+        }
     ]
 }

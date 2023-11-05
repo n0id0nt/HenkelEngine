@@ -64,6 +64,7 @@ void Engine::InitEngine()
 	ImGuiIO& io = ImGui::GetIO();
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;		// Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.ConfigDockingWithShift = false;
 
 	ImGui::StyleColorsDark();

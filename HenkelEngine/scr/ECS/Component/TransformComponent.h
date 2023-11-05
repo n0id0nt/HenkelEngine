@@ -30,6 +30,8 @@ public:
 	glm::mat4 GetLocalMatrix();
 	glm::mat4 GetWorldMatrix();
 
+	void DrawDebugPanel();
+
 	static void LUABind(sol::state& lua);
 
 private:

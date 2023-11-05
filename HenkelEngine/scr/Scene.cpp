@@ -197,21 +197,25 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 
 		for (auto& property : object.child("properties").children())
 		{
-			std::string propertyName(property.attribute("name").as_string());
+			std::string propertyName = property.attribute("name").as_string();
 			if (propertyName == "Script")
 			{
 				std::string script = property.attribute("value").as_string();
 				gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script, m_scriptSystem.GetSolState(), gameObjectEntity);
 			}
-		}
+			else if (propertyName == "Collider")
+			{
+				std::string value = property.attribute("value").as_string();
+				if (value == "Dynamic")
+				{
+					gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), fixtureDef, bodyDef);
+				}
+				else if (value == "Static")
+				{
+					gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), fixtureDef, bodyDef);
 
-		if (objectName == "Player")
-		{
-			gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), fixtureDef, bodyDef);
-		}
-		else
-		{
-			gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), fixtureDef, bodyDef);
+				}
+			}
 		}
 	}
 

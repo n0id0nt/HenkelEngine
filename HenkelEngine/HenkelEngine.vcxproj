@@ -80,7 +80,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -98,7 +98,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -117,7 +117,7 @@
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>

@@ -1,5 +1,6 @@
 #include "TransformComponent.h"
 #include "glm\gtx\matrix_decompose.hpp"
+#include "imgui.h"
 
 TransformComponent::TransformComponent(Entity* entity, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
 	: m_position(position), m_rotation(rotation), m_scale(scale), m_entity(entity)
@@ -98,6 +99,16 @@ glm::mat4 TransformComponent::GetWorldMatrix()
 		return GetParent()->GetWorldMatrix() * GetLocalMatrix();
 	else
 		return GetLocalMatrix();
+}
+
+void TransformComponent::DrawDebugPanel()
+{
+	const float inputFieldWidth = 80.f;
+	ImGui::Text("Transform Componet:");
+	ImGui::Text("Position:"); 
+	ImGui::InputFloat("X", &m_position.x);
+	ImGui::InputFloat("Y", &m_position.y); 
+	ImGui::InputFloat("Z", &m_position.z);
 }
 
 void TransformComponent::LUABind(sol::state& lua)
