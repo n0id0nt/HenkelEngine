@@ -15,12 +15,10 @@
 #include "Resourse\TileSheet.h"
 #include "sol\sol.hpp"
 
-class Engine;
-
 class Scene : public LUABindable
 {
 public :
-	Scene(Engine* engine, const std::string& fileDir, const std::string& levelFile);
+	Scene(const std::string& fileDir, const std::string& levelFile);
 	~Scene();
 
 	void LoadScene(const std::string& fileDir, const std::string& levelFile);
@@ -40,8 +38,6 @@ public :
 	void LUABind(sol::state& lua);
 
 private:
-	Engine* m_engine;
-
 	std::unique_ptr<Camera> m_camera;
 	std::vector<std::unique_ptr<Entity>> m_entities;
 

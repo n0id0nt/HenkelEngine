@@ -15,10 +15,15 @@ const unsigned int FRAME_DELAY = 1000 / FPS;
 class Engine
 {
 public:
-	Engine();
+	Engine(Engine& other) = delete;
+	void operator=(const Engine&) = delete;
+
+	static Engine* GetInstance();
+
 	~Engine();
 
 	void InitEngine();
+	void ExitEngine();
 
 	void Loop();
 
@@ -30,6 +35,9 @@ public:
 	std::string GetProjectDirectory() const;
 
 private:
+	Engine();
+
+	static Engine* s_engine;
 
 	std::unique_ptr<Window> m_window;
 	std::unique_ptr<Scene> m_scene;

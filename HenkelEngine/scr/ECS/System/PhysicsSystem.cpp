@@ -6,8 +6,8 @@
 #include "opengl\DebugRenderer.h"
 #include <iostream>
 
-PhysicsSystem::PhysicsSystem(Registry* registry, Engine* engine) 
-	: m_registry(registry), m_engine(engine)
+PhysicsSystem::PhysicsSystem(Registry* registry) 
+	: m_registry(registry)
 {
 }
 

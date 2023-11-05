@@ -3,8 +3,9 @@
 
 int main(int argc, char** argv)
 {
-	std::unique_ptr<Engine> engine = std::make_unique<Engine>();
-	engine->Loop();
+	Engine::GetInstance()->InitEngine();
+	Engine::GetInstance()->Loop();
+	Engine::GetInstance()->ExitEngine();
 
 	return 0;
 }

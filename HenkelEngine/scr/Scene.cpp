@@ -24,13 +24,13 @@ const int velocityIterations = 6;
 const int positionIterations = 2;
 
 
-Scene::Scene(Engine* engine, const std::string& fileDir, const std::string& levelFile) 
-	: m_engine(engine), m_name("Scene"), 
-	m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry, engine), m_renderSystem(&m_registry, engine), m_scriptSystem(&m_registry), m_entities()
+Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
+	: m_name("Scene"), 
+	m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_entities()
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	m_scriptSystem.BindToLua(*m_engine->GetInput());
+	m_scriptSystem.BindToLua(*(Engine::GetInstance()->GetInput()));
 	m_scriptSystem.BindToLua(*this);
 
 	LoadScene(fileDir, levelFile);
@@ -65,7 +65,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f, 0.f }, timeStep, velocityIterations, positionIterations, pixelsPerMeter);
 
 
-	TileSheet tileSheet(m_engine->GetProjectDirectory(), fileDir + doc.child("map").child("tileset").attribute("source").as_string());
+	TileSheet tileSheet(Engine::GetInstance()->GetProjectDirectory(), fileDir + doc.child("map").child("tileset").attribute("source").as_string());
 
 	for (auto& layer : doc.child("map").children())
 	{
@@ -86,7 +86,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
-			tilemapEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
+			tilemapEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
 			tilemapEntity->CreateComponent<RenderComponent>(width * height);
 			auto* tilemap = tilemapEntity->CreateComponent<TileMapComponent>(width, height, levelArray, tileSheet);
 			auto* transform = tilemapEntity->CreateComponent<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
@@ -141,7 +141,7 @@ Entity* Scene::LoadTemplate(const std::string& fileDir, const std::string& level
 	pugi::xml_parse_result result = doc.load_file(file.c_str());
 	ASSERT(result);
 
-	TileSheet tileSheet(m_engine->GetProjectDirectory(), workingDir + doc.child("template").child("tileset").attribute("source").as_string());
+	TileSheet tileSheet(Engine::GetInstance()->GetProjectDirectory(), workingDir + doc.child("template").child("tileset").attribute("source").as_string());
 
 	return CreateObject(doc.child("template").child("object"), workingDir, tileSheet);
 }
@@ -176,7 +176,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		std::string objectName = object.attribute("name").as_string();
 		gameObjectEntity = CreateEntity(objectName);
 
-		gameObjectEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag", m_engine);
+		gameObjectEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
 		gameObjectEntity->CreateComponent<RenderComponent>(1u);
 		gameObjectEntity->CreateComponent<SpriteComponent>(tileSheet, object.attribute("gid").as_uint() - 1);
 		auto* transform = gameObjectEntity->CreateComponent<TransformComponent>(gameObjectEntity, objectPosition, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
@@ -224,7 +224,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 
 Entity* Scene::CreateTemplatedObject(const std::string& levelFile)
 {
-	return LoadTemplate(m_engine->GetProjectDirectory(), levelFile);
+	return LoadTemplate(Engine::GetInstance()->GetProjectDirectory(), levelFile);
 }
 
 Entity* Scene::CreateEntity(const std::string& name)
@@ -255,7 +255,7 @@ void Scene::Render()
 
 	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
 
-	glm::mat4 projection = m_camera->CalculateProjection((float)m_engine->GetWindow()->GetWidth(), (float)m_engine->GetWindow()->GetHeight());
+	glm::mat4 projection = m_camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
 

@@ -3,12 +3,10 @@
 #include "opengl/Shader.h"
 #include "opengl/Texture.h"
 
-class Engine;
-
 class MaterialComponent
 {
 public:
-	MaterialComponent(std::string texture, std::string vertexShader, std::string fragmentShader, Engine* engine);
+	MaterialComponent(std::string texture, std::string vertexShader, std::string fragmentShader);
 	~MaterialComponent();
 
 	void Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
@@ -17,8 +15,6 @@ public:
 	void SetWorldMatrices(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 
 private:
-	Engine* m_engine = nullptr;
-
 	std::string m_vertexShader;
 	std::string m_fragmentShader;
 	std::string m_texture;

@@ -2,12 +2,10 @@
 
 #include "ECS/Registry.h"
 
-class Engine;
-
 class RenderSystem
 {
 public:
-	RenderSystem(Registry* registry, Engine* engine) : m_registry(registry), m_engine(engine)
+	RenderSystem(Registry* registry) : m_registry(registry)
 	{
 	}
 
@@ -16,6 +14,5 @@ public:
 private:
 
 	Registry* m_registry = nullptr;
-	Engine* m_engine = nullptr;
 };
 

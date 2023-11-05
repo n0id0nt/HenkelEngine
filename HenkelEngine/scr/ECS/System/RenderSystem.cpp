@@ -33,8 +33,8 @@ void RenderSystem::Update()
 			renderComponent->SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index));
 		}
 
-		glm::mat4 projection = m_engine->GetCurrentScene()->GetCamera()->CalculateProjection((float)m_engine->GetWindow()->GetWidth(), (float)m_engine->GetWindow()->GetHeight());
-		glm::mat4 view = m_engine->GetCurrentScene()->GetCamera()->GetViewMatrix();
+		glm::mat4 projection = Engine::GetInstance()->GetCurrentScene()->GetCamera()->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
+		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();
 		glm::mat4 model = transformComponent->GetWorldMatrix();
 		materialComponent->Bind(model, view, projection);
 		renderComponent->Render();

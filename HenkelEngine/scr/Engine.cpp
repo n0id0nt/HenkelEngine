@@ -5,29 +5,29 @@
 #include "opengl\DebugRenderer.h"
 #include <imgui_impl_opengl3.h>
 
-Engine::Engine() : m_clearColor({ 0.2f, 0.3f, 0.3f, 1.0f }), m_projectDirectory("../Example/")
+Engine*Engine::s_engine = nullptr;
+
+Engine::Engine() 
 {
-	InitEngine();
+}
+
+Engine* Engine::GetInstance()
+{
+ 	if (!s_engine) 
+		s_engine = new Engine();
+
+	return s_engine;
 }
 
 Engine::~Engine()
 {
-	DebugRenderer::ExitDebugRenderer();
-	m_resourcePool.reset();
-	m_input.reset();
-	m_scene.reset();
-	m_window.reset();
-
-	// Exit
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-
-	SDL_Quit();
 }
 
 void Engine::InitEngine()
 {
+	m_clearColor = { 0.2f, 0.3f, 0.3f, 1.0f };
+	m_projectDirectory = "../Example/";
+
 	m_input = std::make_unique<Input>();
 
 	m_input->CreateBinding("Jump", SDLK_SPACE);
@@ -77,7 +77,26 @@ void Engine::InitEngine()
 
 	DebugRenderer::InitDebugRenderer();
 
-	m_scene = std::make_unique<Scene>(this, m_projectDirectory, "TestLevel.tmx");
+	m_scene = std::make_unique<Scene>(m_projectDirectory, "TestLevel.tmx");
+}
+
+void Engine::ExitEngine()
+{
+	DebugRenderer::ExitDebugRenderer();
+	m_resourcePool.reset();
+	m_input.reset();
+	m_scene.reset();
+	m_window.reset();
+
+	// Exit
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	SDL_Quit();
+
+	delete s_engine;
+	s_engine = nullptr;
 }
 
 void Engine::Loop()
