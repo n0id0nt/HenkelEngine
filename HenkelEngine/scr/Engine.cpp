@@ -12,12 +12,16 @@ Engine::Engine() : m_clearColor({ 0.2f, 0.3f, 0.3f, 1.0f }), m_projectDirectory(
 
 Engine::~Engine()
 {
+	DebugRenderer::ExitDebugRenderer();
+	m_resourcePool.reset();
+	m_input.reset();
+	m_scene.reset();
+	m_window.reset();
+
 	// Exit
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
-	DebugRenderer::ExitDebugRenderer();
 
 	SDL_Quit();
 }
