@@ -197,7 +197,7 @@
     <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="scr\Debug\GUIPanels.h" />
+    <ClInclude Include="scr\DebugGUIPanels\GUIPanels.h" />
     <ClInclude Include="scr\ECS\EntityManager.h" />
     <ClInclude Include="scr\ECS\Registry.h" />
     <ClInclude Include="scr\ECS\Entity\Entity.h" />
