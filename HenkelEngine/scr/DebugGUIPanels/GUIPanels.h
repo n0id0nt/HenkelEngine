@@ -4,6 +4,10 @@
 #include <string>
 #include <format>
 #include "ECS/Component/TransformComponent.h"
+#include "ECS/Component/ScriptComponent.h"
+#include "ECS/Component/PhysicsBodyComponents/StaticBodyComponent.h"
+#include "ECS/Component/PhysicsBodyComponents/PhysicsBodyComponent.h"
+#include "ECS/Component/PhysicsBodyComponents/TileMapCollisionBodyComponent.h"
 
 namespace GUIPanel
 {
@@ -40,8 +44,15 @@ namespace GUIPanel
 		{
 			ImGui::Text(std::format("Id: {},\tName: {}", entity->GetEntity(), entity->GetName()).c_str());
 			auto* transform = entity->GetComponent<TransformComponent>();
+			auto* staticBody = entity->GetComponent<StaticBodyComponent>();
+			auto* physicsBody = entity->GetComponent<PhysicsBodyComponent>();
+			auto* tileMapCollisionBody = entity->GetComponent<TileMapCollisionBodyComponent>();
+			auto* script = entity->GetComponent<ScriptComponent>();
 			if (transform)
+			{
 				transform->DrawDebugPanel();
+				ImGui::SameLine();
+			}
 		}
 
 		static void RenderTreeNode(Entity* entity)
@@ -49,7 +60,7 @@ namespace GUIPanel
 			bool isNodeOpen = ImGui::CollapsingHeader(std::format("Id: {},\tName: {}", entity->GetEntity(), entity->GetName()).c_str());
 			if (isNodeOpen) {
 				ImGui::Indent(s_indentAmount);
-				if (ImGui::Button("View Component List")) {
+				if (ImGui::Button(std::format("View Component List##UniqueID{}", entity->GetEntity()).c_str())) {
 					s_isComponetWindowOpen = true;
 					s_focusedComponet = entity;
 				}

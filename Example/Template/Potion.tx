@@ -4,7 +4,7 @@
  <object name="Potion" gid="2" width="16" height="16">
   <properties>
    <property name="Collider" propertytype="Collider" value="Dynamic"/>
-   <property name="Script" type="file" value=""/>
+   <property name="Script" type="file" value="../Scripts/Bullet.lua"/>
   </properties>
  </object>
 </template>

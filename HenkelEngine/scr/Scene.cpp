@@ -15,7 +15,7 @@
 #include "ECS\Component\ScriptComponent.h"
 #include <imgui.h>
 #include <ECS\Component\TransformComponent.h>
-#include "Debug\GUIPanels.h"
+#include "DebugGUIPanels\GUIPanels.h"
 
 //Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;

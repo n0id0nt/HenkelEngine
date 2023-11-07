@@ -4,12 +4,17 @@
 ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Entity* entity)
 	: m_this(), m_entity(entity)
 {
+	lua.set("Script", this);
 	lua.script_file(script);
 
-	m_update = lua["update"];
-	if (!m_update.valid())
+	if (m_updatePtr)
 	{
-		std::cerr << "Lua script loading no update(deltaTime) function provided" << std::endl;
+		lua.script("function update(deltaTime) Script.update(deltaTime) end");
+		m_update = lua["update"];
+	}
+	else
+	{
+		std::cerr << "Lua script loading no Script.update(deltaTime) function provided" << std::endl;
 		ASSERT(false);
 	}
 }
@@ -37,11 +42,20 @@ void ScriptComponent::Bind(sol::state& lua)
 {
 	lua.set("GO", m_entity);
 	lua.set("this", m_this);
+	lua.set("Script", this);
 }
 
 void ScriptComponent::Unbind(sol::state& lua)
 {
 	lua.set("GO", sol::nil);
 	lua.set("this", sol::nil);
+	lua.set("Script", sol::nil);
+}
+
+void ScriptComponent::LUABind(sol::state& lua)
+{
+	lua.new_usertype<ScriptComponent>("Script",
+		"update", &m_updatePtr
+	);
 }
 

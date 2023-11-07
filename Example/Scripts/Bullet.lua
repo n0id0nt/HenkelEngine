@@ -1,6 +1,9 @@
 local speed = 80
+local groundAngle = 30
+local gravity = 200 
 
-function update(deltaTime)
+function updatde(deltaTime)
+    print("Bullet")
     local verticalSpeed = GO:getPhysicsBody():getVelocity().y;
     --print("old speed ", verticalSpeed)
 	local horrizontalSpeed = 0;
@@ -13,6 +16,8 @@ function update(deltaTime)
     --print("grounded ", isGrounded)
     if not isGrounded then 
         verticalSpeed = verticalSpeed + gravity * deltaTime
+    else
+        speed = 0
     end
 
     GO:getPhysicsBody():setVelocity(vec2.new(horrizontalSpeed, verticalSpeed))

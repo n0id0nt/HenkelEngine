@@ -18,8 +18,11 @@ public:
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);
 
+	void LUABind(sol::state& lua);
+
 private:
 	sol::protected_function m_update;
+	void (*m_updatePtr)(float);
 
 	Entity* m_entity = nullptr;
 

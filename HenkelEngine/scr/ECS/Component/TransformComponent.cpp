@@ -108,7 +108,6 @@ void TransformComponent::DrawDebugPanel()
 	ImGui::Text("Position:"); 
 	ImGui::InputFloat("X", &m_position.x);
 	ImGui::InputFloat("Y", &m_position.y); 
-	ImGui::InputFloat("Z", &m_position.z);
 }
 
 void TransformComponent::LUABind(sol::state& lua)

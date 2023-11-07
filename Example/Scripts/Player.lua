@@ -3,7 +3,8 @@ local groundAngle = 30
 local gravity = 200 
 local jumpSpeed = 60
 
-function update(deltaTime)
+function Script.update(deltaTime)
+    print("Player")
     local verticalSpeed = GO:getPhysicsBody():getVelocity().y;
     --print("old speed ", verticalSpeed)
 	local horrizontalSpeed = 0;
