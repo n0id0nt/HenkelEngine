@@ -104,7 +104,7 @@ glm::mat4 TransformComponent::GetWorldMatrix()
 void TransformComponent::DrawDebugPanel()
 {
 	const float inputFieldWidth = 80.f;
-	ImGui::Text("Transform Componet:");
+	ImGui::Text("Transform Component:");
 	ImGui::Text("Position:"); 
 	ImGui::InputFloat("X", &m_position.x);
 	ImGui::InputFloat("Y", &m_position.y); 

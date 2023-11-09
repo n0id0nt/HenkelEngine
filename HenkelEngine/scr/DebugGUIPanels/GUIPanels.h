@@ -43,6 +43,7 @@ namespace GUIPanel
 		static void DrawComponentList(Entity* entity)
 		{
 			ImGui::Text(std::format("Id: {},\tName: {}", entity->GetEntity(), entity->GetName()).c_str());
+			ImGui::Separator();
 			auto* transform = entity->GetComponent<TransformComponent>();
 			auto* staticBody = entity->GetComponent<StaticBodyComponent>();
 			auto* physicsBody = entity->GetComponent<PhysicsBodyComponent>();
@@ -51,7 +52,12 @@ namespace GUIPanel
 			if (transform)
 			{
 				transform->DrawDebugPanel();
-				ImGui::SameLine();
+				ImGui::Separator();
+			}
+			if (script)
+			{
+				script->DrawDebugPanel();
+				ImGui::Separator();
 			}
 		}
 

@@ -7,6 +7,7 @@
 #include "ECS\Entity\Entity.h"
 #include "ECS\Component\TransformComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
+#include <map>
 
 class ScriptComponent
 {
@@ -18,6 +19,10 @@ public:
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);
 
+	void AddScriptProperty(const std::string& name, sol::object object);
+
+	void DrawDebugPanel();
+
 	static void LUABind(sol::state& lua);
 
 private:
@@ -27,6 +32,8 @@ private:
 	Entity* m_entity = nullptr;
 
 	sol::table m_this;
+
+	std::map<std::string, sol::object> m_properties;
 
 };
 

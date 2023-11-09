@@ -3,7 +3,6 @@ local groundAngle = 30
 local gravity = 200 
 
 Script.update = function(deltaTime)
-    --print("Bullet")
     local verticalSpeed = GO:getPhysicsBody():getVelocity().y;
     --print("old speed ", verticalSpeed)
 	local horrizontalSpeed = 0;
