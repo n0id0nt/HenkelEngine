@@ -14,6 +14,7 @@ ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 	Entity::LUABind(m_lua);
 	TransformComponent::LUABind(m_lua);
 	PhysicsBodyComponent::LUABind(m_lua);
+	ScriptComponent::LUABind(m_lua);
 }
 
 void ScriptSystem::BindToLua(LUABindable& luaBindable)

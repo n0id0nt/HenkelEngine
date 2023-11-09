@@ -7,7 +7,7 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 	lua.set("Script", this);
 	lua.script_file(script);
 
-	if (m_updatePtr)
+	if (m_updateFunction)
 	{
 		lua.script("function update(deltaTime) Script.update(deltaTime) end");
 		m_update = lua["update"];
@@ -55,7 +55,7 @@ void ScriptComponent::Unbind(sol::state& lua)
 void ScriptComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<ScriptComponent>("Script",
-		"update", &m_updatePtr
+		"update", &ScriptComponent::m_updateFunction
 	);
 }
 
