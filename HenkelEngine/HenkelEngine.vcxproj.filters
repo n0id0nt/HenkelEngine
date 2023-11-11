@@ -141,6 +141,9 @@
     <ClCompile Include="scr\ECS\EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\TimeHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\sprite.frag" />
@@ -420,6 +423,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\DebugGUIPanels\GUIPanels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\TimeHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

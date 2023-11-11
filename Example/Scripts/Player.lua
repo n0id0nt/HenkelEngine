@@ -1,30 +1,218 @@
-local speed = 80
-local groundAngle = 30
-local gravity = 200 
-local jumpSpeed = 60
+--------------------------------------------------------------
+--HELPER FUNCTIONS
+--------------------------------------------------------------
+function MoveTowards(currentValue, targetValue, speed)
+    local direction = targetValue - currentValue
+    local magnitude = math.abs(direction)
 
-Script:property("float", 10)
+    if magnitude > 0 then
+        local normalizedDirection = direction / magnitude
+        local newValue = currentValue + normalizedDirection * speed
+        return newValue
+    else
+        return currentValue
+    end
+end
+
+function Clamp(value, minValue, maxValue)
+    return math.max(minValue, math.min(value, maxValue))
+end
+
+--------------------------------------------------------------
+--INPUT
+--------------------------------------------------------------
+local horrizontalInput = 0
+local jumpInput = false
+local jumpInputUsed = true
+local lastJumpPress = 0
+
+function setHorizontalInput(value)
+    horizontalInput = value
+end
+
+function setJumpInput(value)
+    if value then
+        lastJumpPress = Time:getTime()
+        if value ~= jumpInput then
+            jumpInputUsed = false
+        end
+    end
+    jumpInput = value
+end
+
+--------------------------------------------------------------
+--MOVE
+--------------------------------------------------------------
+Script:property("accelerationTime", 0.5)
+Script:property("deccelerationTime", 0.3)
+Script:property("maxSpeed", 80)
+local horizontalSpeed = 0
+local curAcceleration = 0
+
+function move(deltaTime)
+    curAcceleration = horizontalSpeed / maxSpeed
+    local stillDeccelerating = horizontalInput * curAcceleration < 0
+    if horizontalInput ~= 0 and (not stillDeccelerating or accelerationTime < deccelerationTime) then
+        --acceleration
+        local deltaAcceleration = accelerationTime <= 0 and horizontalInput or (horizontalInput * deltaTime / accelerationTime)
+        curAcceleration = curAcceleration + deltaAcceleration
+        curAcceleration = Clamp(curAcceleration, -1, 1)
+    else
+        --decceleration
+        local deltaAcceleration = deccelerationTime <= 0 and 1 or (deltaTime / deccelerationTime)
+        curAcceleration = MoveTowards(curAcceleration, 0, deltaAcceleration)
+    end
+    horizontalSpeed = curAcceleration * maxSpeed
+end
+
+--------------------------------------------------------------
+--JUMP
+--------------------------------------------------------------
+Script:property("jumpDist", 16 * 3)
+Script:property("jumpHeight", 16 * 5)
+Script:property("jumpArcHeight", 16)
+Script:property("jumpArcDist", 16)
+Script:property("jumpFallDist", 16 * 2)
+Script:property("maxFallSpeed", 300)
+Script:property("bufferTime", 1000)
+Script:property("coyoteTime", 500)
+local isGrounded = false
+local verticalSpeed = 0
+local endJumpEarly = false
+local timeLeftGrounded  = 0
+local jumping = false
+local coyoteUsable = false
+
+function canUseCoyote()
+    return coyoteUsable and not isGrounded and (timeLeftGrounded + coyoteTime > Time:getTime()) and lastJumpPress == Time:getTime()
+end
+
+function hasBufferJump()
+    return isGrounded and (lastJumpPress + bufferTime > Time:getTime())
+end
+
+function jumpSpeed()
+    return (2 * jumpHeight * maxSpeed) / jumpDist
+end
+
+function jumpArcSpeed()
+    return (2 * jumpArcHeight * maxSpeed) / jumpArcDist
+end
+
+function jumpGravity()
+    return (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpDist, 2)
+end
+
+function jumpArcGravity()
+    return (2 * jumpArcHeight * math.pow(maxSpeed, 2)) / math.pow(jumpArcDist, 2)
+end
+
+function fallGravity()
+    return (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpFallDist, 2)
+end
+
+-- these are for animation controls
+local justJumped = false
+local justLanded = false
+local justInAir = false
+
+function calculateGravity(deltaTime)
+    local newIsGrounded = checkGrounded()
+    justLanded = false
+    justInAir = false
+    if isGrounded ~= newIsGrounded then
+        isGrounded = newIsGrounded
+        if isGrounded then
+            coyoteUsable = true
+            justLanded = true
+            jumping = false
+        else
+            timeLeftGrounded = Time:getTime()
+            if not jumping then
+                justInAir = true
+            end
+        end
+    end
+    if not isGrounded then
+        local deltaSpeed = (verticalSpeed < 0 and (endJumpEarly and jumpArcGravity() or jumpGravity()) or fallGravity()) * deltaTime
+        verticalSpeed = verticalSpeed + deltaSpeed
+
+        -- clamp speed
+        if verticalSpeed > maxFallSpeed then 
+            verticalSpeed = maxFallSpeed
+        end
+    end
+end
+
+function jump()
+    -- can jump if: grounded or within coyote threshold or sufficient jump buffer
+    if not jumpInputUsed and hasBufferJump() or canUseCoyote() then 
+        verticalSpeed = -jumpSpeed()
+        jumpInputUsed = true
+        endJumpEarly = false
+        coyoteUsable = false
+        justJumped = true
+        jumping = true
+    else
+        justJumped = false
+    end
+    -- end jump input once at jump arc
+    if verticalSpeed > -jumpArcSpeed() then
+        endJumpEarly = true
+    end
+    -- test to end jump early
+    if not isGrounded and not jumpInput and not endJumpEarly then
+        endJumpEarly = true
+        verticalSpeed = -jumpArcSpeed()
+    end
+end
+
+--------------------------------------------------------------
+--COLLISION
+--------------------------------------------------------------
+Script:property("groundCheckArea", 1)
+Script:property("groundLayer", 1)
+Script:property("groundAngle", 25)
+
+function checkGrounded()
+    return GO:getPhysicsBody():checkGrounded(groundAngle)
+end
+
+--------------------------------------------------------------
+--DASH
+--------------------------------------------------------------
+Script:property("dashSpeed", 1)
+
+local canDash = false
+local isDashing = false
+
+function dash()
+    canDash = false
+    horizontalSpeed = horrizontalInput * dashSpeed
+    verticalSpeed = 0
+end
+
+--------------------------------------------------------------
+--SCRIPT EVENTS
+--------------------------------------------------------------
 Script:property("string", "Test")
 Script:property("bool", false)
 
 Script.update = function(deltaTime)
-    local verticalSpeed = GO:getPhysicsBody():getVelocity().y;
-    --print("old speed ", verticalSpeed)
-	local horrizontalSpeed = 0;
 
-    local horrizontalDir = Input:getArrowDir().x
-    --print("input dir ", horrizontalDir)
-    local horrizontalSpeed = horrizontalDir * speed
+    setHorizontalInput(Input:getArrowDir().x)
+    setJumpInput(Input:isInputDown("Jump"))
 
-    local isGrounded = GO:getPhysicsBody():checkGrounded(groundAngle)
-    --print("grounded ", isGrounded)
-    if not isGrounded then 
-        verticalSpeed = verticalSpeed + gravity * deltaTime
-    end
+    local velocity = GO:getPhysicsBody():getVelocity();
+    horizontalSpeed = velocity.x
+    verticalSpeed = velocity.y
 
-    if Input:isInputDown("Jump") and isGrounded then 
-        print("Jump")
-        verticalSpeed = verticalSpeed - jumpSpeed
+    if dashing then
+        dash()
+    else
+        move(deltaTime)
+        calculateGravity(deltaTime)
+        jump()
     end
 
     if Input:isInputDown("Shoot") then 
@@ -32,5 +220,5 @@ Script.update = function(deltaTime)
         local potion = Scene:createTemplatedObject("Template/Potion.tx")
     end
 
-    GO:getPhysicsBody():setVelocity(vec2.new(horrizontalSpeed, verticalSpeed))
+    GO:getPhysicsBody():setVelocity(vec2.new(horizontalSpeed, verticalSpeed))
 end

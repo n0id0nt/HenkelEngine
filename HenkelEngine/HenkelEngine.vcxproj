@@ -184,6 +184,7 @@
     <ClCompile Include="scr\opengl\Texture.cpp" />
     <ClCompile Include="scr\Scene.cpp" />
     <ClCompile Include="scr\ECS\Component\TransformComponent.cpp" />
+    <ClCompile Include="scr\TimeHelper.cpp" />
     <ClCompile Include="scr\Window.cpp" />
     <ClCompile Include="scr\ECS\Component\RenderComponents\TileMapComponent.cpp" />
     <ClCompile Include="scr\Resourse\TileSheet.cpp" />
@@ -288,6 +289,7 @@
     <ClInclude Include="scr\Resourse\TileSheet.h" />
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h" />
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h" />
+    <ClInclude Include="scr\TimeHelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

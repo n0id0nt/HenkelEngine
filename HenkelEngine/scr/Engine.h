@@ -4,7 +4,7 @@
 #include "Window.h"
 #include <SDL.h>
 #include <string>
-
+#include "TimeHelper.h"
 #include "glm\glm.hpp"
 #include "Input.h"
 #include "ResourcePool.h"
@@ -30,6 +30,7 @@ public:
 	Window* GetWindow() const;
 	Scene* GetCurrentScene() const;
 	Input* GetInput() const;
+	Time* GetTime() const;
 	ResourcePool* GetResourcePool() const;
 
 	std::string GetProjectDirectory() const;
@@ -41,6 +42,7 @@ private:
 
 	std::unique_ptr<Window> m_window;
 	std::unique_ptr<Scene> m_scene;
+	std::unique_ptr<Time> m_time;
 
 	glm::vec4 m_clearColor;
 

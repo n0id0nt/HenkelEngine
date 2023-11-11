@@ -31,6 +31,7 @@ Scene::Scene(const std::string& fileDir, const std::string& levelFile)
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	m_scriptSystem.BindToLua(*(Engine::GetInstance()->GetInput()));
+	m_scriptSystem.BindToLua(*(Engine::GetInstance()->GetTime()));
 	m_scriptSystem.BindToLua(*this);
 
 	LoadScene(fileDir, levelFile);

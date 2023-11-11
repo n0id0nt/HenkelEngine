@@ -29,6 +29,7 @@ void Engine::InitEngine()
 	m_projectDirectory = "../Example/";
 
 	m_input = std::make_unique<Input>();
+	m_time = std::make_unique<Time>();
 
 	m_input->CreateBinding("Jump", SDLK_SPACE);
 	m_input->CreateBinding("Jump", SDLK_w);
@@ -105,6 +106,7 @@ void Engine::Loop()
 	while (m_window->IsRunning())
 	{
 		m_frameStart = SDL_GetTicks();
+		m_time->SetTime(m_frameStart);
 
 		m_input->Update();
 		if (m_input->WasWindowResized())
@@ -163,6 +165,11 @@ Scene* Engine::GetCurrentScene() const
 Input* Engine::GetInput() const
 {
 	return m_input.get();
+}
+
+Time* Engine::GetTime() const
+{
+	return m_time.get();
 }
 
 ResourcePool* Engine::GetResourcePool() const
