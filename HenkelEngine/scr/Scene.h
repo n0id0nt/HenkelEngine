@@ -28,7 +28,7 @@ public :
 
 	Entity* CreateEntity(const std::string& name);
 
-	void Update(float deltaTime);
+	void Update();
 	void Render();
 
 	Camera* GetCamera() const { return m_camera.get(); }

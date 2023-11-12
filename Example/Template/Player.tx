@@ -5,6 +5,7 @@
   <properties>
    <property name="Collider" propertytype="Collider" value="Dynamic"/>
    <property name="Script" type="file" value="../Scripts/Player.lua"/>
+   <property name="Script#maxSpeed" type="float" value="100"/>
   </properties>
  </object>
 </template>

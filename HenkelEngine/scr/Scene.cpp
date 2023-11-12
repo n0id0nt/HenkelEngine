@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include "base64.h"
 #include "HelperFunctions.h"
 #include "zlib.h"
@@ -171,6 +172,56 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		{
 			staticBody->SetPosition(objectPosition);
 		}
+
+		std::vector<ScriptProperty> scriptProperties;
+
+		for (auto& property : object.child("properties").children())
+		{
+			std::string propertyName = property.attribute("name").as_string();
+
+			// Define the regex pattern
+			std::regex pattern("#");
+
+			// Use regex_iterator to split the string
+			std::sregex_token_iterator iterator(propertyName.begin(), propertyName.end(), pattern, -1);
+			std::sregex_token_iterator end;
+
+			std::vector<std::string> splitPropertyName(iterator, end);
+
+			if (splitPropertyName[0] == "Script")
+			{
+				if (splitPropertyName.size() > 1)
+				{
+					std::string type = property.attribute("type").as_string();
+					sol::state& lua = m_scriptSystem.GetSolState();
+					if (type == "float")
+					{
+						lua["temp"] = property.attribute("value").as_float();
+					}
+					else if (type == "int")
+					{
+						lua["temp"] = property.attribute("value").as_int();
+					}
+					else if (type == "bool")
+					{
+						lua["temp"] = property.attribute("value").as_bool();
+					}
+					else if (type == "string" || type == "file")
+					{
+						lua["temp"] = property.attribute("value").as_string();
+					}
+					scriptProperties.push_back({ splitPropertyName[1], lua["temp"] });
+				}
+			}
+		}
+		auto* scriptComponent = gameObjectEntity->GetComponent<ScriptComponent>();
+		if (scriptComponent)
+		{
+			for (auto& scriptProperty : scriptProperties)
+			{
+				scriptComponent->SetScriptProperty(scriptProperty.name, scriptProperty.value);
+			}
+		}
 	}
 	else
 	{
@@ -196,15 +247,52 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		fixtureDef.friction = 0.f;
 		fixtureDef.density = 1.f;
 
+		std::vector<ScriptProperty> scriptProperties;
+
 		for (auto& property : object.child("properties").children())
 		{
 			std::string propertyName = property.attribute("name").as_string();
-			if (propertyName == "Script")
+
+			// Define the regex pattern
+			std::regex pattern("#");
+
+			// Use regex_iterator to split the string
+			std::sregex_token_iterator iterator(propertyName.begin(), propertyName.end(), pattern, -1);
+			std::sregex_token_iterator end;
+
+			std::vector<std::string> splitPropertyName(iterator, end);
+
+			if (splitPropertyName[0] == "Script")
 			{
-				std::string script = property.attribute("value").as_string();
-				gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script, m_scriptSystem.GetSolState(), gameObjectEntity);
+				if (splitPropertyName.size() > 1)
+				{
+					std::string type = property.attribute("type").as_string();
+					sol::state& lua = m_scriptSystem.GetSolState();
+					if (type == "float")
+					{
+						lua["temp"] = property.attribute("value").as_float();
+					}
+					else if (type == "int")
+					{
+						lua["temp"] = property.attribute("value").as_int();
+					}
+					else if (type == "bool")
+					{
+						lua["temp"] = property.attribute("value").as_bool();
+					}
+					else if (type == "string" || type == "file")
+					{
+						lua["temp"] = property.attribute("value").as_string();
+					}
+					scriptProperties.push_back({ splitPropertyName[1], lua["temp"] });
+				}
+				else
+				{
+					std::string script = property.attribute("value").as_string();
+					gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script, m_scriptSystem.GetSolState(), gameObjectEntity);
+				}
 			}
-			else if (propertyName == "Collider")
+			else if (splitPropertyName[0] == "Collider")
 			{
 				std::string value = property.attribute("value").as_string();
 				if (value == "Dynamic")
@@ -216,6 +304,14 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 					gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), fixtureDef, bodyDef);
 
 				}
+			}
+		}
+		auto* scriptComponent = gameObjectEntity->GetComponent<ScriptComponent>();
+		if (scriptComponent)
+		{
+			for (auto& scriptProperty : scriptProperties)
+			{
+				scriptComponent->SetScriptProperty(scriptProperty.name, scriptProperty.value);
 			}
 		}
 	}
@@ -234,11 +330,11 @@ Entity* Scene::CreateEntity(const std::string& name)
 	return m_entities.back().get();
 }
 
-void Scene::Update(float deltaTime)
+void Scene::Update()
 {
 	m_physicsSystem.Update(m_world.get());
 
-	m_scriptSystem.Update(deltaTime);
+	m_scriptSystem.Update();
 
 	m_camera->SetPosition({ x, y, 0.f });
 	m_camera->SetZoom(z);

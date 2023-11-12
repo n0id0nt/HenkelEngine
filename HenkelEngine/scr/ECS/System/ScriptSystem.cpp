@@ -22,7 +22,7 @@ void ScriptSystem::BindToLua(LUABindable& luaBindable)
 	luaBindable.LUABind(m_lua);
 }
 
-void ScriptSystem::Update(float deltaTime)
+void ScriptSystem::Update()
 {
 	{
 		auto view = m_registry->GetEntitiesWithComponent<ScriptComponent>();
@@ -30,7 +30,7 @@ void ScriptSystem::Update(float deltaTime)
 		{
 			auto* script = m_registry->GetComponent<ScriptComponent>(entity);
 			script->Bind(m_lua);
-			script->Update(deltaTime);
+			script->Update();
 			script->Unbind(m_lua);
 		}
 	}

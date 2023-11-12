@@ -13,7 +13,7 @@ public:
 
 	void BindToLua(LUABindable& luaBindable);
 
-	void Update(float deltaTime);
+	void Update();
 
 	sol::state& GetSolState();
 

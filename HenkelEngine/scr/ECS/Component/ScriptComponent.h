@@ -7,19 +7,26 @@
 #include "ECS\Entity\Entity.h"
 #include "ECS\Component\TransformComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
-#include <map>
+#include <vector>
+
+struct ScriptProperty
+{
+	std::string name;
+	sol::object value;
+};
 
 class ScriptComponent
 {
 public:
 	ScriptComponent(const std::string& script, sol::state& lua, Entity* entity);
 
-	void Update(float deltaTime);
+	void Update();
 
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);
 
 	void AddScriptProperty(const std::string& name, sol::object object);
+	void SetScriptProperty(const std::string& name, sol::object object);
 
 	void DrawDebugPanel();
 
@@ -27,13 +34,15 @@ public:
 
 private:
 	sol::protected_function m_update;
-	std::function<void(float)> m_updateFunction;
+	std::function<void()> m_updateFunction;
 
 	Entity* m_entity = nullptr;
 
 	sol::table m_this;
 
-	std::map<std::string, sol::object> m_properties;
+	std::vector<ScriptProperty> m_properties;
+
+	sol::state* m_lua;
 
 };
 

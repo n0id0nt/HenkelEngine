@@ -3,7 +3,7 @@
 #include "imgui.h"
 
 ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Entity* entity)
-	: m_this(), m_entity(entity), m_properties()
+	: m_this(), m_entity(entity), m_properties(), m_lua(&lua)
 {
 	lua.set("Script", this);
 	lua.script_file(script);
@@ -21,13 +21,13 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 	lua.set("Script", sol::nil);
 }
 
-void ScriptComponent::Update(float deltaTime)
+void ScriptComponent::Update()
 {
 	if (m_update.valid())
 	{
 		sol::protected_function updateScript = m_update;
 
-		sol::protected_function_result result = updateScript(deltaTime);
+		sol::protected_function_result result = updateScript();
 
 		// Check if the execution was successful
 		if (!result.valid()) {
@@ -48,7 +48,7 @@ void ScriptComponent::Bind(sol::state& lua)
 
 	for (auto& propertyPair : m_properties)
 	{
-		lua.set(propertyPair.first, propertyPair.second);
+		lua.set(propertyPair.name, propertyPair.value);
 	}
 }
 
@@ -60,14 +60,24 @@ void ScriptComponent::Unbind(sol::state& lua)
 
 	for (auto& propertyPair : m_properties)
 	{
-		propertyPair.second = lua[propertyPair.first];
-		lua.set(propertyPair.first, sol::nil);
+		propertyPair.value = lua[propertyPair.name];
+		lua.set(propertyPair.name, sol::nil);
 	}
 }
 
 void ScriptComponent::AddScriptProperty(const std::string& name, sol::object object)
 {
-	m_properties[name] = object;
+	m_properties.push_back({name, object});
+}
+
+void ScriptComponent::SetScriptProperty(const std::string& name, sol::object object)
+{
+	auto it = std::find_if(m_properties.begin(), m_properties.end(), [name](const ScriptProperty& scriptProperty) { return scriptProperty.name == name; });
+
+	// Check if the component was found
+	ASSERT(it != m_properties.end());
+	it->name = name;
+	it->value = object;
 }
 
 void ScriptComponent::DrawDebugPanel()
@@ -77,31 +87,37 @@ void ScriptComponent::DrawDebugPanel()
 
 	for (auto& propertyPair : m_properties)
 	{
-		switch (propertyPair.second.get_type())
+		switch (propertyPair.value.get_type())
 		{
 		case sol::type::number:
 		{
-			float value = propertyPair.second.as<float>();
-			ImGui::InputFloat(propertyPair.first.c_str(), &value);
+			float value = propertyPair.value.as<float>();
+			ImGui::InputFloat(propertyPair.name.c_str(), &value);
+			(*m_lua)["temp"] = value;
+			propertyPair.value = (*m_lua)["temp"];
 			break;
 		}
 		case sol::type::string:
 		{
-			std::string stringValue = propertyPair.second.as<std::string>();
+			std::string stringValue = propertyPair.value.as<std::string>();
 			// Copy the string to a char array
 			char inputBuffer[256];
 			strncpy_s(inputBuffer, stringValue.c_str(), sizeof(inputBuffer));
-			ImGui::InputText(propertyPair.first.c_str(), inputBuffer, sizeof(inputBuffer));
+			ImGui::InputText(propertyPair.name.c_str(), inputBuffer, sizeof(inputBuffer));
+			(*m_lua)["temp"] = stringValue;
+			propertyPair.value = (*m_lua)["temp"];
 			break;
 		}
 		case sol::type::boolean:
 		{
-			bool value = propertyPair.second.as<bool>();
-			ImGui::Checkbox(propertyPair.first.c_str(), &value);
+			bool value = propertyPair.value.as<bool>();
+			ImGui::Checkbox(propertyPair.name.c_str(), &value);
+			(*m_lua)["temp"] = value;
+			propertyPair.value = (*m_lua)["temp"];
 			break;
 		}
 		default:
-			ImGui::Text((propertyPair.first + std::string(" is not a supported data type")).c_str());
+			ImGui::Text((propertyPair.name + std::string(" is not a supported data type")).c_str());
 			break;
 		}
 	}

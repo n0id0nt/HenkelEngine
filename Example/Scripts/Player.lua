@@ -5,12 +5,12 @@ function MoveTowards(currentValue, targetValue, speed)
     local direction = targetValue - currentValue
     local magnitude = math.abs(direction)
 
-    if magnitude > 0 then
+    if magnitude > speed then
         local normalizedDirection = direction / magnitude
         local newValue = currentValue + normalizedDirection * speed
         return newValue
     else
-        return currentValue
+        return targetValue
     end
 end
 
@@ -43,23 +43,23 @@ end
 --------------------------------------------------------------
 --MOVE
 --------------------------------------------------------------
-Script:property("accelerationTime", 0.5)
-Script:property("deccelerationTime", 0.3)
+Script:property("accelerationTime", 0.3)
+Script:property("deccelerationTime", 0.2)
 Script:property("maxSpeed", 80)
 local horizontalSpeed = 0
 local curAcceleration = 0
 
-function move(deltaTime)
+function move()
     curAcceleration = horizontalSpeed / maxSpeed
     local stillDeccelerating = horizontalInput * curAcceleration < 0
     if horizontalInput ~= 0 and (not stillDeccelerating or accelerationTime < deccelerationTime) then
         --acceleration
-        local deltaAcceleration = accelerationTime <= 0 and horizontalInput or (horizontalInput * deltaTime / accelerationTime)
+        local deltaAcceleration = accelerationTime <= 0 and horizontalInput or (horizontalInput * Time:getDeltaTime() / accelerationTime)
         curAcceleration = curAcceleration + deltaAcceleration
         curAcceleration = Clamp(curAcceleration, -1, 1)
     else
         --decceleration
-        local deltaAcceleration = deccelerationTime <= 0 and 1 or (deltaTime / deccelerationTime)
+        local deltaAcceleration = deccelerationTime <= 0 and 1 or (Time:getDeltaTime() / deccelerationTime)
         curAcceleration = MoveTowards(curAcceleration, 0, deltaAcceleration)
     end
     horizontalSpeed = curAcceleration * maxSpeed
@@ -74,8 +74,8 @@ Script:property("jumpArcHeight", 16)
 Script:property("jumpArcDist", 16)
 Script:property("jumpFallDist", 16 * 2)
 Script:property("maxFallSpeed", 300)
-Script:property("bufferTime", 1000)
-Script:property("coyoteTime", 500)
+Script:property("bufferTime", 100)
+Script:property("coyoteTime", 100)
 local isGrounded = false
 local verticalSpeed = 0
 local endJumpEarly = false
@@ -116,7 +116,7 @@ local justJumped = false
 local justLanded = false
 local justInAir = false
 
-function calculateGravity(deltaTime)
+function calculateGravity()
     local newIsGrounded = checkGrounded()
     justLanded = false
     justInAir = false
@@ -134,7 +134,7 @@ function calculateGravity(deltaTime)
         end
     end
     if not isGrounded then
-        local deltaSpeed = (verticalSpeed < 0 and (endJumpEarly and jumpArcGravity() or jumpGravity()) or fallGravity()) * deltaTime
+        local deltaSpeed = (verticalSpeed < 0 and (endJumpEarly and jumpArcGravity() or jumpGravity()) or fallGravity()) * Time:getDeltaTime()
         verticalSpeed = verticalSpeed + deltaSpeed
 
         -- clamp speed
@@ -195,10 +195,7 @@ end
 --------------------------------------------------------------
 --SCRIPT EVENTS
 --------------------------------------------------------------
-Script:property("string", "Test")
-Script:property("bool", false)
-
-Script.update = function(deltaTime)
+Script.update = function()
 
     setHorizontalInput(Input:getArrowDir().x)
     setJumpInput(Input:isInputDown("Jump"))
@@ -210,8 +207,8 @@ Script.update = function(deltaTime)
     if dashing then
         dash()
     else
-        move(deltaTime)
-        calculateGravity(deltaTime)
+        move()
+        calculateGravity()
         jump()
     end
 

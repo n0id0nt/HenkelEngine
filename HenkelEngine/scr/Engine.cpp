@@ -102,7 +102,6 @@ void Engine::ExitEngine()
 
 void Engine::Loop()
 {
-	float deltaTime = 0.f;
 	while (m_window->IsRunning())
 	{
 		m_frameStart = SDL_GetTicks();
@@ -125,7 +124,7 @@ void Engine::Loop()
 		ImGui::NewFrame();
 
 		// Update
-		m_scene->Update(deltaTime);
+		m_scene->Update();
 
 		// Define the viewport dimensions
 		glViewport(0, 0, m_window->GetWidth(), m_window->GetHeight());
@@ -148,7 +147,7 @@ void Engine::Loop()
 		{
 			SDL_Delay(FRAME_DELAY - m_frameTime);
 		}
-		deltaTime = (SDL_GetTicks() - m_frameStart) / 1000.f;
+		m_time->SetDeltaTime((SDL_GetTicks() - m_frameStart) / 1000.f);
 	}
 }
 

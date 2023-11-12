@@ -10,11 +10,11 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "Player.tmx": {
-            "scale": 2.5590625,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 357.1620466479424,
-                "y": 218.0486017828795
+                "x": 181.66666666666663,
+                "y": 174.33333333333334
             }
         },
         "TestLevel.tmj": {
@@ -35,11 +35,11 @@
             "expandedGroupLayers": [
                 3
             ],
-            "scale": 1.5,
+            "scale": 5.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 240,
-                "y": 160
+                "x": 195.72727272727275,
+                "y": 88.09090909090908
             }
         },
         "TestTiles.tsj": {
@@ -66,7 +66,7 @@
         "TestLevel.tmx"
     ],
     "project": "TestGameForCustomEngine.tiled-project",
-    "property.type": "Collider",
+    "property.type": "float",
     "recentFiles": [
         "TestLevel.tmx",
         "Player.tmx",
