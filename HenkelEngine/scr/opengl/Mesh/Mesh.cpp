@@ -77,15 +77,15 @@ void Mesh::setQuadData(std::vector<GLuint>& indexes, unsigned int quadsCount)
     }
 }
 
-void Mesh::setQuadData(std::vector<Vertex>& vertices, const glm::vec2& pos, const glm::vec4& sourceRect)
+void Mesh::setQuadData(std::vector<Vertex>& vertices, const glm::vec2& pos, const glm::vec4& sourceRect, const bool& flipped)
 {
     std::vector<Vertex> _vertices =
     {
-        // Position             Color               Texture
-        {{pos.x - 0.5f, pos.y - 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.x, sourceRect.y}},
-        {{pos.x + 0.5f, pos.y - 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.z, sourceRect.y}},
-        {{pos.x - 0.5f, pos.y + 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.x, sourceRect.w}},
-        {{pos.x + 0.5f, pos.y + 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.z, sourceRect.w}},
+        // Position                           Color               Texture
+        {{pos.x + 0.5f * (flipped ? 1 : -1), pos.y - 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.x, sourceRect.y}},
+        {{pos.x + 0.5f * (flipped ? -1 : 1), pos.y - 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.z, sourceRect.y}},
+        {{pos.x + 0.5f * (flipped ? 1 : -1), pos.y + 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.x, sourceRect.w}},
+        {{pos.x + 0.5f * (flipped ? -1 : 1), pos.y + 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.z, sourceRect.w}},
     };
 
     vertices.clear();

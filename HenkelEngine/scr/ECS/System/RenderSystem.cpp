@@ -30,7 +30,7 @@ void RenderSystem::Update()
 
 		if (spriteComponent)
 		{
-			renderComponent->SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index));
+			renderComponent->SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index), spriteComponent->flipped);
 		}
 
 		glm::mat4 projection = Engine::GetInstance()->GetCurrentScene()->GetCamera()->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());

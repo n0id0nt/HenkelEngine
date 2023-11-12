@@ -2,6 +2,7 @@
 #include "ECS\Component\TransformComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
 #include "ECS/Component/ScriptComponent.h"
+#include "ECS/Component/RenderComponents/SpriteComponent.h"
 #include "HelperFunctions.h"
 #include "sol/sol.hpp"
 #include <opengl\openglHelper.h>
@@ -15,6 +16,7 @@ ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 	TransformComponent::LUABind(m_lua);
 	PhysicsBodyComponent::LUABind(m_lua);
 	ScriptComponent::LUABind(m_lua);
+	SpriteComponent::LUABind(m_lua);
 }
 
 void ScriptSystem::BindToLua(LUABindable& luaBindable)

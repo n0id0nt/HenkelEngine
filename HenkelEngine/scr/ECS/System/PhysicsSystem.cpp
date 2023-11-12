@@ -23,7 +23,9 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 		{
 			auto* staticBody = m_registry->GetComponent<StaticBodyComponent>(entity);
 			//auto staticBody = view.get<StaticBodyComponent>(entity);
-			DebugRenderer::DrawRectangle(glm::vec3{staticBody->GetPosition(), 0.f}, 16.f, 16.f, { 0.f, 0.5f, 0.8f });
+			glm::vec2 collisionShape = staticBody->GetCollisionShape();
+
+			DebugRenderer::DrawRectangle(glm::vec3{staticBody->GetPosition(), 0.f}, collisionShape.x, collisionShape.y, { 0.f, 0.5f, 0.8f });
 		}
 	}
 	{
@@ -46,8 +48,8 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 			auto* physicsBody = m_registry->GetComponent<PhysicsBodyComponent>(entity);
 			
 			transform->SetWorldPosition(physicsBody->GetPosition());
-			
-			DebugRenderer::DrawRectangle(glm::vec3{physicsBody->GetPosition(), 0.f}, 16.f, 16.f);
+			glm::vec2 collisionShape = physicsBody->GetCollisionShape();
+			DebugRenderer::DrawRectangle(glm::vec3{physicsBody->GetPosition(), 0.f}, collisionShape.x, collisionShape.y);
 		}
 	}
 }

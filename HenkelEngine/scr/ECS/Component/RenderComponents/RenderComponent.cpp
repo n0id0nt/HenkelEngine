@@ -55,10 +55,10 @@ void RenderComponent::AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPo
     m_Vertices.insert(m_Vertices.end(), vertices.begin(), vertices.end());
 }
 
-void RenderComponent::SetQuadUVs(const glm::vec4& rect)
+void RenderComponent::SetQuadUVs(const glm::vec4& rect, const bool& flipped)
 {
     ASSERT(!IsBatching()); // can't be batching because batch is cleared each draw call 
-    Mesh::setQuadData(m_Vertices, { 0.f, 0.f }, rect);
+    Mesh::setQuadData(m_Vertices, { 0.f, 0.f }, rect, flipped);
 }
 
 void RenderComponent::InitRenderData()

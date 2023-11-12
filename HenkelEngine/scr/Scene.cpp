@@ -232,20 +232,6 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		gameObjectEntity->CreateComponent<RenderComponent>(1u);
 		gameObjectEntity->CreateComponent<SpriteComponent>(tileSheet, object.attribute("gid").as_uint() - 1);
 		auto* transform = gameObjectEntity->CreateComponent<TransformComponent>(gameObjectEntity, objectPosition, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
-		
-
-		b2BodyDef bodyDef;
-		glm::vec2 position = transform->GetWorldPosition();
-		bodyDef.position = b2Vec2(position.x, position.y);
-		bodyDef.fixedRotation = true;
-		//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
-
-		b2FixtureDef fixtureDef;
-		b2PolygonShape shape;
-		shape.SetAsBox(object.attribute("width").as_float() / (2.f * m_world->GetPixelsPerMeter()), object.attribute("height").as_float() / (2.f * m_world->GetPixelsPerMeter()));
-		fixtureDef.shape = &shape;
-		fixtureDef.friction = 0.f;
-		fixtureDef.density = 1.f;
 
 		std::vector<ScriptProperty> scriptProperties;
 
@@ -297,12 +283,13 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 				std::string value = property.attribute("value").as_string();
 				if (value == "Dynamic")
 				{
-					gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), fixtureDef, bodyDef);
+					auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ object.attribute("width").as_float(), object.attribute("height").as_float() });
+					physicsBody->SetPosition(transform->GetWorldPosition());
 				}
 				else if (value == "Static")
 				{
-					gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), fixtureDef, bodyDef);
-
+					auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ object.attribute("width").as_float(), object.attribute("height").as_float() });
+					staticsBody->SetPosition(transform->GetWorldPosition());
 				}
 			}
 		}

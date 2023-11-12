@@ -2,10 +2,21 @@
 #include "opengl/openglHelper.h"
 #include <glm\gtx\vector_angle.hpp>
 
-PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef) : m_world(world)
+PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape) : m_world(world), m_collisionShape(collisionShape)
 {
+	b2BodyDef bodyDef;
+	bodyDef.fixedRotation = true;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position = b2Vec2(bodyDef.position.x / m_world->GetPixelsPerMeter(), bodyDef.position.y / m_world->GetPixelsPerMeter());
+	//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
+
+	b2FixtureDef fixtureDef;
+	b2PolygonShape shape;
+	shape.SetAsBox(collisionShape.x / (2.f * m_world->GetPixelsPerMeter()), collisionShape.y / (2.f * m_world->GetPixelsPerMeter()));
+	fixtureDef.shape = &shape;
+	fixtureDef.friction = 0.f;
+	fixtureDef.density = 1.f;
+
 
 	m_body = m_world->CreateBody(&bodyDef);
 	m_body->CreateFixture(&fixtureDef);
@@ -36,6 +47,11 @@ glm::vec2 PhysicsBodyComponent::GetPosition()
 void PhysicsBodyComponent::SetPosition(glm::vec2 pos)
 {
 	m_body->SetTransform(b2Vec2(pos.x / m_world->GetPixelsPerMeter(), pos.y / m_world->GetPixelsPerMeter()), 0.f);
+}
+
+glm::vec2 PhysicsBodyComponent::GetCollisionShape()
+{
+	return m_collisionShape;
 }
 
 bool PhysicsBodyComponent::CheckGrounded(float groundAngle)

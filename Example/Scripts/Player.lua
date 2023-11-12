@@ -198,6 +198,9 @@ end
 Script.update = function()
 
     setHorizontalInput(Input:getArrowDir().x)
+    if horizontalInput ~= 0 then
+        GO:getSprite().flipped = horizontalInput < 0
+    end
     setJumpInput(Input:isInputDown("Jump"))
 
     local velocity = GO:getPhysicsBody():getVelocity();

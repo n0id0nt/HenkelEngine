@@ -5,7 +5,8 @@
     },
     "activeFile": "TestLevel.tmx",
     "expandedProjectPaths": [
-        "."
+        ".",
+        "Template"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -13,8 +14,8 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 181.66666666666663,
-                "y": 174.33333333333334
+                "x": 197,
+                "y": 184
             }
         },
         "TestLevel.tmj": {
@@ -35,11 +36,15 @@
             "expandedGroupLayers": [
                 3
             ],
-            "scale": 5.5,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                6,
+                4
+            ],
+            "scale": 2,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 195.72727272727275,
-                "y": 88.09090909090908
+                "x": 153.25,
+                "y": 104
             }
         },
         "TestTiles.tsj": {
@@ -49,9 +54,13 @@
         "TestTiles.tsx": {
             "scaleInDock": 3,
             "scaleInEditor": 5.5
+        },
+        "adventurer-1.3-Sheet.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
-    "last.imagePath": "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/TiledBaseEngine/Tiles",
+    "last.imagePath": "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/HenkelEngine/HenkelEngine/Example/Tiles",
     "last.objectTemplatePath": "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/HenkelEngine/HenkelEngine/Example/Template",
     "map.fixedSize": true,
     "map.height": 20,
@@ -63,24 +72,26 @@
     "map.width": 15,
     "openFiles": [
         "Player.tmx",
-        "TestLevel.tmx"
+        "TestLevel.tmx",
+        "adventurer-1.3-Sheet.tsx"
     ],
     "project": "TestGameForCustomEngine.tiled-project",
     "property.type": "float",
     "recentFiles": [
-        "TestLevel.tmx",
         "Player.tmx",
+        "adventurer-1.3-Sheet.tsx",
+        "TestLevel.tmx",
         "TestTiles.tsj",
         "TestLevel.tmj",
         "TestTiles.tsx"
     ],
     "tileset.embedInMap": false,
-    "tileset.lastUsedFormat": "json",
+    "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 0,
     "tileset.spacing": 0,
     "tileset.tileSize": {
-        "height": 16,
-        "width": 16
+        "height": 50,
+        "width": 37
     },
     "tileset.transparentColor": "#ff00ff",
     "tileset.type": 0,
