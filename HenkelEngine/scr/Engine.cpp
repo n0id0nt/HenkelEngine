@@ -57,7 +57,7 @@ void Engine::InitEngine()
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	// Setup some OpenGL options
-	GLCall(glEnable(GL_DEPTH_TEST));
+	//GLCall(glEnable(GL_DEPTH_TEST));
 
 	// enable alpha support
 	GLCall(glEnable(GL_BLEND));
