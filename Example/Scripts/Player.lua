@@ -191,7 +191,38 @@ function dash()
     horizontalSpeed = horrizontalInput * dashSpeed
     verticalSpeed = 0
 end
+--------------------------------------------------------------
+--ANIMATION
+--------------------------------------------------------------
+local runAnimation = "Run"
+local dashAnimation = "Dash"
+local idleAnimation = "Idle"
+local jumpAnimation = "Jump"
+local upToFallAnimation = "UpToFall"
+local fallAnimation = "Fall"
 
+function controlAnimations()
+    if isGrounded then
+        if horizontalSpeed ~= 0 then
+            tryPlayAnimation(runAnimation)
+        else
+            tryPlayAnimation(idleAnimation)
+        end
+    else
+        if verticalSpeed < 0 then
+            tryPlayAnimation(jumpAnimation)
+        else
+            tryPlayAnimation(fallAnimation)
+        end
+    end
+end
+
+function tryPlayAnimation(animation)
+    local spriteAnimation = GO:getSpriteAnimation()
+    if spriteAnimation:getCurrentAnimation() ~= animation then
+        spriteAnimation:playAnimation(animation)
+    end
+end
 --------------------------------------------------------------
 --SCRIPT EVENTS
 --------------------------------------------------------------
@@ -221,4 +252,6 @@ Script.update = function()
     end
 
     GO:getPhysicsBody():setVelocity(vec2.new(horizontalSpeed, verticalSpeed))
+
+    controlAnimations()
 end

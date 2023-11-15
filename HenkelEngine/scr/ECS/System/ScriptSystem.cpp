@@ -7,6 +7,7 @@
 #include "sol/sol.hpp"
 #include <opengl\openglHelper.h>
 #include "ECS\Entity\Entity.h"
+#include <ECS\Component\SpriteAnimationComponent.h>
 
 ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 {
@@ -17,6 +18,7 @@ ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 	PhysicsBodyComponent::LUABind(m_lua);
 	ScriptComponent::LUABind(m_lua);
 	SpriteComponent::LUABind(m_lua);
+	SpriteAnimationComponent::LUABind(m_lua);
 }
 
 void ScriptSystem::BindToLua(LUABindable& luaBindable)

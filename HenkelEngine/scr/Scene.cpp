@@ -186,6 +186,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 
 	std::vector<ScriptProperty> scriptProperties;
 	std::unordered_map<std::string, SpriteAnimation> spriteAnimations;
+	std::string defaultAnimation;
 
 	for (auto& property : object.child("properties").children())
 	{
@@ -249,7 +250,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		{
 			unsigned int startFrame, endFrame;
 			float animationTime;
-			bool loop;
+			bool loop = false;
 			for (auto& animationProperty : property.child("properties").children())
 			{
 				std::string name = animationProperty.attribute("name").as_string();
@@ -274,6 +275,10 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 			SpriteAnimation spriteAnimation{ startFrame, endFrame, animationTime, loop };
 			spriteAnimations[splitPropertyName[1]] = spriteAnimation;
 		}
+		else if (splitPropertyName[0] == "DefaultAnimation")
+		{
+			defaultAnimation = property.attribute("value").as_string();
+		}
 	}
 	auto* scriptComponent = gameObjectEntity->GetComponent<ScriptComponent>();
 	if (scriptComponent)
@@ -285,7 +290,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 	}
 	if (spriteAnimations.size())
 	{
-		gameObjectEntity->CreateComponent<SpriteAnimationComponent>(spriteAnimations, spriteAnimations.begin()->first);
+		gameObjectEntity->CreateComponent<SpriteAnimationComponent>(spriteAnimations, !defaultAnimation.empty() ? defaultAnimation : spriteAnimations.begin()->first);
 	}
 
 	return gameObjectEntity;
@@ -324,13 +329,13 @@ void Scene::Render()
 
 	GUIPanel::EntityHierarchy::Panel(m_entities);
 
+	m_renderSystem.Update();
+
 	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
 
 	glm::mat4 projection = m_camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
-
-	m_renderSystem.Update();
 }
 
 void Scene::LUABind(sol::state& lua)

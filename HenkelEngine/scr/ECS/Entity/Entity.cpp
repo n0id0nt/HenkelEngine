@@ -2,6 +2,7 @@
 #include "ECS\Component\TransformComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
 #include "ECS/Component/RenderComponents/SpriteComponent.h"
+#include <ECS\Component\SpriteAnimationComponent.h>
 
 Entity::Entity(const std::string& name, Registry* registry)
 	: m_name(name), m_registry(registry), m_parent(nullptr), m_children()
@@ -75,6 +76,7 @@ void Entity::LUABind(sol::state& lua)
 	lua.new_usertype<Entity>("GO",
 		"getTransform", &Entity::GetComponent<TransformComponent>,
 		"getSprite", &Entity::GetComponent<SpriteComponent>,
+		"getSpriteAnimation", &Entity::GetComponent<SpriteAnimationComponent>,
 		"getPhysicsBody", &Entity::GetComponent<PhysicsBodyComponent>
 	);
 }

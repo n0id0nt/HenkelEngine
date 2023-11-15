@@ -11,9 +11,9 @@
     ],
     "propertyTypes": [
         {
-            "color": "#ffa40003",
+            "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 2,
+            "id": 3,
             "members": [
                 {
                     "name": "animationTime",

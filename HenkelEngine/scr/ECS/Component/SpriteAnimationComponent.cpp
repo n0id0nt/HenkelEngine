@@ -15,6 +15,18 @@ void SpriteAnimationComponent::PlayAnimation(std::string animation)
 	m_animationStartTime = Engine::GetInstance()->GetTime()->GetTime();
 }
 
+std::string SpriteAnimationComponent::GetCurrentAnimation()
+{
+	return m_curAnimation;
+}
+
+bool SpriteAnimationComponent::IsAnimationPlaying()
+{
+	SpriteAnimation curAnimation = m_animations[m_curAnimation];
+	float animationTime = Engine::GetInstance()->GetTime()->GetTime() - m_animationStartTime;
+	return curAnimation.loop || animationTime <= curAnimation.animationTime;
+}
+
 int SpriteAnimationComponent::GetCurrentFrame()
 {
 	float animationTime = Engine::GetInstance()->GetTime()->GetTime() - m_animationStartTime;
@@ -30,4 +42,13 @@ int SpriteAnimationComponent::GetCurrentFrame()
 
 	int frame = curAnimation.startFrame + (int)glm::floor((curAnimation.endFrame - curAnimation.startFrame) * animationTime / curAnimation.animationTime);
 	return frame;
+}
+
+void SpriteAnimationComponent::LUABind(sol::state& lua)
+{
+	lua.new_usertype<SpriteAnimationComponent>("spriteAnimation",
+		"playAnimation", &SpriteAnimationComponent::PlayAnimation,
+		"getCurrentAnimation", &SpriteAnimationComponent::GetCurrentAnimation,
+		"isAnimationPlaying", &SpriteAnimationComponent::IsAnimationPlaying
+	);
 }
