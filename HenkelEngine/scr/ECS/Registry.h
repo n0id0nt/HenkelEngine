@@ -103,8 +103,9 @@ public:
     template <typename... ComponentTypes>
     std::vector<EntityId> GetEntitiesWithComponents()
     {
-        std::vector<EntityId> matchingEntities;
+        std::vector<EntityId> matchingEntities; 
 
+        // TODO Get get all entities with the first component and check all the entities in the list share the same component
         for (auto& entityId : m_entities)
         {
 			bool hasAllComponents = (HasComponent<ComponentTypes>(entityId) && ...);

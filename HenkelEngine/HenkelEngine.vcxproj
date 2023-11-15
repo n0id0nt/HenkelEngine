@@ -190,6 +190,7 @@
     <ClCompile Include="scr\Resourse\TileSheet.cpp" />
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.cpp" />
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp" />
+    <ClCompile Include="scr\ECS\Component\SpriteAnimationComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\debug.frag" />
@@ -290,6 +291,7 @@
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h" />
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h" />
     <ClInclude Include="scr\TimeHelper.h" />
+    <ClInclude Include="scr\ECS\Component\SpriteAnimationComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

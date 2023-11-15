@@ -76,7 +76,7 @@
         "adventurer-1.3-Sheet.tsx"
     ],
     "project": "TestGameForCustomEngine.tiled-project",
-    "property.type": "float",
+    "property.type": "Animation",
     "recentFiles": [
         "Player.tmx",
         "adventurer-1.3-Sheet.tsx",

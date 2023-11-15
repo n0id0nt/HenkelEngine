@@ -14,6 +14,7 @@
 #include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 #include "ECS\Component\ScriptComponent.h"
+#include "ECS\Component\SpriteAnimationComponent.h"
 #include <imgui.h>
 #include <ECS\Component\TransformComponent.h>
 #include "DebugGUIPanels\GUIPanels.h"
@@ -26,8 +27,7 @@ const int positionIterations = 2;
 
 
 Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
-	: m_name("Scene"), 
-	m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_entities()
+	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_entities()
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -183,7 +183,9 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		gameObjectEntity->CreateComponent<SpriteComponent>(tileSheet, object.attribute("gid").as_uint() - 1);
 		gameObjectEntity->CreateComponent<TransformComponent>(gameObjectEntity, objectPosition, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
 	}
+
 	std::vector<ScriptProperty> scriptProperties;
+	std::unordered_map<std::string, SpriteAnimation> spriteAnimations;
 
 	for (auto& property : object.child("properties").children())
 	{
@@ -243,6 +245,35 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 				staticsBody->SetPosition(transform->GetWorldPosition());
 			}
 		}
+		else if (splitPropertyName[0] == "Animation")
+		{
+			unsigned int startFrame, endFrame;
+			float animationTime;
+			bool loop;
+			for (auto& animationProperty : property.child("properties").children())
+			{
+				std::string name = animationProperty.attribute("name").as_string();
+				if (name == "startFrame")
+				{
+					startFrame = animationProperty.attribute("value").as_int();
+				}
+				else if (name == "endFrame")
+				{
+					endFrame = animationProperty.attribute("value").as_int();
+				}
+				else if (name == "loop")
+				{
+					loop = animationProperty.attribute("value").as_bool();
+				}
+				else if (name == "animationTime")
+				{
+					animationTime = animationProperty.attribute("value").as_float();
+				}
+			}
+			// TODO check ll value are valid from the file
+			SpriteAnimation spriteAnimation{ startFrame, endFrame, animationTime, loop };
+			spriteAnimations[splitPropertyName[1]] = spriteAnimation;
+		}
 	}
 	auto* scriptComponent = gameObjectEntity->GetComponent<ScriptComponent>();
 	if (scriptComponent)
@@ -251,6 +282,10 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		{
 			scriptComponent->SetScriptProperty(scriptProperty.name, scriptProperty.value);
 		}
+	}
+	if (spriteAnimations.size())
+	{
+		gameObjectEntity->CreateComponent<SpriteAnimationComponent>(spriteAnimations, spriteAnimations.begin()->first);
 	}
 
 	return gameObjectEntity;
@@ -272,6 +307,8 @@ void Scene::Update()
 	m_physicsSystem.Update(m_world.get());
 
 	m_scriptSystem.Update();
+
+	m_animationSystem.Update();
 
 	m_camera->SetPosition({ x, y, 0.f });
 	m_camera->SetZoom(z);

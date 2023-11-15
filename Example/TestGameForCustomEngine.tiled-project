@@ -11,6 +11,46 @@
     ],
     "propertyTypes": [
         {
+            "color": "#ffa40003",
+            "drawFill": true,
+            "id": 2,
+            "members": [
+                {
+                    "name": "animationTime",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "endFrame",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "loop",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "startFrame",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "Animation",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "id": 1,
             "name": "Collider",
             "storageType": "string",

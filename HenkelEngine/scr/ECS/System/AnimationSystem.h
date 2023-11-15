@@ -5,17 +5,12 @@
 class AnimationSystem
 {
 public:
-	AnimationSystem(Registry* registry) : m_registry(registry)
-	{
-	}
+	AnimationSystem(Registry* registry);
 
-	void Update()
-	{
-
-	}
+	void Update();
 
 private:
 
-	Registry* m_registry;
+	Registry* m_registry = nullptr;
 };
 
