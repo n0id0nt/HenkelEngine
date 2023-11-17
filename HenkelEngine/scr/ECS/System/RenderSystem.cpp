@@ -5,6 +5,7 @@
 #include "ECS/Component/TransformComponent.h"
 #include "Engine.h"
 #include "Scene.h"
+#include "glm\glm.hpp"
 
 void RenderSystem::Update()
 {
@@ -19,6 +20,10 @@ void RenderSystem::Update()
 
 		ASSERT(tilemapComponent || spriteComponent);
 
+		glm::mat4 projection = Engine::GetInstance()->GetCurrentScene()->GetCamera()->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
+		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();
+		glm::mat4 model = transformComponent->GetWorldMatrix();
+
 		if (tilemapComponent)
 		{
 			auto tileVertices = tilemapComponent->GetTileVertices();
@@ -31,11 +36,9 @@ void RenderSystem::Update()
 		if (spriteComponent)
 		{
 			renderComponent->SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index), spriteComponent->flipped);
+			model = glm::translate(glm::mat4(1.f), glm::vec3{spriteComponent->xOffset* (spriteComponent->flipped ? -1.f : 1.f), spriteComponent->yOffset, 0.f})* model;
 		}
 
-		glm::mat4 projection = Engine::GetInstance()->GetCurrentScene()->GetCamera()->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
-		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();
-		glm::mat4 model = transformComponent->GetWorldMatrix();
 		materialComponent->Bind(model, view, projection);
 		renderComponent->Render();
 		materialComponent->Unbind();

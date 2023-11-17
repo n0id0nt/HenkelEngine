@@ -146,7 +146,7 @@ end
 
 function jump()
     -- can jump if: grounded or within coyote threshold or sufficient jump buffer
-    if not jumpInputUsed and hasBufferJump() or canUseCoyote() then 
+    if not jumpInputUsed and (hasBufferJump() or canUseCoyote()) then 
         verticalSpeed = -jumpSpeed()
         jumpInputUsed = true
         endJumpEarly = false

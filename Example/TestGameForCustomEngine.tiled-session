@@ -75,7 +75,7 @@
         "adventurer-1.3-Sheet.tsx"
     ],
     "project": "TestGameForCustomEngine.tiled-project",
-    "property.type": "string",
+    "property.type": "ColliderType",
     "recentFiles": [
         "TestLevel.tmx",
         "adventurer-1.3-Sheet.tsx",

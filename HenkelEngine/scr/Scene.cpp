@@ -187,6 +187,9 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 	std::vector<ScriptProperty> scriptProperties;
 	std::unordered_map<std::string, SpriteAnimation> spriteAnimations;
 	std::string defaultAnimation;
+	std::string colliderType;
+	float colliderWidth = 0.f;
+	float colliderHeight = 0.f;
 
 	for (auto& property : object.child("properties").children())
 	{
@@ -231,20 +234,10 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 				gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script, m_scriptSystem.GetSolState(), gameObjectEntity);
 			}
 		}
-		else if (splitPropertyName[0] == "Collider")
+		else if (splitPropertyName[0] == "ColliderType")
 		{
-			std::string value = property.attribute("value").as_string();
-			auto* transform = gameObjectEntity->GetComponent<TransformComponent>();
-			if (value == "Dynamic")
-			{
-				auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ object.attribute("width").as_float(), object.attribute("height").as_float() });
-				physicsBody->SetPosition(transform->GetWorldPosition());
-			}
-			else if (value == "Static")
-			{
-				auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ object.attribute("width").as_float(), object.attribute("height").as_float() });
-				staticsBody->SetPosition(transform->GetWorldPosition());
-			}
+			colliderType = property.attribute("value").as_string();
+			ASSERT(colliderType == "Dynamic" || colliderType == "Static");
 		}
 		else if (splitPropertyName[0] == "Animation")
 		{
@@ -279,6 +272,38 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		{
 			defaultAnimation = property.attribute("value").as_string();
 		}
+		else if (splitPropertyName[0] == "Sprite")
+		{
+			auto* sprite = gameObjectEntity->GetComponent<SpriteComponent>();
+			if (!sprite) continue;
+			for (auto& spriteProperty : property.child("properties").children())
+			{
+				std::string name = spriteProperty.attribute("name").as_string();
+				if (name == "XOffset")
+				{
+					sprite->xOffset = spriteProperty.attribute("value").as_float();
+				}
+				else if(name == "YOffset")
+				{
+					sprite->yOffset = spriteProperty.attribute("value").as_float();
+				}
+			}
+		}
+		else if (splitPropertyName[0] == "Collider")
+		{
+			for (auto& colliderProperty : property.child("properties").children())
+			{
+				std::string name = colliderProperty.attribute("name").as_string();
+				if (name == "Width")
+				{
+					colliderWidth = colliderProperty.attribute("value").as_float();
+				}
+				else if(name == "Height")
+				{
+					colliderHeight = colliderProperty.attribute("value").as_float();
+				}
+			}
+		}
 	}
 	auto* scriptComponent = gameObjectEntity->GetComponent<ScriptComponent>();
 	if (scriptComponent)
@@ -291,6 +316,22 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 	if (spriteAnimations.size())
 	{
 		gameObjectEntity->CreateComponent<SpriteAnimationComponent>(spriteAnimations, !defaultAnimation.empty() ? defaultAnimation : spriteAnimations.begin()->first);
+	}
+	if (colliderType != "")
+	{
+		auto* transform = gameObjectEntity->GetComponent<TransformComponent>();
+		float width = colliderWidth ? colliderWidth : object.attribute("width").as_float();
+		float height = colliderHeight ? colliderHeight : object.attribute("height").as_float();
+		if (colliderType == "Dynamic")
+		{
+			auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ width, height });
+			physicsBody->SetPosition(transform->GetWorldPosition());
+		}
+		else if (colliderType == "Static")
+		{
+			auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ width, height });
+			staticsBody->SetPosition(transform->GetWorldPosition());
+		}
 	}
 
 	return gameObjectEntity;

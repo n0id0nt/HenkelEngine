@@ -52,7 +52,7 @@
         },
         {
             "id": 1,
-            "name": "Collider",
+            "name": "ColliderType",
             "storageType": "string",
             "type": "enum",
             "values": [
@@ -60,6 +60,60 @@
                 "Dynamic"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "XOffset",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "YOffset",
+                    "type": "float",
+                    "value": 0
+                }
+            ],
+            "name": "Sprite",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
+                "project"
+            ]
+        },
+        {
+            "color": "#ff43a425",
+            "drawFill": true,
+            "id": 6,
+            "members": [
+                {
+                    "name": "Height",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "Width",
+                    "type": "float",
+                    "value": 0
+                }
+            ],
+            "name": "RectangleCollider",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
         }
     ]
 }

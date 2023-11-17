@@ -5,8 +5,10 @@
 
 struct SpriteComponent
 {
-	SpriteComponent(TileSheet tileSheet, unsigned int index) : tileSheet(tileSheet), index(index), flipped(false) {}
+	SpriteComponent(TileSheet tileSheet, unsigned int index, float xOffset = 0.f, float yOffset = 0.f) 
+		: tileSheet(tileSheet), index(index), flipped(false), xOffset(xOffset), yOffset(yOffset) {}
 
+	float xOffset, yOffset;
 	TileSheet tileSheet;
 	unsigned int index;
 	bool flipped;

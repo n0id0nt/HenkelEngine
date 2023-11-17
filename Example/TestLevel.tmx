@@ -22,7 +22,7 @@
  <objectgroup id="4" name="Item" offsetx="-186.645" offsety="-16.0269">
   <object id="4" name="Wand" gid="3" x="434" y="215.394" width="16" height="16">
    <properties>
-    <property name="Collider" propertytype="Collider" value="Static"/>
+    <property name="ColliderType" propertytype="ColliderType" value="Static"/>
    </properties>
   </object>
   <object id="5" gid="6" x="460" y="221.636" width="16" height="16"/>
