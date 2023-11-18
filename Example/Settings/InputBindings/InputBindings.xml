@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inputs>
+    <input name="Jump" type="button">
+        <bindings>
+            <binding type="keycode" value="space"/>
+            <binding type="keycode" value="w"/>
+            <binding type="keycode" value="up"/>
+        </bindings>
+    </input>
+    <input name="Shoot" type="button">
+        <bindings>
+            <binding type="keycode" value="lshift"/>
+            <binding type="keycode" value="rshift"/>
+        </bindings>
+    </input>
+</inputs>

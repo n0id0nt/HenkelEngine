@@ -28,6 +28,8 @@ public:
 
 	glm::vec2 GetArrowDir();
 
+	void LoadInputBindings(const std::string& fileDir, const std::string& levelFile);
+
 	/// Handling Mouse Events
 	void onMouseButtonDown(SDL_Event& event);
 	void onMouseMove(SDL_Event& event);
@@ -38,9 +40,14 @@ public:
 	///Handling Keyboard Events
 	void onKeyDown(SDL_Event& event);
 	void onKeyUp(SDL_Event& event);
+
 	bool isKeyDown(SDL_Keycode key);
 	bool isKeyJustPressed(SDL_Keycode key);
 	bool isKeyJustReleased(SDL_Keycode key);
+
+	bool isStringKeyDown(const std::string& input);
+	bool isStringKeyJustPressed(const std::string& input);
+	bool isStringKeyJustReleased(const std::string& input);
 
 	//Handling Window Events
 	bool Quit() const;
@@ -58,6 +65,8 @@ public:
 	bool isInputJustPressed(const std::string& input);
 	bool isInputJustReleased(const std::string& input);
 
+	SDL_Keycode GetKeycodeFromString(const std::string& input);
+
 	void LUABind(sol::state& lua) override;
 
 private:
@@ -72,5 +81,6 @@ private:
 	bool m_windowResized;
 
 	std::unordered_map<std::string, std::set<SDL_Keycode>> m_bindings;
+	static std::unordered_map<std::string, SDL_Keycode> s_keycodeMap;
 };
 

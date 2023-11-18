@@ -31,11 +31,12 @@ void Engine::InitEngine()
 	m_input = std::make_unique<Input>();
 	m_time = std::make_unique<Time>();
 
-	m_input->CreateBinding("Jump", SDLK_SPACE);
-	m_input->CreateBinding("Jump", SDLK_w);
-	m_input->CreateBinding("Jump", SDLK_UP);
-	m_input->CreateBinding("Shoot", SDLK_LSHIFT);
-	m_input->CreateBinding("Shoot", SDLK_RSHIFT);
+	m_input->LoadInputBindings(m_projectDirectory, "Settings/InputBindings/InputBindings.xml");
+	//m_input->CreateBinding("Jump", SDLK_SPACE);
+	//m_input->CreateBinding("Jump", SDLK_w);
+	//m_input->CreateBinding("Jump", SDLK_UP);
+	//m_input->CreateBinding("Shoot", SDLK_LSHIFT);
+	//m_input->CreateBinding("Shoot", SDLK_RSHIFT);
 
 	m_resourcePool = std::make_unique<ResourcePool>();
 	SDL_Init(SDL_INIT_EVERYTHING);
