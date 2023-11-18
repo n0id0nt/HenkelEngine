@@ -11,6 +11,36 @@
 
 class Window;
 
+typedef std::set<SDL_Keycode> Binding;
+
+struct AxisBinding
+{
+	Binding positive;
+	Binding negetive;
+};
+
+enum Axis
+{
+	positive,
+	negetive
+};
+
+struct Axis2Binding
+{
+	Binding up;
+	Binding down;
+	Binding left;
+	Binding right;
+};
+
+enum Axis2
+{
+	up,
+	down,
+	left,
+	right
+};
+
 class Input : public LUABindable
 {
 public:
@@ -25,8 +55,6 @@ public:
 	~Input();
 
 	void Update();
-
-	glm::vec2 GetArrowDir();
 
 	void LoadInputBindings(const std::string& fileDir, const std::string& levelFile);
 
@@ -58,12 +86,18 @@ public:
 	glm::vec2 WindowSize() const;
 
 	void LoadInputBindings(const std::string& file);
-	void CreateBinding(const std::string& input, SDL_Keycode code);
+	void CreateButtonBinding(const std::string& input, SDL_Keycode code);
+	void CreateVairableBinding(const std::string& input, SDL_Keycode code);
+	void CreateAxisBinding(const std::string& input, SDL_Keycode code, Axis axis);
+	void CreateAxis2Binding(const std::string& input, SDL_Keycode code, Axis2 axis);
 	
 	///Handling Binded Events
 	bool isInputDown(const std::string& input);
 	bool isInputJustPressed(const std::string& input);
 	bool isInputJustReleased(const std::string& input);
+	float getInputVariable(const std::string& input);
+	float getInputAxis(const std::string& input);
+	glm::vec2 getInputAxis2(const std::string& input);
 
 	SDL_Keycode GetKeycodeFromString(const std::string& input);
 
@@ -80,7 +114,10 @@ private:
 	glm::vec2 m_windowSize;
 	bool m_windowResized;
 
-	std::unordered_map<std::string, std::set<SDL_Keycode>> m_bindings;
+	std::unordered_map<std::string, Binding> m_buttonBindings;
+	std::unordered_map<std::string, Binding> m_variableBindings;
+	std::unordered_map<std::string, AxisBinding> m_axisBindings;
+	std::unordered_map<std::string, Axis2Binding> m_axis2Bindings;
 	static std::unordered_map<std::string, SDL_Keycode> s_keycodeMap;
 };
 

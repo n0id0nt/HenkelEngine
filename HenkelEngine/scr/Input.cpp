@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "pugixml.hpp"
 #include <opengl\openglHelper.h>
+#include <iostream>
 
 std::unordered_map<std::string, SDL_Keycode> Input::s_keycodeMap = {
     {"return",              SDLK_RETURN},
@@ -247,7 +248,9 @@ std::unordered_map<std::string, SDL_Keycode> Input::s_keycodeMap = {
 };
 
 Input::Input() 
-    : m_mouseButtonStates{ false, false, false }, m_mousePosition(0, 0), m_keysDown{}, m_keysPressed{}, m_keysReleased{}, m_windowSize{0u,0u}, m_windowResized(false), m_quit(false), m_bindings()
+    : m_mouseButtonStates{ false, false, false }, m_mousePosition(0, 0), m_keysDown{}, m_keysPressed{}, m_keysReleased{}, 
+    m_windowSize{0u,0u}, m_windowResized(false), m_quit(false), 
+    m_buttonBindings(), m_variableBindings(), m_axisBindings(), m_axis2Bindings()
 {
 }
 
@@ -295,13 +298,6 @@ void Input::Update()
     }
 }
 
-glm::vec2 Input::GetArrowDir()
-{
-    int x = isKeyDown(SDLK_RIGHT) - isKeyDown(SDLK_LEFT);
-    int y = isKeyDown(SDLK_UP) - isKeyDown(SDLK_DOWN);
-    return glm::vec2(x, y);
-}
-
 void Input::LoadInputBindings(const std::string& fileDir, const std::string& levelFile)
 {
     pugi::xml_document doc;
@@ -320,9 +316,91 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 std::string value(binding.attribute("value").as_string());
                 if (bindingType == "keycode")
                 {
-                    CreateBinding(name, GetKeycodeFromString(value));
+                    CreateButtonBinding(name, GetKeycodeFromString(value));
+                }
+                else
+                {
+                    std::cout << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    ASSERT(false);
                 }
             }
+        }
+        else if (inputType == "variable")
+        {
+            for (auto& binding : input.child("bindings").children())
+            {
+                std::string bindingType(binding.attribute("type").as_string());
+                std::string value(binding.attribute("value").as_string());
+                if (bindingType == "keycode")
+                {
+                    CreateVairableBinding(name, GetKeycodeFromString(value));
+                }
+                else
+                {
+                    std::cout << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    ASSERT(false);
+                }
+            }
+        }
+        else if (inputType == "axis")
+        {
+            for (auto& binding : input.child("bindings").children())
+            {
+                std::string bindingType(binding.attribute("type").as_string());
+                std::string value(binding.attribute("value").as_string());
+                std::string component(binding.attribute("component").as_string());
+                if (bindingType == "keycode")
+                {
+                    Axis axis;
+                    if (component == "positive")
+                        axis = Axis::positive;
+                    else if (component == "negetive")
+                        axis = Axis::negetive;
+                    else
+                        ASSERT(false);
+                    CreateAxisBinding(name, GetKeycodeFromString(value), axis);
+                }
+                else
+                {
+                    std::cout << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    ASSERT(false);
+                }
+            }
+        }
+        else if (inputType == "axis2")
+        {
+            for (auto& binding : input.child("bindings").children())
+            {
+                std::string bindingType(binding.attribute("type").as_string());
+                std::string value(binding.attribute("value").as_string());
+                std::string component(binding.attribute("component").as_string());
+
+                if (bindingType == "keycode")
+                {
+                    Axis2 axis;
+                    if (component == "up")
+                        axis = Axis2::up;
+                    else if (component == "down")
+                        axis = Axis2::down;
+                    else if (component == "left")
+                        axis = Axis2::left;
+                    else if (component == "right")
+                        axis = Axis2::right;
+                    else
+                        ASSERT(false);
+                    CreateAxis2Binding(name, GetKeycodeFromString(value), axis);
+                }
+                else
+                {
+                    std::cout << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    ASSERT(false);
+                }
+            }
+        }
+        else
+        {
+            std::cout << "ERROR: " << inputType << " is not a valid input type." << std::endl;
+            ASSERT(false);
         }
     }
 }
@@ -417,19 +495,87 @@ void Input::LoadInputBindings(const std::string& file)
     ASSERT(result);
 }
 
-void Input::CreateBinding(const std::string& input, SDL_Keycode code)
+void Input::CreateButtonBinding(const std::string& input, SDL_Keycode code)
 {
-    auto it = m_bindings.find(input);
-    if (it == m_bindings.end())
-        m_bindings[input] = std::set{ code };
+    auto it = m_buttonBindings.find(input);
+    if (it == m_buttonBindings.end())
+        m_buttonBindings[input] = std::set{ code };
     else
-        m_bindings[input].insert(code);
+        m_buttonBindings[input].insert(code);
+}
+
+void Input::CreateVairableBinding(const std::string& input, SDL_Keycode code)
+{
+    auto it = m_variableBindings.find(input);
+    if (it == m_variableBindings.end())
+        m_variableBindings[input] = std::set{ code };
+    else
+        m_variableBindings[input].insert(code);
+}
+
+void Input::CreateAxisBinding(const std::string& input, SDL_Keycode code, Axis axis)
+{
+    auto it = m_axisBindings.find(input);
+    bool hasBinding = it == m_axisBindings.end();
+    switch (axis)
+    {
+    case Axis::positive:
+        if (hasBinding)
+            m_axisBindings[input].positive = std::set{ code };
+        else
+            m_axisBindings[input].positive.insert(code);    
+        break;
+    case Axis::negetive:
+        if (hasBinding)
+            m_axisBindings[input].negetive = std::set{ code };
+        else
+            m_axisBindings[input].positive.insert(code);
+        break;
+    default:
+        ASSERT(false);
+    }
+}
+
+void Input::CreateAxis2Binding(const std::string& input, SDL_Keycode code, Axis2 axis)
+{
+    auto it = m_axis2Bindings.find(input);
+    bool hasBinding = it == m_axis2Bindings.end();
+    switch (axis)
+    {
+    case Axis2::up:
+        if (hasBinding)
+            m_axis2Bindings[input].up = std::set{ code };
+        else
+            m_axis2Bindings[input].up.insert(code);
+        break;
+    case Axis2::down:
+        if (hasBinding)
+            m_axis2Bindings[input].down = std::set{ code };
+        else
+            m_axis2Bindings[input].down.insert(code);
+        break;
+    case Axis2::left:
+        if (hasBinding)
+            m_axis2Bindings[input].left = std::set{ code };
+        else
+            m_axis2Bindings[input].left.insert(code);
+        break;
+    case Axis2::right:
+        if (hasBinding)
+            m_axis2Bindings[input].right = std::set{ code };
+        else
+            m_axis2Bindings[input].right.insert(code);
+        break;
+    default:
+        ASSERT(false);
+    }
 }
 
 bool Input::isInputDown(const std::string& input)
 {
-    auto& keys = m_bindings[input];
-    for (auto it = keys.begin(); it != keys.end(); ++it)
+    auto keys = m_buttonBindings.find(input);
+    ASSERT(keys != m_buttonBindings.end());
+    for (auto it = keys->second.begin(); it != keys->second.end(); ++it)
     {
         if (isKeyDown(*it))
             return true;
@@ -439,8 +585,9 @@ bool Input::isInputDown(const std::string& input)
 
 bool Input::isInputJustPressed(const std::string& input)
 {
-    auto& keys = m_bindings[input];
-    for (auto it = keys.begin(); it != keys.end(); ++it)
+    auto keys = m_buttonBindings.find(input);
+    ASSERT(keys != m_buttonBindings.end());
+    for (auto it = keys->second.begin(); it != keys->second.end(); ++it)
     {
         if (isKeyJustPressed(*it))
             return true;
@@ -450,13 +597,84 @@ bool Input::isInputJustPressed(const std::string& input)
 
 bool Input::isInputJustReleased(const std::string& input)
 {
-    auto& keys = m_bindings[input];
-    for (auto it = keys.begin(); it != keys.end(); ++it)
+    auto keys = m_buttonBindings.find(input);
+    ASSERT(keys != m_buttonBindings.end());
+    for (auto it = keys->second.begin(); it != keys->second.end(); ++it)
     {
         if (isKeyJustReleased(*it))
             return true;
     }
     return false;
+}
+
+float Input::getInputVariable(const std::string& input)
+{
+    auto keys = m_variableBindings.find(input);
+    ASSERT(keys != m_variableBindings.end());
+    for (auto it = keys->second.begin(); it != keys->second.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            return 1.f;
+    }
+    return 0.f;
+}
+
+float Input::getInputAxis(const std::string& input)
+{
+    auto keys = m_axisBindings.find(input);
+    ASSERT(keys != m_axisBindings.end());
+
+    float positive = 0.f;
+    for (auto it = keys->second.positive.begin(); it != keys->second.positive.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            positive = 1.f;
+    }
+
+    float negetive = 0.f;
+    for (auto it = keys->second.negetive.begin(); it != keys->second.negetive.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            negetive = 1.f;
+    }
+
+    return positive - negetive;
+}
+
+glm::vec2 Input::getInputAxis2(const std::string& input)
+{
+    auto keys = m_axis2Bindings.find(input);
+    ASSERT(keys != m_axis2Bindings.end());
+
+    float up = 0.f;
+    for (auto it = keys->second.up.begin(); it != keys->second.up.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            up = 1.f;
+    }
+
+    float down = 0.f;
+    for (auto it = keys->second.down.begin(); it != keys->second.down.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            down = 1.f;
+    }
+    
+    float left = 0.f;
+    for (auto it = keys->second.left.begin(); it != keys->second.left.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            left = 1.f;
+    }
+
+    float right = 0.f;
+    for (auto it = keys->second.right.begin(); it != keys->second.right.end(); ++it)
+    {
+        if (isKeyDown(*it))
+            right = 1.f;
+    }
+
+    return glm::vec2{ right - left, up - down };
 }
 
 SDL_Keycode Input::GetKeycodeFromString(const std::string& input)
@@ -518,7 +736,9 @@ void Input::LUABind(sol::state& lua)
         "isKeyDown", &Input::isStringKeyDown,
         "isKeyJustPressed", &Input::isStringKeyJustPressed,
         "isKeyJustReleased", &Input::isStringKeyJustReleased,
-        "getArrowDir", &Input::GetArrowDir
+        "getInputVariable", &Input::getInputVariable,
+        "getInputAxis", &Input::getInputAxis,
+        "getInputAxis2", &Input::getInputAxis2
     );
     lua.set("Input", this);
 }

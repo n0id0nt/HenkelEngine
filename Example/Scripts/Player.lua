@@ -228,7 +228,7 @@ end
 --------------------------------------------------------------
 Script.update = function()
 
-    setHorizontalInput(Input:getArrowDir().x)
+    setHorizontalInput(Input:getInputAxis("Horizontal"))
     if horizontalInput ~= 0 then
         GO:getSprite().flipped = horizontalInput < 0
     end
