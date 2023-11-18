@@ -2,9 +2,11 @@
 <inputs>
     <input name="Jump" type="button">
         <bindings>
-            <binding type="keycode" value="space"/>
-            <binding type="keycode" value="w"/>
-            <binding type="keycode" value="up"/>
+            <binding type="keycode"             value="space"/>
+            <binding type="keycode"             value="w"/>
+            <binding type="keycode"             value="up"/>
+            <binding type="controllerButton"    value="a"/>
+            <binding type="controllerButton"    value="up"/>
         </bindings>
     </input>
     <input name="Shoot" type="button">
@@ -21,22 +23,32 @@
     </input>
     <input name="Horizontal" type="axis">
         <bindings>
-            <binding type="keycode" value="left"    component="negetive"/>
-            <binding type="keycode" value="a"       component="negetive"/>
-            <binding type="keycode" value="right"   component="positive"/>
-            <binding type="keycode" value="d"       component="positive"/>
+            <binding type="keycode"             value="left"    component="negetive"/>
+            <binding type="controllerButton"    value="left"    component="negetive"/>
+            <binding type="keycode"             value="a"       component="negetive"/>
+
+            <binding type="keycode"             value="right"   component="positive"/>
+            <binding type="controllerButton"    value="right"   component="positive"/>
+            <binding type="keycode"             value="d"       component="positive"/>
         </bindings>
     </input>
     <input name="Move" type="axis2">
         <bindings>
-            <binding type="keycode" value="up"      component="up"/>
-            <binding type="keycode" value="w"       component="up"/>
-            <binding type="keycode" value="down"    component="down"/>
-            <binding type="keycode" value="s"       component="down"/>
-            <binding type="keycode" value="left"    component="left"/>
-            <binding type="keycode" value="a"       component="left"/>
-            <binding type="keycode" value="right"   component="right"/>
-            <binding type="keycode" value="d"       component="right"/>
+            <binding type="keycode"             value="up"      component="up"/>
+            <binding type="controllerButton"    value="up"      component="up"/>
+            <binding type="keycode"             value="w"       component="up"/>
+
+            <binding type="keycode"             value="down"    component="down"/>
+            <binding type="keycode"             value="down"    component="down"/>
+            <binding type="keycode"             value="s"       component="down"/>
+
+            <binding type="keycode"             value="left"    component="left"/>
+            <binding type="controllerButton"    value="left"    component="left"/>
+            <binding type="keycode"             value="a"       component="left"/>
+            
+            <binding type="keycode"             value="right"   component="right"/>
+            <binding type="controllerButton"    value="right"   component="right"/>
+            <binding type="keycode"             value="d"       component="right"/>
         </bindings>
     </input>
 </inputs>
