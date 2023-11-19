@@ -269,13 +269,21 @@ std::unordered_map<std::string, SDL_GameControllerButton> Input::s_controllerBut
     {"paddle3",     SDL_CONTROLLER_BUTTON_PADDLE3},
     {"paddle4",     SDL_CONTROLLER_BUTTON_PADDLE4},
     {"touchpad",    SDL_CONTROLLER_BUTTON_TOUCHPAD},
-    {"max",         SDL_CONTROLLER_BUTTON_MAX},
+};
+
+std::unordered_map<std::string, SDL_GameControllerAxis> Input::s_controllerAxisMap = {
+    {"leftx",       SDL_CONTROLLER_AXIS_LEFTX},
+    {"lefty",       SDL_CONTROLLER_AXIS_LEFTY},
+    {"rightx",      SDL_CONTROLLER_AXIS_RIGHTX},
+    {"rightx",      SDL_CONTROLLER_AXIS_RIGHTY},
+    {"lefttrigger", SDL_CONTROLLER_AXIS_TRIGGERLEFT},
+    {"rightTrigger",SDL_CONTROLLER_AXIS_TRIGGERRIGHT},
 };
 
 Input::Input() 
     : m_mouseButtonStates{ false, false, false }, m_mousePosition(0, 0), m_windowSize{ 0u,0u }, m_windowResized(false), m_quit(false), 
     m_keysDown{}, m_keysPressed{}, m_keysReleased{}, m_controllerButtonsDown{}, m_controllerButtonsPressed{}, m_controllerButtonsReleased{},
-    m_buttonBindings(), m_variableBindings(), m_axisBindings(), m_axis2Bindings()
+    m_buttonBindings(), m_variableBindings(), m_axisBindings(), m_axis2Bindings(), m_deadzone()
 {
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
         std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
@@ -356,8 +364,7 @@ void Input::Update()
             break;
         case SDL_JOYAXISMOTION:
             // Joystick axis motion event
-            std::cout << "Joystick Axis " << static_cast<int>(event.jaxis.axis)
-                << " Value: " << static_cast<int>(event.jaxis.value) << std::endl;
+            //std::cout << "Joystick Axis " << static_cast<int>(event.jaxis.axis) << " Value: " << static_cast<int>(event.jaxis.value) << std::endl;
             break;
         case SDL_CONTROLLERBUTTONDOWN:
             onControllerButtonDown(event);            
@@ -376,6 +383,10 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
     pugi::xml_parse_result result = doc.load_file((fileDir + levelFile).c_str());
     ASSERT(result);
 
+    auto controllerAxis = doc.child("controllerAxis");
+
+    m_deadzone = controllerAxis.attribute("deadzone").as_float();
+
     for (auto& input : doc.child("inputs").children())
     {
         std::string name(input.attribute("name").as_string());
@@ -392,7 +403,7 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 }
                 else if (bindingType == "controllerButton")
                 {
-                    CreateButtonBinding(name, GetButtonFromString(value));
+                    CreateButtonBinding(name, GetControllerButtonFromString(value));
                 }
                 else
                 {
@@ -413,7 +424,7 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 }
                 else if (bindingType == "controllerButton")
                 {
-                    CreateVairableBinding(name, GetButtonFromString(value));
+                    CreateVairableBinding(name, GetControllerButtonFromString(value));
                 }
                 else
                 {
@@ -430,21 +441,32 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 std::string value(binding.attribute("value").as_string());
                 std::string component(binding.attribute("component").as_string());
 
-                Axis axis;
-                if (component == "positive")
-                    axis = Axis::positive;
-                else if (component == "negetive")
-                    axis = Axis::negetive;
-                else
-                    ASSERT(false);
-
                 if (bindingType == "keycode")
                 {
+                    //TODO convert this to a function
+                    AxisComponent axis;
+                    if (component == "positive")
+                        axis = AxisComponent::positive;
+                    else if (component == "negetive")
+                        axis = AxisComponent::negetive;
+                    else
+                        ASSERT(false);
                     CreateAxisBinding(name, GetKeycodeFromString(value), axis);
                 }
                 else if (bindingType == "controllerButton")
                 {
-                    CreateAxisBinding(name, GetButtonFromString(value), axis);
+                    AxisComponent axis;
+                    if (component == "positive")
+                        axis = AxisComponent::positive;
+                    else if (component == "negetive")
+                        axis = AxisComponent::negetive;
+                    else
+                        ASSERT(false);
+                    CreateAxisBinding(name, GetControllerButtonFromString(value), axis);
+                }
+                else if (bindingType == "controllerAxis")
+                {
+                    CreateAxisBinding(name, GetControllerAxisFromString(value));
                 }
                 else
                 {
@@ -461,15 +483,15 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 std::string value(binding.attribute("value").as_string());
                 std::string component(binding.attribute("component").as_string());
 
-                Axis2 axis;
+                Axis2Component axis;
                 if (component == "up")
-                    axis = Axis2::up;
+                    axis = Axis2Component::up;
                 else if (component == "down")
-                    axis = Axis2::down;
+                    axis = Axis2Component::down;
                 else if (component == "left")
-                    axis = Axis2::left;
+                    axis = Axis2Component::left;
                 else if (component == "right")
-                    axis = Axis2::right;
+                    axis = Axis2Component::right;
                 else
                     ASSERT(false);
 
@@ -479,7 +501,7 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 }
                 else if (bindingType == "controllerButton")
                 {
-                    CreateAxis2Binding(name, GetButtonFromString(value), axis);
+                    CreateAxis2Binding(name, GetControllerButtonFromString(value), axis);
                 }
                 else
                 {
@@ -531,6 +553,22 @@ bool Input::isControllerButtonJustReleased(SDL_GameControllerButton button)
     return m_controllerButtonsReleased.count(button);
 }
 
+float Input::getControllerAxisValue(SDL_GameControllerAxis code)
+{
+    const int minVal = -32768;
+    const int maxVal = 32767;
+
+    int value = SDL_JoystickGetAxis(m_joystick, code);
+    float normalizedValue = static_cast<float>(value - minVal) / (maxVal - minVal);
+    normalizedValue = glm::max(-1.0f, glm::min(1.0f, 2.0f * normalizedValue - 1.0f));
+
+    if (glm::abs(normalizedValue) <= m_deadzone) {
+        return 0.0f;  
+    }
+
+    return normalizedValue;
+}
+
 bool Input::isStringKeyDown(const std::string& input)
 {
     SDL_Keycode key = GetKeycodeFromString(input);
@@ -549,22 +587,28 @@ bool Input::isStringKeyJustReleased(const std::string& input)
     return isKeyJustReleased(key);
 }
 
-bool Input::isStringButtonDown(const std::string& input)
+bool Input::isStringControllerButtonDown(const std::string& input)
 {
-    SDL_GameControllerButton key = GetButtonFromString(input);
+    SDL_GameControllerButton key = GetControllerButtonFromString(input);
     return isControllerButtonDown(key);
 }
 
-bool Input::isStringButtonJustPressed(const std::string& input)
+bool Input::isStringControllerButtonJustPressed(const std::string& input)
 {
-    SDL_GameControllerButton key = GetButtonFromString(input);
+    SDL_GameControllerButton key = GetControllerButtonFromString(input);
     return isControllerButtonJustPressed(key);
 }
 
-bool Input::isStringButtonJustReleased(const std::string& input)
+bool Input::isStringControllerButtonJustReleased(const std::string& input)
 {
-    SDL_GameControllerButton key = GetButtonFromString(input);
+    SDL_GameControllerButton key = GetControllerButtonFromString(input);
     return isControllerButtonJustReleased(key);
+}
+
+float Input::getStringControllerAxisValue(const std::string& input)
+{
+    SDL_GameControllerAxis key = GetControllerAxisFromString(input);
+    return getControllerAxisValue(key);
 }
 
 void Input::onKeyDown(SDL_Event& event)
@@ -669,19 +713,19 @@ void Input::CreateVairableBinding(const std::string& input, SDL_GameControllerBu
         m_variableBindings[input].controllerButtons.insert(code);
 }
 
-void Input::CreateAxisBinding(const std::string& input, SDL_Keycode code, Axis axis)
+void Input::CreateAxisBinding(const std::string& input, SDL_Keycode code, AxisComponent axis)
 {
     auto it = m_axisBindings.find(input);
     bool hasBinding = it == m_axisBindings.end();
     switch (axis)
     {
-    case Axis::positive:
+    case AxisComponent::positive:
         if (hasBinding)
             m_axisBindings[input].positive.keycodes = std::set{ code };
         else
             m_axisBindings[input].positive.keycodes.insert(code);
         break;
-    case Axis::negetive:
+    case AxisComponent::negetive:
         if (hasBinding)
             m_axisBindings[input].negetive.keycodes = std::set{ code };
         else
@@ -692,19 +736,19 @@ void Input::CreateAxisBinding(const std::string& input, SDL_Keycode code, Axis a
     }
 }
 
-void Input::CreateAxisBinding(const std::string& input, SDL_GameControllerButton code, Axis axis)
+void Input::CreateAxisBinding(const std::string& input, SDL_GameControllerButton code, AxisComponent axis)
 {
     auto it = m_axisBindings.find(input);
     bool hasBinding = it == m_axisBindings.end();
     switch (axis)
     {
-    case Axis::positive:
+    case AxisComponent::positive:
         if (hasBinding)
             m_axisBindings[input].positive.controllerButtons = std::set{ code };
         else
             m_axisBindings[input].positive.controllerButtons.insert(code);
         break;
-    case Axis::negetive:
+    case AxisComponent::negetive:
         if (hasBinding)
             m_axisBindings[input].negetive.controllerButtons = std::set{ code };
         else
@@ -715,70 +759,102 @@ void Input::CreateAxisBinding(const std::string& input, SDL_GameControllerButton
     }
 }
 
-void Input::CreateAxis2Binding(const std::string& input, SDL_Keycode code, Axis2 axis)
+void Input::CreateAxisBinding(const std::string& input, SDL_GameControllerAxis code)
+{
+    auto it = m_axisBindings.find(input);
+    if (it == m_axisBindings.end())
+        m_axisBindings[input].controllerAxis = std::set{ code };
+    else
+        m_axisBindings[input].controllerAxis.insert(code);
+}
+
+void Input::CreateAxis2Binding(const std::string& input, SDL_Keycode code, Axis2Component axis)
 {
     auto it = m_axis2Bindings.find(input);
     bool hasBinding = it == m_axis2Bindings.end();
     switch (axis)
     {
-    case Axis2::up:
+    case Axis2Component::up:
         if (hasBinding)
-            m_axis2Bindings[input].up.keycodes = std::set{ code };
+            m_axis2Bindings[input].yAxis.positive.keycodes = std::set{ code };
         else
-            m_axis2Bindings[input].up.keycodes.insert(code);
+            m_axis2Bindings[input].yAxis.positive.keycodes.insert(code);
         break;
-    case Axis2::down:
+    case Axis2Component::down:
         if (hasBinding)
-            m_axis2Bindings[input].down.keycodes = std::set{ code };
+            m_axis2Bindings[input].yAxis.negetive.keycodes = std::set{ code };
         else
-            m_axis2Bindings[input].down.keycodes.insert(code);
+            m_axis2Bindings[input].yAxis.negetive.keycodes.insert(code);
         break;
-    case Axis2::left:
+    case Axis2Component::left:
         if (hasBinding)
-            m_axis2Bindings[input].left.keycodes = std::set{ code };
+            m_axis2Bindings[input].xAxis.negetive.keycodes = std::set{ code };
         else
-            m_axis2Bindings[input].left.keycodes.insert(code);
+            m_axis2Bindings[input].xAxis.negetive.keycodes.insert(code);
         break;
-    case Axis2::right:
+    case Axis2Component::right:
         if (hasBinding)
-            m_axis2Bindings[input].right.keycodes = std::set{ code };
+            m_axis2Bindings[input].xAxis.positive.keycodes = std::set{ code };
         else
-            m_axis2Bindings[input].right.keycodes.insert(code);
+            m_axis2Bindings[input].xAxis.positive.keycodes.insert(code);
         break;
     default:
         ASSERT(false);
     }
 }
 
-void Input::CreateAxis2Binding(const std::string& input, SDL_GameControllerButton code, Axis2 axis)
+void Input::CreateAxis2Binding(const std::string& input, SDL_GameControllerButton code, Axis2Component axis)
 {
     auto it = m_axis2Bindings.find(input);
     bool hasBinding = it == m_axis2Bindings.end();
     switch (axis)
     {
-    case Axis2::up:
+    case Axis2Component::up:
         if (hasBinding)
-            m_axis2Bindings[input].up.controllerButtons = std::set{ code };
+            m_axis2Bindings[input].yAxis.positive.controllerButtons = std::set{ code };
         else
-            m_axis2Bindings[input].up.controllerButtons.insert(code);
+            m_axis2Bindings[input].yAxis.positive.controllerButtons.insert(code);
         break;
-    case Axis2::down:
+    case Axis2Component::down:
         if (hasBinding)
-            m_axis2Bindings[input].down.controllerButtons = std::set{ code };
+            m_axis2Bindings[input].yAxis.negetive.controllerButtons = std::set{ code };
         else
-            m_axis2Bindings[input].down.controllerButtons.insert(code);
+            m_axis2Bindings[input].yAxis.negetive.controllerButtons.insert(code);
         break;
-    case Axis2::left:
+    case Axis2Component::left:
         if (hasBinding)
-            m_axis2Bindings[input].left.controllerButtons = std::set{ code };
+            m_axis2Bindings[input].xAxis.negetive.controllerButtons = std::set{ code };
         else
-            m_axis2Bindings[input].left.controllerButtons.insert(code);
+            m_axis2Bindings[input].xAxis.negetive.controllerButtons.insert(code);
         break;
-    case Axis2::right:
+    case Axis2Component::right:
         if (hasBinding)
-            m_axis2Bindings[input].right.controllerButtons = std::set{ code };
+            m_axis2Bindings[input].xAxis.positive.controllerButtons = std::set{ code };
         else
-            m_axis2Bindings[input].right.controllerButtons.insert(code);
+            m_axis2Bindings[input].xAxis.positive.controllerButtons.insert(code);
+        break;
+    default:
+        ASSERT(false);
+    }
+}
+
+void Input::CreateAxis2Binding(const std::string& input, SDL_GameControllerAxis code, Axis2Direction axis)
+{
+    auto it = m_axis2Bindings.find(input);
+    bool hasBinding = it == m_axis2Bindings.end();
+    switch (axis)
+    {
+    case Axis2Direction::x:
+        if (hasBinding)
+            m_axis2Bindings[input].xAxis.controllerAxis = std::set{ code };
+        else
+            m_axis2Bindings[input].xAxis.controllerAxis.insert(code);
+        break;
+    case Axis2Direction::y:
+        if (hasBinding)
+            m_axis2Bindings[input].yAxis.controllerAxis = std::set{ code };
+        else
+            m_axis2Bindings[input].yAxis.controllerAxis.insert(code);
         break;
     default:
         ASSERT(false);
@@ -882,7 +958,18 @@ float Input::getInputAxis(const std::string& input)
             negetive = 1.f;
     }
 
-    return positive - negetive;
+    float value = positive - negetive;
+
+    if (!value)
+    {
+        value = 0.f;
+        for (auto it = keys->second.controllerAxis.begin(); it != keys->second.controllerAxis.end(); ++it)
+        {
+            value += getControllerAxisValue(*it);
+        }
+        value /= (float)keys->second.controllerAxis.size();
+    }
+    return value;
 }
 
 glm::vec2 Input::getInputAxis2(const std::string& input)
@@ -891,48 +978,48 @@ glm::vec2 Input::getInputAxis2(const std::string& input)
     ASSERT(keys != m_axis2Bindings.end());
 
     float up = 0.f;
-    for (auto it = keys->second.up.keycodes.begin(); it != keys->second.up.keycodes.end(); ++it)
+    for (auto it = keys->second.yAxis.positive.keycodes.begin(); it != keys->second.yAxis.positive.keycodes.end(); ++it)
     {
         if (isKeyDown(*it))
             up = 1.f;
     }
-    for (auto it = keys->second.up.controllerButtons.begin(); it != keys->second.up.controllerButtons.end(); ++it)
+    for (auto it = keys->second.yAxis.positive.controllerButtons.begin(); it != keys->second.yAxis.positive.controllerButtons.end(); ++it)
     {
         if (isControllerButtonDown(*it))
             up = 1.f;
     }
 
     float down = 0.f;
-    for (auto it = keys->second.down.keycodes.begin(); it != keys->second.down.keycodes.end(); ++it)
+    for (auto it = keys->second.yAxis.negetive.keycodes.begin(); it != keys->second.yAxis.negetive.keycodes.end(); ++it)
     {
         if (isKeyDown(*it))
             down = 1.f;
     }
-    for (auto it = keys->second.down.controllerButtons.begin(); it != keys->second.down.controllerButtons.end(); ++it)
+    for (auto it = keys->second.yAxis.negetive.controllerButtons.begin(); it != keys->second.yAxis.negetive.controllerButtons.end(); ++it)
     {
         if (isControllerButtonDown(*it))
             down = 1.f;
     }
     
     float left = 0.f;
-    for (auto it = keys->second.left.keycodes.begin(); it != keys->second.left.keycodes.end(); ++it)
+    for (auto it = keys->second.xAxis.negetive.keycodes.begin(); it != keys->second.xAxis.negetive.keycodes.end(); ++it)
     {
         if (isKeyDown(*it))
             left = 1.f;
     }
-    for (auto it = keys->second.left.controllerButtons.begin(); it != keys->second.left.controllerButtons.end(); ++it)
+    for (auto it = keys->second.xAxis.negetive.controllerButtons.begin(); it != keys->second.xAxis.negetive.controllerButtons.end(); ++it)
     {
         if (isControllerButtonDown(*it))
             left = 1.f;
     }
 
     float right = 0.f;
-    for (auto it = keys->second.right.keycodes.begin(); it != keys->second.right.keycodes.end(); ++it)
+    for (auto it = keys->second.xAxis.positive.keycodes.begin(); it != keys->second.xAxis.positive.keycodes.end(); ++it)
     {
         if (isKeyDown(*it))
             right = 1.f;
     }
-    for (auto it = keys->second.right.controllerButtons.begin(); it != keys->second.right.controllerButtons.end(); ++it)
+    for (auto it = keys->second.xAxis.positive.controllerButtons.begin(); it != keys->second.xAxis.positive.controllerButtons.end(); ++it)
     {
         if (isControllerButtonDown(*it))
             right = 1.f;
@@ -948,10 +1035,17 @@ SDL_Keycode Input::GetKeycodeFromString(const std::string& input)
     return it->second;
 }
 
-SDL_GameControllerButton Input::GetButtonFromString(const std::string& input)
+SDL_GameControllerButton Input::GetControllerButtonFromString(const std::string& input)
 {
     auto it = s_controllerButtonMap.find(input);
     ASSERT(it != s_controllerButtonMap.end());
+    return it->second;
+}
+
+SDL_GameControllerAxis Input::GetControllerAxisFromString(const std::string& input)
+{
+    auto it = s_controllerAxisMap.find(input);
+    ASSERT(it != s_controllerAxisMap.end());
     return it->second;
 }
 
@@ -1007,6 +1101,9 @@ void Input::LUABind(sol::state& lua)
         "isKeyDown", &Input::isStringKeyDown,
         "isKeyJustPressed", &Input::isStringKeyJustPressed,
         "isKeyJustReleased", &Input::isStringKeyJustReleased,
+        "isStringControllerButtonDown", &Input::isStringControllerButtonDown,
+        "isStringControllerButtonJustPressed", &Input::isStringControllerButtonJustPressed,
+        "isStringControllerButtonJustReleased", &Input::isStringControllerButtonJustReleased,
         "getInputVariable", &Input::getInputVariable,
         "getInputAxis", &Input::getInputAxis,
         "getInputAxis2", &Input::getInputAxis2
