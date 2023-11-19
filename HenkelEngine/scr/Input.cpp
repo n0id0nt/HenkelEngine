@@ -962,7 +962,6 @@ float Input::getInputAxis(const std::string& input)
 
     if (!value)
     {
-        value = 0.f;
         for (auto it = keys->second.controllerAxis.begin(); it != keys->second.controllerAxis.end(); ++it)
         {
             value += getControllerAxisValue(*it);

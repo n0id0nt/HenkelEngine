@@ -14,7 +14,7 @@ class Window;
 
 class Input : public LUABindable
 {
-public:
+private:
 	struct Binding
 	{
 		std::set<SDL_Keycode> keycodes;
@@ -60,6 +60,8 @@ public:
 		Middle,
 		Right
 	};
+
+public:
 
 	Input();
 	~Input();
