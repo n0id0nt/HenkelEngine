@@ -1,5 +1,5 @@
 {
-    "automappingRulesFile": "",
+    "automappingRulesFile": "rules.txt",
     "commands": [
     ],
     "compatibilityVersion": 1100,
@@ -62,30 +62,6 @@
             "valuesAsFlags": false
         },
         {
-            "color": "#ffa0a0a4",
-            "drawFill": true,
-            "id": 4,
-            "members": [
-                {
-                    "name": "XOffset",
-                    "type": "float",
-                    "value": 0
-                },
-                {
-                    "name": "YOffset",
-                    "type": "float",
-                    "value": 0
-                }
-            ],
-            "name": "Sprite",
-            "type": "class",
-            "useAs": [
-                "property",
-                "object",
-                "project"
-            ]
-        },
-        {
             "color": "#ff43a425",
             "drawFill": true,
             "id": 6,
@@ -112,6 +88,30 @@
                 "tileset",
                 "wangcolor",
                 "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "XOffset",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "YOffset",
+                    "type": "float",
+                    "value": 0
+                }
+            ],
+            "name": "Sprite",
+            "type": "class",
+            "useAs": [
+                "property",
+                "object",
                 "project"
             ]
         }

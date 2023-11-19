@@ -10,6 +10,22 @@
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "AutoMappingTestLevel.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 418.66666666666663,
+                "y": 279.3333333333333
+            }
+        },
+        "AutomappingRules/AutoTileRules.tmx": {
+            "scale": 2.6421875,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 98.7817859254879,
+                "y": 110.13601419278534
+            }
+        },
         "Player.tmx": {
             "scale": 1.5,
             "selectedLayer": 0,
@@ -37,14 +53,14 @@
                 3
             ],
             "expandedObjectLayers": [
-                4,
-                6
+                6,
+                4
             ],
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 189.5,
-                "y": 151
+                "x": 108.75,
+                "y": 150.5
             }
         },
         "TestTiles.tsj": {
@@ -64,7 +80,7 @@
     "last.objectTemplatePath": "C:/Users/H1Ber/OneDrive/Documents/MyGameCreationProjects/HenkelEngine/HenkelEngine/Example/Template",
     "map.fixedSize": true,
     "map.height": 20,
-    "map.lastUsedFormat": "json",
+    "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": 1,
     "map.orientation": 1,
     "map.tileHeight": 16,
@@ -89,8 +105,8 @@
     "tileset.margin": 0,
     "tileset.spacing": 0,
     "tileset.tileSize": {
-        "height": 44,
-        "width": 69
+        "height": 16,
+        "width": 16
     },
     "tileset.transparentColor": "#ff00ff",
     "tileset.type": 0,
