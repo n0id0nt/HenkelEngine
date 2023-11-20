@@ -89,6 +89,7 @@ void Engine::ExitEngine()
 	m_input.reset();
 	m_scene.reset();
 	m_window.reset();
+	m_time.reset();
 
 	// Exit
 	ImGui_ImplOpenGL3_Shutdown();
