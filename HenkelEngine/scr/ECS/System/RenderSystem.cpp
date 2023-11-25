@@ -24,13 +24,15 @@ void RenderSystem::Update()
 		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();
 		glm::mat4 model = transformComponent->GetWorldMatrix();
 
-		if (tilemapComponent)
+		if (tilemapComponent && !renderComponent->BatchValid())
 		{
+			renderComponent->ClearBatch();
 			auto tileVertices = tilemapComponent->GetTileVertices();
 			for (auto& vertice : tileVertices)
 			{
 				renderComponent->AddQuadToBatch(vertice[0], vertice[1], vertice[2]);
 			}
+			renderComponent->ValidateBatch();
 		}
 
 		if (spriteComponent)

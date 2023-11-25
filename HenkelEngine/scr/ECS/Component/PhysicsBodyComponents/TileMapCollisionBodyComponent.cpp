@@ -1,4 +1,7 @@
 #include "TileMapCollisionBodyComponent.h"
+#include <unordered_set>
+#include <vector>
+#include <array>
 
 bool TileMapCollisionBodyComponent::IsTileClearAtDir(glm::ivec2 tile, const TileMapComponent& tilemap, Dir inputDir)
 {

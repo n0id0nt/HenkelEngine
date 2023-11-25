@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include "Window.h"
 
-RenderComponent::RenderComponent(unsigned int quads) : m_Quads(quads)
+RenderComponent::RenderComponent(unsigned int quads) : m_Quads(quads), m_batchValid(false)
 {
     // ensure renderer will actually draw something
     ASSERT(quads > 0);
@@ -19,32 +19,24 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Render()
 {
-    bool isBatching = IsBatching();
     // Bind Material
 
     GLCall(glBindVertexArray(m_VAO));
 
     // loop to ensure no more than the max batch size is rendered
     int batchesToDraw = (int)glm::ceil((float)m_Vertices.size() / (m_Quads * QUAD_SIZE));
+    int indexOffset = 0;
     for (int i = 0; i < batchesToDraw; i++)
     {
 
         GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
-        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(m_Quads * QUAD_SIZE, m_Vertices.size()), m_Vertices.data()));
+        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(m_Quads * QUAD_SIZE, m_Vertices.size() - indexOffset), &m_Vertices.at(indexOffset)));
 
         GLCall(glDrawElements(GL_TRIANGLES, m_Indexes.size(), GL_UNSIGNED_INT, 0));
 
-        if (isBatching && i != batchesToDraw - 1)
-        {
-            m_Vertices.erase(m_Vertices.begin(), m_Vertices.begin() + m_Quads * QUAD_SIZE);
-        }
+        indexOffset += m_Quads * QUAD_SIZE;
     }
     GLCall(glBindVertexArray(0));
-
-    if (isBatching)
-    {
-        m_Vertices.clear();
-    }
 }
 
 void RenderComponent::AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize)
@@ -59,6 +51,26 @@ void RenderComponent::SetQuadUVs(const glm::vec4& rect, const bool& flipped)
 {
     ASSERT(!IsBatching()); // can't be batching because batch is cleared each draw call 
     Mesh::setQuadData(m_Vertices, { 0.f, 0.f }, rect, flipped);
+}
+
+bool RenderComponent::BatchValid()
+{
+    return m_batchValid;
+}
+
+void RenderComponent::InvalidateBatch()
+{
+    m_batchValid = false;
+}
+
+void RenderComponent::ValidateBatch()
+{
+    m_batchValid = m_Vertices.size();
+}
+
+void RenderComponent::ClearBatch()
+{
+    m_Vertices.clear();
 }
 
 void RenderComponent::InitRenderData()

@@ -7,6 +7,9 @@
 
 Engine*Engine::s_engine = nullptr;
 
+const std::string s_testMap1 = "TestLevel.tmx";
+const std::string s_testMap2 = "AutoMappingTestLevel.tmx";
+
 Engine::Engine() 
 {
 }
@@ -74,7 +77,7 @@ void Engine::InitEngine()
 
 	DebugRenderer::InitDebugRenderer();
 
-	m_scene = std::make_unique<Scene>(m_projectDirectory, "AutoMappingTestLevel.tmx");
+	m_scene = std::make_unique<Scene>(m_projectDirectory, s_testMap2);
 }
 
 void Engine::ExitEngine()
@@ -145,6 +148,10 @@ void Engine::Loop()
 			SDL_Delay(FRAME_DELAY - m_frameTime);
 		}
 		m_time->SetDeltaTime((SDL_GetTicks() - m_frameStart) / 1000.f);
+
+		float delayedFrameTime = SDL_GetTicks() - m_frameStart;
+		float fps = (delayedFrameTime > 0) ? 1000.0f / delayedFrameTime : 0.0f;
+		m_window->SetWindowName("Henkel Engine - fps: " + std::to_string(fps));
 	}
 }
 

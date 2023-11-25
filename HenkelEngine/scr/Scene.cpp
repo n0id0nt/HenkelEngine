@@ -19,11 +19,10 @@
 #include <ECS\Component\TransformComponent.h>
 #include "DebugGUIPanels\GUIPanels.h"
 
-//Entity* cube, *cube2;
 float x = 0.f, y = 0.f, z = 2.f;
-const float timeStep = 1.0f / 60.0f;
+const float timeStep = 1.0f / FPS;
 const int velocityIterations = 6;
-const int positionIterations = 2;
+const int positionIterations = 4;
 
 
 Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
@@ -93,19 +92,14 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			auto* tilemap = tilemapEntity->CreateComponent<TileMapComponent>(width, height, levelArray, tileSheet);
 			auto* transform = tilemapEntity->CreateComponent<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
 			
-			b2BodyDef bodyDef;
-			glm::vec2 position = transform->GetWorldPosition();
-			bodyDef.position = b2Vec2(position.x, position.y);
-			bodyDef.fixedRotation = true;
-			//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
-			
-			b2FixtureDef fixtureDef;
-			b2PolygonShape shape;
-			shape.SetAsBox(tileSheet.GetTileWidth() / (2.f * m_world->GetPixelsPerMeter()), tileSheet.GetTileHeight() / (2.f * m_world->GetPixelsPerMeter()));
-			fixtureDef.shape = &shape;
-			fixtureDef.friction = 0.f;
-			fixtureDef.density = 1.f;
-			tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), fixtureDef, bodyDef, *tilemap);
+			for (auto& property : layer.child("properties").children())
+			{
+				std::string propertyName = property.attribute("name").as_string();
+				if (propertyName == "ColliderType")
+				{
+					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), *tilemap);
+				}
+			}
 		}
 		else if (name == "objectgroup")
 		{

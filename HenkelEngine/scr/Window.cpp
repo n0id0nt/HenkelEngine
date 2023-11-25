@@ -22,6 +22,11 @@ Window::~Window()
 	SDL_DestroyWindow(m_window);
 }
 
+void Window::SetWindowName(std::string name)
+{
+	SDL_SetWindowTitle(m_window, name.c_str());
+}
+
 void Window::SetFullscreen(bool fullscreen)
 {
 	SDL_SetWindowFullscreen(m_window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);

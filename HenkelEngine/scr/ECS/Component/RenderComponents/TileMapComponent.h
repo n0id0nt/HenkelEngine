@@ -9,6 +9,9 @@ class TileMapComponent
 public:
 	TileMapComponent(unsigned int width, unsigned int height, std::vector<unsigned int> levelArray, TileSheet tileSheet);
 
+	unsigned int GetWidth() const;
+	unsigned int GetHeight() const;
+
 	unsigned int GetTileWidth() const;
 	unsigned int GetTileHeight() const;
 

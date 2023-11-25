@@ -17,6 +17,8 @@ public:
 	Window(std::string name, int x, int y, int w, int h, bool resizeWindow, bool fullscreen);
 	~Window();
 
+	void SetWindowName(std::string name);
+
 	void SetFullscreen(bool fullscreen);
 	void SetResizable(bool resizableWindow);
 

@@ -203,7 +203,7 @@ local fallAnimation = "Fall"
 
 function controlAnimations()
     if isGrounded then
-        if horizontalSpeed ~= 0 then
+        if horizontalInput ~= 0 then
             tryPlayAnimation(runAnimation)
         else
             tryPlayAnimation(idleAnimation)

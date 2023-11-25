@@ -19,10 +19,16 @@ public:
 
 	void SetQuadUVs(const glm::vec4& rect, const bool& flipped);
 
+	bool BatchValid();
+	void InvalidateBatch();
+	void ValidateBatch();
+	void ClearBatch();
+
 private:
 	void InitRenderData();
 
 	bool IsBatching();
+	bool m_batchValid;
 
 	std::vector<Vertex> m_Vertices;
 	std::vector<GLuint> m_Indexes;

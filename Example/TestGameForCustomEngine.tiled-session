@@ -15,19 +15,22 @@
             "scaleInDock": 1
         },
         "AutoMappingTestLevel.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 6,
+            "expandedObjectLayers": [
+                8
+            ],
+            "scale": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1008,
-                "y": 579
+                "x": 526,
+                "y": 304.5
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {
             "scale": 2,
-            "selectedLayer": 0,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 443,
-                "y": 107.25
+                "x": 1318.5,
+                "y": 160.75
             }
         },
         "Player.tmx": {
@@ -61,10 +64,10 @@
                 4
             ],
             "scale": 2,
-            "selectedLayer": 3,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 204.25,
-                "y": 192.5
+                "x": 189.25,
+                "y": 156.75
             }
         },
         "TestTiles.tsj": {
@@ -107,10 +110,10 @@
     "project": "TestGameForCustomEngine.tiled-project",
     "property.type": "ColliderType",
     "recentFiles": [
+        "AutomappingRules/AutoTileRules.tmx",
         "TestLevel.tmx",
         "adventurer-1.3-Sheet.tsx",
         "cavesofgallet_tiles.tsx",
-        "AutomappingRules/AutoTileRules.tmx",
         "AutoMappingTestLevel.tmx",
         "Player.tmx",
         "TestTiles.tsj",

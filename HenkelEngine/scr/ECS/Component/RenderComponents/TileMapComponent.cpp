@@ -10,6 +10,16 @@ TileMapComponent::TileMapComponent(unsigned int width, unsigned int height, std:
 {
 }
 
+unsigned int TileMapComponent::GetWidth() const
+{
+	return m_width;
+}
+
+unsigned int TileMapComponent::GetHeight() const
+{
+	return m_height;
+}
+
 unsigned int TileMapComponent::GetTileWidth() const
 {
 	return m_tileSheet.GetTileWidth();
