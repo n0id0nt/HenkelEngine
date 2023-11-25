@@ -1,4 +1,9 @@
 #include "TileMapComponent.h"
+#include <bitset>
+#include <iostream>
+
+const unsigned int horizontal_flip_bit_mask = 1u << 31u;
+const unsigned int vertical_flip_bit_mask = 1u << 30u;
 
 TileMapComponent::TileMapComponent(unsigned int width, unsigned int height, std::vector<unsigned int> levelArray, TileSheet tileSheet)
 	: m_width(width), m_height(height), m_levelArray(levelArray), m_tileSheet(tileSheet)
@@ -41,7 +46,12 @@ std::vector<std::array<glm::vec2, 3>> TileMapComponent::GetTileVertices()
 			unsigned int tile = GetTile(row, col);
 			if (tile != 0)
 			{
-				glm::vec4 uvs = m_tileSheet.GetSpriteRectAtIndex(tile - 1);
+				bool flipped = tile & horizontal_flip_bit_mask;
+				if (flipped)
+				{
+					tile ^= horizontal_flip_bit_mask;
+				}
+				glm::vec4 uvs = m_tileSheet.GetSpriteRectAtIndex(tile - 1, flipped);
 				vertices.push_back(std::array<glm::vec2, 3>{ glm::vec2{ col, row },  { uvs.x, uvs.y }, { uvs.z, uvs.w } });
 			}
 		}

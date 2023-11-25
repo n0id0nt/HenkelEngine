@@ -35,7 +35,7 @@ glm::vec2 TileSheet::GetSpriteAtIndex(unsigned int index)
 	return glm::vec2();
 }
 
-glm::vec4 TileSheet::GetSpriteRectAtIndex(unsigned int index)
+glm::vec4 TileSheet::GetSpriteRectAtIndex(unsigned int index, bool flippedHorrizontal)
 {
 	int x = ((index - m_indexOffset) % m_columns) * m_tileWidth;
 	int y = glm::floor(index / m_columns) * m_tileHeight;
@@ -43,6 +43,14 @@ glm::vec4 TileSheet::GetSpriteRectAtIndex(unsigned int index)
 	float perY = y / (float)m_imageHeight;
 	float perWidth = m_tileWidth / (float)m_imageWidth + perX;
 	float perHeight = m_tileHeight / (float)m_imageHeight + perY;
+
+	if (flippedHorrizontal)
+	{
+		float swap = perWidth;
+		perWidth = perX;
+		perX = swap;
+	}
+
 	return glm::vec4({perX, perY, perWidth, perHeight});
 }
 

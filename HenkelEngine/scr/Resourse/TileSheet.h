@@ -11,7 +11,7 @@ public:
 	//void LoadTileSheet(std::string name, std::string imageFile, unsigned int tileWidth, unsigned int tileHeight, unsigned int tileCount, unsigned int columns, unsigned int imageWidth, unsigned int imageHeight, unsigned int paddingX = 0, unsigned int paddingY = 0, unsigned int borderX = 0, unsigned int borderY = 0);
 
 	glm::vec2 GetSpriteAtIndex(unsigned int index);
-	glm::vec4 GetSpriteRectAtIndex(unsigned int index);
+	glm::vec4 GetSpriteRectAtIndex(unsigned int index, bool flippedHorrizontal = false);
 
 	std::string GetTileSetImagePath() const;
 

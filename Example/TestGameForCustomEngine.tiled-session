@@ -5,9 +5,9 @@
     },
     "activeFile": "AutoMappingTestLevel.tmx",
     "expandedProjectPaths": [
-        "Template",
+        "AutomappingRules",
         ".",
-        "AutomappingRules"
+        "Template"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -15,19 +15,19 @@
             "scaleInDock": 1
         },
         "AutoMappingTestLevel.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 0,
+            "scale": 0.5,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 535.9999999999999,
-                "y": 332
+                "x": 1008,
+                "y": 579
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {
-            "scale": 2.6421875,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 98.7817859254879,
-                "y": 110.13601419278534
+                "x": 443,
+                "y": 107.25
             }
         },
         "Player.tmx": {
@@ -61,10 +61,10 @@
                 4
             ],
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 108.75,
-                "y": 150.5
+                "x": 204.25,
+                "y": 192.5
             }
         },
         "TestTiles.tsj": {
