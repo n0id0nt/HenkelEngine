@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="9" nextobjectid="2">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="10" nextobjectid="2">
+ <properties>
+  <property name="Pixels Per Meter" type="float" value="50"/>
+ </properties>
  <tileset firstgid="1" source="cavesofgallet_tiles.tsx"/>
- <objectgroup id="8" name="objects">
-  <object id="1" template="Template/Player.tx" x="326" y="539"/>
- </objectgroup>
  <layer id="4" name="water_input" width="100" height="50">
+  <properties>
+   <property name="ColliderType" propertytype="ColliderType" value="Static"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzt2EEOgyAUAFHvyf3v0WXRQEH6wTHMS4guiDF/XBiOQ5KktvT0C+jEHiw9PVK2NJc9WOzBYg8We7DYgyEVVs9ezWEPpnS51vb0NlMMe7yHPVjswWIPFnuw2IPFHiz2YLHHmFnzsMeY1T1SYY++7MFROq+Nmo897rMHjz1YdujxtubXGUU90x7/sweLPVjswWIPFnuw2IPFHiz2YIl499q5WGvNsnOP0Rb2KLMHiz1Y7MFiD5bI/6v8vjb/Ff+8u/fIn/OrjdpWfKv26OecWEZ6fAC1Z4EK
   </data>
@@ -24,14 +27,28 @@
    eJztwTEBAAAAwqD1T20ND6AAAAAAAAAAAAAAAAAAAAAAAAAAeDBOIAAB
   </data>
  </layer>
- <layer id="2" name="ground" width="100" height="50">
-  <data encoding="base64" compression="zlib">
-   eJztm0tPG0EMgCeHULVQpCIureBAoVySW8pfaDnR/qT89K4Jbl1jj+15bAaIJSsR2Xmsv/FjZpeUyuWXQx9S2lYMcZCA3E+6MPT+wMMtq0pbeXn8HJzJD6b7kloe35PN4/c0xsgxa1orEFP3Hl+vp3FXDfrxMBk5ZgGLac08zvMuPd7PVruW+5HHr7zXrRrxALGYjMwD5u7hwP1IqlsgLlO7S200/2vJAyTH5J7M1SPWOqzRiHCboh9pcVniBG3uiGrcW/MA0fI7zlVaQ1ytdVijfHxLPBwk9dify2ZGHtYaktZU5P69Ssd/UOo+ui489WOp/SWpra+4YCzuYcuo3hmKdR+No9w3PeuiZW5szQMFuXi1xJ459axRWPs8jtJay6s5HlDDfp0+uV4r1/fiERXOr8bnS8ZELiVxUuMBLK4mldpoeWIUHvsWb56QVFs7kJ8vlTYHHnnR4qtmT4sFFeSCCu0mvxHj1oGHLSsl5pTGVNofclmR32rn+1Lk/U630XYSj5p9ghTHOJdRBWz4waEeO3+e9Hi6LtIGJGc/rU6K9Ev7Hp3Hp7Sb53LSI6IL8vfl7rqtp7/PT+2OAm1QJD9pwYX23YsHruuS+EAFeFD7S/ouxWwLTL7sPkNz0/II5WLtLzTZdOZRes9aP5bWjuORHA+Lj4dRj/PE1ywRHpE9B0qP88TXLLn93aWh3lj0lurdVsL95Nxhw/P0Onh4690W6q09Snl4csraM4EZ5WTSj0RP0/9xYcn0iHwuyOdS+L4k/Ug1m7dG43HLy0OKcRt23Wg8pHnPpaX7kWnNbE8ybU/S83XFOaCMzMPKjy01uocBoXEr5yP8njQWIKPysGJAaz+q5ZHL1d6990165BGaQ28p4dHKf2p4QK7OPfPLxSiUdZqXB62VMN5q+dvLQ7uuxH/grDFyvsPrrNwzJk+tOzcPOIvCGgftqNmtlsdFKvObiI/wOov6CDyrxe8j8zhL8/Cw2mms6Hm8d28iPV+6IgxeAo+Lp3G1dXzh5AG1Jo13uboT21kxbsk+rfPKTcq/syDxoO+doB/tg0fJmqaC+YbX8zm/ojnqNDO+5Kve+JV7hijxkGqzXjy0M47jVM9D86ecX3E7az5Vw0M6axyFBz6zkM4pJHt44kyNWLVWLpdFay76DJby4LUuvQ5/6x2vaL6wtMZnLKnhUbJPRMGzWu+Z7Rw8rGetUR58v+LxM2pn6T3VHI+zVM4DJcoD9unfnvSmYmyeNzBftORh7SukftDO0tpbkzbQd49nwVEe6/Tvfmr8Bfd7Us7oHa9y+xEvj7mF+gHobXrOo+Y95ki+OPDYjc3tQHnU5hLcX5SoVHPRfKDlDV6rSv3gXkXjwdv0fLbIx+7Nw5u/o35jnat4zg81Htr1PPbS9/GW7Hs050OsulXmOIJ/jMjDqyU1mDZuax6l+aOWh7VvB5VyYwsei9SHx+2u9v3b703K17/8933yKJWR/YMzoftFiQ39HfYekf3GW+LB61qsbT08kAm2od95PFuT33uwAMXaRzvP1eoySfl60nJqieZ4RJhLPDRF21uMR1VpPbXqm9uGnnVEeUT/NxnV8955Tq3821p5Psf7btF37n+uI/aFNn8Aw5ktag==
-  </data>
- </layer>
  <layer id="6" name="background_detail" width="100" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt2dENgyAQgGEe2sQdnMF1qOMwevuAEYmWExEQ/i8h1kaUoicHVQoAAAAAAAAAUNJQugGVG23JrbX78utDY7dLMUtR676Yds4HlIgX/xnOQUdcS1Lnrv5r7T3mk/StjqjTmly/WXqd2ZbefGy5eo7Z+bx3/hTXAZ5oJ8eVfOfW3eTCbp7h1gUQ1mO+BUgRH/2paV6+5Dxvu/8q2RgAp+l1XuLOUUzhZj3SO3xIMjWNA2f566qxYsabVGNUC7mXs3ZhSrbjn1BM9bheWXOe1UJc9Kb2seSu+A7FUc1xdsS/l5O3jeWubacav9G2Qa3PYw3vmKsx0LpZbf9f7y2vkso5LoyC+fnoHQvgOcinys8bJ0V+UEoL/X53fiuJD55h9CrVOgeAY1/u3SoJ
+   eJzt2WHOwiAMBmB+aOIdOIPX0Bs4j8PRzRKW1A4d00Jb9j4J0e9zOAYD2hkCAGi6h5C02/DNjRXQc9duAPyMz6OaeVV7HNSb+7BmHs3rMu13y3NvaWuNrfvwn7KH9T6VwO8hXlpfPz0/2FKK+zysNSOj6yjGwA7rORIAQCsX7QYYF5X2h5HGJeaS36elsM9TLFX+/r1Ja3zAFo35Qu7bpHD6okf5f2mr3kjrTU81fQv9YDzam3J5krJ4ks+n/k0DUEdiXB73ruJgUiewvxOtVziHudjDipN2A8AUxAT+SOYjyG0A3lmZEyQeCuf8Hvs3QPlZnlUPkqfEsM5noF7P9c/KPvALqflx3j5EpE6J19yE/mY3yrOIoz2vlLqHW/A6L2ae9m1JlveS5XcJDSPkM9dcpCA+hFoX8rpnjfG8h3g2kdejxVR79Iy/aIwe33P1xI4xG88fNa4Cu7DHACUdJ3vXan586mPvfa+VQ0v0m/e+L+HXNOI1whrGGaCdF4XvPpY=
+  </data>
+ </layer>
+ <objectgroup id="8" name="objects">
+  <object id="1" template="Template/Player.tx" x="329" y="510"/>
+ </objectgroup>
+ <layer id="2" name="ground" width="100" height="50">
+  <properties>
+   <property name="ColliderType" propertytype="ColliderType" value="Static"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztm81SGzEMgM2BdFooM3S40IEDhXJJbinvwKntI+XRa5GoaIQkS7Z3Y0I0oyGZXXu9/qw/O6RUL38c+julTcMjjhKQ56wnBX0+8nDLsnGujjz6SiuPX6nM429+xug+K49v7/71Pj932aEfD5ORbQRY5DXzMs6n9PI+m32MY9mJB0iJycg8YOxeDtSOvHkLb6Pd15MHiMVkZB4ewTlFO9L8ssQJ2jwR1bj35gGixXccq9c3W+uwRaOxwcNBUs/8c1nPyKO0hqQ1FXl/r9Lne9h48sfa+ZekNb/igr54irmM6lNBtbyP2qZnXfT0xb15oCAXr9bMp6WeNQprn/tRmmt51eIBOeyP/JfrvXL/VDyiwvnNkXPSZyKXGj+p8QAWd1mlNlqcGIXHvsUbJyTV1g7E51ulzZGHLZp/1eazxIIKckGFdtluRL915FGWpeJzan0q7Q+5LMm11vG+F/m81U20ncSjpU6Q/BjnMqrAHH5xqGeer7Oe5fsibUCs+dPypEi/tO/ReVym7ThPsy7S67jx+2L3+dI5t9e7+08CbVAkO+nBhfY9FQ9c1zX+gQrysPRTis0tMPm+/RsamxZHKJdSfaHJemIete+s9VPS1ud4xOJR4uNhNMV+4iFLhEek5kCZYj/xkMWq724L6vVFHynf7SXcTq4cc3iVDoOHN9/tod7co5aHJ6asPAOYUc6zfiV6kWT/gLnvqfAddcH0lNwv9eHN0bjf8vKQfNya3TcaD2ncc+i3VF+P5DWzOTfanqe364pzQBmZRyk+9taW+tCyEf5OGguQUXmUfEBvO4rWlCCUhxWrvbX3Q3rhERrD1FLDo5f9tPCAWG2d+Vk+CmWV5uVBcyX0t1r89vLQ7quxH9hrjOzv8DzLOmPy5Lpz86B7UTiP2ry18rhJdXYTsRGeZ1EbgbNa/HzkUW6nsaL78d7aRDpfuiMMRuaBOf/N7rnaOr5x8oBck/o7K+/EdiUfh7UL1iul/cp1sn+zIPGgvztBO9oXj+iapoLxRqsTpb5pjLowns9tNZJzWWeIEg8pN5uKh7bHcZbqfAwVzZ4su+LzrNkUvy9SI0p7jaPwwDMLfqanzYfHz7RIKdeyYlk056JnsJQHz3XpfXhtan/lOdvzxu8WaeFRUyei4F6td8/2PfLg9YrHzug8S79TLeV6tTxQojygTv+504eGZ/O4gfGiJ49SXSH1g/Msrb0VaQN9T3EWHOWxSq/v02IvmD9hruhl0cNfWfWIl8fcQu0A9DG95dHyO2ZaX0T1I/Kg807tYZX08UYkEi88OReNB1rc4Lmq1A/WKhoP3mbKs0X+7FF51OQ+nuv8XT1zgrpgn+n5Ij2XXKR4zAdf9aiMsSePWn81Ig+v1pwtas89FB6luh1Uio0j83jc5r7/+31Idv7Lr++TR6304FFTM3p4cCa0XpTY0OtQe0TqjUPiUbIPntdibuvhgUywDf3M/dmKXJ+CBSjmPtp+rpaXScrXkxZTe/OIMJd4aIpzX2I8qkrrqVfffG7oXkeUR/R/k1E9vzu3tBR/eyuP5/jePfq2/uc6Mr/Q5h85ABUq
+  </data>
+ </layer>
+ <layer id="9" name="Collision" width="100" height="50">
+  <properties>
+   <property name="ColliderType" propertytype="ColliderType" value="Static"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1cEJwDAMBMFT/03nG0wI+ekCM+AGvHCaJBNazO3RYaJLEz36vHXQqosewF+c99527Xr6ez326NHl3Cd7tc/t6KUHAAAAAAAAAAAAAAAAAMB3F7H+ACg=
   </data>
  </layer>
 </map>

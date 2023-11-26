@@ -34,9 +34,25 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 		{
 			auto* transform = m_registry->GetComponent<TransformComponent>(entity);
 			auto* tileMap = m_registry->GetComponent<TileMapCollisionBodyComponent>(entity);
-			auto positions = tileMap->tilePositions();
-			for (auto& position : positions)
-				DebugRenderer::DrawRectangle(glm::vec3{position, 0.f}, 16.f, 16.f, { 0.8f, 0.5f, 0.f });
+			for (b2Fixture* fixture = tileMap->GetBody()->GetFixtureList(); fixture; fixture = fixture->GetNext())
+			{
+				b2Shape* shape = fixture->GetShape();
+
+				if (shape->GetType() == b2Shape::e_chain) 
+				{
+					b2ChainShape* chainShape = dynamic_cast<b2ChainShape*>(shape);
+					if (chainShape)
+					{
+						b2Vec2 prevVertex = tileMap->GetBody()->GetWorldPoint(chainShape->m_vertices[0]);
+						for (int i = 1; i < chainShape->m_count; ++i)
+						{
+							b2Vec2 vertex = tileMap->GetBody()->GetWorldPoint(chainShape->m_vertices[i]);
+							DebugRenderer::DrawLine(glm::vec3{prevVertex.x * world->GetPixelsPerMeter(), prevVertex.y * world->GetPixelsPerMeter(), 0.f}, glm::vec3{vertex.x * world->GetPixelsPerMeter(), vertex.y * world->GetPixelsPerMeter(), 0.f}, { 0.8f, 0.5f, 0.f });
+							prevVertex = vertex;
+						}
+					}
+				}
+			}
 		}
 	}
 	{

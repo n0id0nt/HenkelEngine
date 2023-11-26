@@ -2,20 +2,50 @@
 #include "HenkelEngine.h"
 #include "Resourse/TileSheet.h"
 #include <vector>
+#include <unordered_set>
+#include <array>
 #include "../RenderComponents/TileMapComponent.h"
 #include "Physics\PhysicsWorld.h"
 
 class TileMapCollisionBodyComponent 
 {
 public:
-    TileMapCollisionBodyComponent(PhysicsWorld* world, b2FixtureDef fixtureDef, b2BodyDef bodyDef, const TileMapComponent& tilemap);
+    TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap);
     ~TileMapCollisionBodyComponent();
 
-    std::vector<glm::vec2> tilePositions();
+    b2Body* GetBody() const;
 
 private:
 
-    std::vector<b2Body*> m_bodies;
+    enum Dir {
+        Right,
+        Down,
+        Left,
+        Up,
+        Count
+    };
+
+    // Custom hash function for glm::ivec2
+    struct IVec2Hash
+    {
+        std::size_t operator()(const glm::ivec2& v) const {
+            // Combine hash values of each component
+            std::hash<unsigned int> hasher;
+            std::size_t hash = hasher(v.x);
+            hash ^= hasher(v.y) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+            return hash;
+        }
+    };
+
+    bool IsTileClearAtDir(glm::ivec2 tile, const TileMapComponent& tilemap, Dir inputDir);
+    Dir NextDir(Dir inputDir);
+    Dir PreviousDir(Dir inputDir);
+    bool IsNextDirClear(glm::ivec2 tile, const TileMapComponent& tilemap, Dir inputDir);
+    glm::ivec2 GetTileInDir(glm::ivec2 tile, Dir inputDir);
+    void CreateLoop(Dir inputDir, glm::ivec2 inputTile, std::unordered_set<glm::ivec2, IVec2Hash>& checkedTiles, const TileMapComponent& tilemap);
+    std::array<b2Vec2, 2> GetSideLine(Dir inputDir, glm::ivec2 inputTile, const TileMapComponent& tilemap);
+
+    b2Body* m_body;
     PhysicsWorld* m_world;
 };
 
