@@ -14,6 +14,7 @@
 #include "pugixml.hpp"
 #include "Resourse\TileSheet.h"
 #include "sol\sol.hpp"
+#include <ECS\System\CameraSystem.h>
 
 class Scene : public LUABindable
 {
@@ -51,5 +52,6 @@ private:
 	PhysicsSystem m_physicsSystem;
 	RenderSystem m_renderSystem;
 	ScriptSystem m_scriptSystem;
+	CameraSystem m_cameraSystem;
 };
 

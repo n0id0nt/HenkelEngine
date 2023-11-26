@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="10" nextobjectid="2">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="11" nextobjectid="4">
  <properties>
   <property name="Pixels Per Meter" type="float" value="50"/>
  </properties>
@@ -33,7 +33,16 @@
   </data>
  </layer>
  <objectgroup id="8" name="objects">
-  <object id="1" template="Template/Player.tx" x="329" y="510"/>
+  <object id="1" template="Template/Player.tx" x="329" y="510">
+   <properties>
+    <property name="Camera" type="class" propertytype="Camera"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="Cameras">
+  <object id="3" name="Camera" x="329" y="490">
+   <point/>
+  </object>
  </objectgroup>
  <layer id="2" name="ground" width="100" height="50">
   <properties>

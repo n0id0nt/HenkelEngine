@@ -147,6 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\ECS\System\CameraSystem.cpp" />
+    <ClCompile Include="scr\ECS\Component\CameraComponent.cpp" />
     <ClCompile Include="scr\ECS\EntityManager.cpp" />
     <ClCompile Include="scr\ECS\Registry.cpp" />
     <ClCompile Include="scr\ECS\Entity\Entity.cpp" />
@@ -199,6 +201,8 @@
     <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\ECS\System\CameraSystem.h" />
+    <ClInclude Include="scr\ECS\Component\CameraComponent.h" />
     <ClInclude Include="scr\DebugGUIPanels\GUIPanels.h" />
     <ClInclude Include="scr\ECS\EntityManager.h" />
     <ClInclude Include="scr\ECS\Registry.h" />

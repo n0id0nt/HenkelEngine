@@ -18,15 +18,16 @@
 #include <imgui.h>
 #include <ECS\Component\TransformComponent.h>
 #include "DebugGUIPanels\GUIPanels.h"
+#include <ECS\Component\CameraComponent.h>
 
-float x = 0.f, y = 0.f, z = 2.f;
+float z = 2.f;
 const float timeStep = 1.0f / FPS;
 const int velocityIterations = 6;
 const int positionIterations = 4;
 
 
 Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
-	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_entities()
+	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities()
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -298,6 +299,10 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 				}
 			}
 		}
+		else if (splitPropertyName[0] == "Camera")
+		{
+			gameObjectEntity->CreateComponent<CameraComponent>();
+		}
 	}
 	auto* scriptComponent = gameObjectEntity->GetComponent<ScriptComponent>();
 	if (scriptComponent)
@@ -350,15 +355,13 @@ void Scene::Update()
 
 	m_animationSystem.Update();
 
-	m_camera->SetPosition({ x, y, 0.f });
+	m_cameraSystem.Update(m_camera.get());
 	m_camera->SetZoom(z);
 }
 
 void Scene::Render()
 {
 	ImGui::Begin("Camera Controls");
-	ImGui::SliderFloat("X", &x, -300.0f, 300.0f);
-	ImGui::SliderFloat("Y", &y, -300.0f, 300.0f);
 	ImGui::SliderFloat("Zoom", &z, 0.5f, 20.0f);
 	ImGui::End();
 
