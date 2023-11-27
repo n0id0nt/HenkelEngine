@@ -2,6 +2,7 @@
 
 #include "glm\glm.hpp"
 #include "glm\gtc\matrix_transform.hpp"
+#include <ECS\Component\CameraComponent.h>
 
 class Camera
 {
@@ -18,6 +19,9 @@ public:
 	void SetZoom(float zoom);
 	float GetZoom();
 
+	void SetActiveCameraComponent(CameraComponent* camera);
+	CameraComponent* GetActiveCameraComponent();
+
 	void SetPosition(glm::vec3 position);
 	glm::vec3 GetPosition();
 
@@ -32,5 +36,6 @@ private:
 	float m_Near = 0.1f;
 	float m_Far = 1000.f;
 	float m_zoom = 1.f;
+	CameraComponent* m_activeCameraComponent = nullptr;
 };
 

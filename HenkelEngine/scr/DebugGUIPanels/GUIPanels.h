@@ -8,6 +8,7 @@
 #include "ECS/Component/PhysicsBodyComponents/StaticBodyComponent.h"
 #include "ECS/Component/PhysicsBodyComponents/PhysicsBodyComponent.h"
 #include "ECS/Component/PhysicsBodyComponents/TileMapCollisionBodyComponent.h"
+#include "ECS/Component/CameraComponent.h"
 
 namespace GUIPanel
 {
@@ -45,6 +46,7 @@ namespace GUIPanel
 			ImGui::Text(std::format("Id: {},\tName: {}", entity->GetEntity(), entity->GetName()).c_str());
 			ImGui::Separator();
 			auto* transform = entity->GetComponent<TransformComponent>();
+			auto* camera = entity->GetComponent<CameraComponent>();
 			auto* staticBody = entity->GetComponent<StaticBodyComponent>();
 			auto* physicsBody = entity->GetComponent<PhysicsBodyComponent>();
 			auto* tileMapCollisionBody = entity->GetComponent<TileMapCollisionBodyComponent>();
@@ -52,6 +54,11 @@ namespace GUIPanel
 			if (transform)
 			{
 				transform->DrawDebugPanel();
+				ImGui::Separator();
+			}
+			if (camera)
+			{
+				camera->DrawDebugPanel();
 				ImGui::Separator();
 			}
 			if (script)

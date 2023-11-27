@@ -20,7 +20,6 @@
 #include "DebugGUIPanels\GUIPanels.h"
 #include <ECS\Component\CameraComponent.h>
 
-float z = 2.f;
 const float timeStep = 1.0f / FPS;
 const int velocityIterations = 6;
 const int positionIterations = 4;
@@ -356,15 +355,10 @@ void Scene::Update()
 	m_animationSystem.Update();
 
 	m_cameraSystem.Update(m_camera.get());
-	m_camera->SetZoom(z);
 }
 
 void Scene::Render()
 {
-	ImGui::Begin("Camera Controls");
-	ImGui::SliderFloat("Zoom", &z, 0.1f, 10.0f);
-	ImGui::End();
-
 	GUIPanel::EntityHierarchy::Panel(m_entities);
 
 	m_renderSystem.Update();

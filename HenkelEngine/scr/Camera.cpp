@@ -40,6 +40,20 @@ float Camera::GetZoom()
 	return m_zoom;
 }
 
+void Camera::SetActiveCameraComponent(CameraComponent* camera)
+{
+	if (m_activeCameraComponent)
+	{
+		m_activeCameraComponent->MakeCameraInactive();
+	}
+	m_activeCameraComponent = camera;
+}
+
+CameraComponent* Camera::GetActiveCameraComponent()
+{
+	return m_activeCameraComponent;
+}
+
 void Camera::SetPosition(glm::vec3 position)
 {
 	m_Postition = position;
@@ -54,10 +68,10 @@ glm::mat4 Camera::CalculateProjection(float width, float height)
 {
 	if (m_Orthographic)
 	{
-		float left = m_Postition.x		- width		/ (2.f * m_zoom);
-		float right = m_Postition.x		+ width		/ (2.f * m_zoom);
-		float top = m_Postition.y		+ height	/ (2.f * m_zoom);
-		float bottom = m_Postition.y	- height	/ (2.f * m_zoom);
+		float left = m_Postition.x - width / (2.f * m_zoom);
+		float right = m_Postition.x + width / (2.f * m_zoom);
+		float top = m_Postition.y + height / (2.f * m_zoom);
+		float bottom = m_Postition.y - height / (2.f * m_zoom);
 		glm::mat4 orthoMatrix = glm::ortho(left, right, top, bottom);
 		return orthoMatrix;
 	}

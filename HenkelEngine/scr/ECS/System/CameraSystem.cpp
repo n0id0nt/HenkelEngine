@@ -11,7 +11,12 @@ void CameraSystem::Update(Camera* camera)
 	auto view = m_registry->GetEntitiesWithComponents<CameraComponent, TransformComponent>();
 	for (auto& entity : view)
 	{
-		auto* transform = m_registry->GetComponent<TransformComponent>(entity);
-		camera->SetPosition(transform->GetWorldPosition());
+		auto* cameraComponent = m_registry->GetComponent<CameraComponent>(entity);
+		if (cameraComponent->IsActiveCamera())
+		{
+			auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
+			camera->SetPosition(transformComponent->GetWorldPosition());
+			camera->SetZoom(cameraComponent->GetZoom());
+		}
 	}
 }
