@@ -92,23 +92,23 @@ function hasBufferJump()
 end
 
 function jumpSpeed()
-    return (2 * jumpHeight * maxSpeed) / jumpDist
+    return jumpDist ~= 0 and (2 * jumpHeight * maxSpeed) / jumpDist or 0
 end
 
 function jumpArcSpeed()
-    return (2 * jumpArcHeight * maxSpeed) / jumpArcDist
+    return jumpArcDist ~= 0 and (2 * jumpArcHeight * maxSpeed) / jumpArcDist or 0
 end
 
 function jumpGravity()
-    return (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpDist, 2)
+    return jumpDist ~= 0 and (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpDist, 2) or 0
 end
 
 function jumpArcGravity()
-    return (2 * jumpArcHeight * math.pow(maxSpeed, 2)) / math.pow(jumpArcDist, 2)
+    return jumpArcDist ~= 0 and (2 * jumpArcHeight * math.pow(maxSpeed, 2)) / math.pow(jumpArcDist, 2) or 0
 end
 
 function fallGravity()
-    return (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpFallDist, 2)
+    return jumpFallDist ~= 0 and (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpFallDist, 2) or 0
 end
 
 -- these are for animation controls
@@ -248,7 +248,7 @@ Script.update = function()
 
     if Input:isInputDown("Shoot") then 
         print("Shoot")
-        local potion = Scene:createTemplatedObject("Template/Potion.tx")
+        --local potion = Scene:createTemplatedObject("Template/Potion.tx")
     end
 
     GO:getPhysicsBody():setVelocity(vec2.new(horizontalSpeed, verticalSpeed))

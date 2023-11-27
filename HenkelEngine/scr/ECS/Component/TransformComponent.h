@@ -36,6 +36,8 @@ public:
 
 private:
 
+	void UpdateComponentsTransforms();
+
 	void LUASetPosition(glm::vec2 position);
 
 	glm::vec3 m_position;

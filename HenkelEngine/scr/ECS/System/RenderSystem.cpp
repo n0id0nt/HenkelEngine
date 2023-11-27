@@ -6,6 +6,7 @@
 #include "Engine.h"
 #include "Scene.h"
 #include "glm\glm.hpp"
+#include <opengl\DebugRenderer.h>
 
 void RenderSystem::Update()
 {
@@ -19,6 +20,8 @@ void RenderSystem::Update()
 		auto* spriteComponent = m_registry->GetComponent<SpriteComponent>(entity);
 
 		ASSERT(tilemapComponent || spriteComponent);
+
+		DebugRenderer::DrawCircle(Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetPosition(), 3.f, { 0.9f, 0.4f, 0.3f });
 
 		glm::mat4 projection = Engine::GetInstance()->GetCurrentScene()->GetCamera()->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();

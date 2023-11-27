@@ -40,7 +40,7 @@
   </object>
  </objectgroup>
  <objectgroup id="10" name="Cameras">
-  <object id="3" name="Camera" x="329" y="490">
+  <object id="3" name="Camera" x="0" y="0">
    <point/>
   </object>
  </objectgroup>

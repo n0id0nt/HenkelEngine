@@ -12,7 +12,7 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	return glm::lookAt(m_Postition, m_Postition + m_Front, m_Up);
+	return glm::mat4(1.f);//glm::lookAt(m_Postition, m_Postition + m_Front, m_Up);
 }
 
 float Camera::GetFov()
@@ -54,7 +54,12 @@ glm::mat4 Camera::CalculateProjection(float width, float height)
 {
 	if (m_Orthographic)
 	{
-		return glm::ortho(m_Postition.x - width / m_zoom, m_Postition.x + width / m_zoom, m_Postition.y + height / m_zoom, m_Postition.y - height / m_zoom);
+		float left = m_Postition.x		- width		/ (2.f * m_zoom);
+		float right = m_Postition.x		+ width		/ (2.f * m_zoom);
+		float top = m_Postition.y		+ height	/ (2.f * m_zoom);
+		float bottom = m_Postition.y	- height	/ (2.f * m_zoom);
+		glm::mat4 orthoMatrix = glm::ortho(left, right, top, bottom);
+		return orthoMatrix;
 	}
 	else
 	{

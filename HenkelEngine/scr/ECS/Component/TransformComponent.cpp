@@ -1,10 +1,14 @@
 #include "TransformComponent.h"
 #include "glm\gtx\matrix_decompose.hpp"
 #include "imgui.h"
+#include "PhysicsBodyComponents\PhysicsBodyComponent.h"
+#include "PhysicsBodyComponents\StaticBodyComponent.h"
+#include "PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 
 TransformComponent::TransformComponent(Entity* entity, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
 	: m_position(position), m_rotation(rotation), m_scale(scale), m_entity(entity)
 {
+	UpdateComponentsTransforms();
 }
 
 TransformComponent::~TransformComponent()
@@ -14,6 +18,7 @@ TransformComponent::~TransformComponent()
 void TransformComponent::SetPosition(glm::vec3 position)
 {
 	m_position = position;
+	UpdateComponentsTransforms();
 }
 
 glm::vec3 TransformComponent::GetPosition()
@@ -24,11 +29,15 @@ glm::vec3 TransformComponent::GetPosition()
 void TransformComponent::SetPosition(glm::vec2 position)
 {
 	m_position = { position, 0.f };
+	UpdateComponentsTransforms();
 }
 
 void TransformComponent::SetWorldPosition(glm::vec3 position)
 {
-	m_position = position - GetParent()->GetWorldPosition();
+	m_position = position;
+	if (GetParent())
+		m_position -= GetParent()->GetWorldPosition();
+	UpdateComponentsTransforms();
 }
 
 void TransformComponent::SetWorldPosition(glm::vec2 position)
@@ -36,6 +45,7 @@ void TransformComponent::SetWorldPosition(glm::vec2 position)
 	m_position = glm::vec3{ position, 0.f };
 	if (GetParent())
 		m_position -= GetParent()->GetWorldPosition();
+	UpdateComponentsTransforms();
 }
 
 glm::vec3 TransformComponent::GetWorldPosition()
@@ -52,6 +62,7 @@ glm::vec3 TransformComponent::GetWorldPosition()
 void TransformComponent::SetRotation(glm::vec3 rotation)
 {
 	m_rotation = rotation;
+	UpdateComponentsTransforms();
 }
 
 glm::vec3 TransformComponent::GetRotation()
@@ -62,6 +73,7 @@ glm::vec3 TransformComponent::GetRotation()
 void TransformComponent::SetScale(glm::vec3 scale)
 {
 	m_scale = scale;
+	UpdateComponentsTransforms();
 }
 
 glm::vec3 TransformComponent::GetScale()
@@ -106,8 +118,41 @@ void TransformComponent::DrawDebugPanel()
 	const float inputFieldWidth = 80.f;
 	ImGui::Text("Transform Component:");
 	ImGui::Text("Position:"); 
-	ImGui::InputFloat("X", &m_position.x);
-	ImGui::InputFloat("Y", &m_position.y); 
+	glm::vec3 pos = m_position;
+	ImGui::InputFloat("X", &pos.x);
+	ImGui::InputFloat("Y", &pos.y);
+	SetPosition(pos);
+}
+
+void TransformComponent::UpdateComponentsTransforms()
+{
+	glm::vec3 worldPosition = GetWorldPosition();
+	auto* physicsBody = m_entity->GetComponent<PhysicsBodyComponent>();
+	auto* staticBody = m_entity->GetComponent<StaticBodyComponent>();
+	auto* tileMap = m_entity->GetComponent<TileMapCollisionBodyComponent>();
+	if (physicsBody)
+	{
+		physicsBody->SetPosition(worldPosition);
+	}
+	if (staticBody)
+	{
+		staticBody->SetPosition(worldPosition);
+	}
+	if (tileMap)
+	{
+		tileMap->SetPosition(worldPosition);
+	}
+
+	for (auto& child : m_entity->GetChildren())
+	{
+		auto* transform = child->GetComponent<TransformComponent>();
+		transform->UpdateComponentsTransforms();
+	}
+}
+
+void TransformComponent::LUASetPosition(glm::vec2 position)
+{
+	SetPosition(position);
 }
 
 void TransformComponent::LUABind(sol::state& lua)
@@ -120,9 +165,4 @@ void TransformComponent::LUABind(sol::state& lua)
 		"setScale", &TransformComponent::SetScale,
 		"getScale", &TransformComponent::GetScale
 	);
-}
-
-void TransformComponent::LUASetPosition(glm::vec2 position)
-{
-	SetPosition(position);
 }

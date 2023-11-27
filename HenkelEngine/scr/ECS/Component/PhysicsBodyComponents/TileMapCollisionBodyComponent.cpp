@@ -166,8 +166,18 @@ TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(PhysicsWorld* world
 
 TileMapCollisionBodyComponent::~TileMapCollisionBodyComponent()
 {
-	//for (auto& body : m_bodies)
-		m_world->DestroyBody(m_body);
+	m_world->DestroyBody(m_body);
+}
+
+glm::vec2 TileMapCollisionBodyComponent::GetPosition()
+{
+	b2Vec2 pos = m_body->GetPosition();
+	return glm::vec2(pos.x * m_world->GetPixelsPerMeter(), pos.y * m_world->GetPixelsPerMeter());
+}
+
+void TileMapCollisionBodyComponent::SetPosition(glm::vec2 pos)
+{
+	m_body->SetTransform(b2Vec2(pos.x / m_world->GetPixelsPerMeter(), pos.y / m_world->GetPixelsPerMeter()), 0.f);
 }
 
 b2Body* TileMapCollisionBodyComponent::GetBody() const

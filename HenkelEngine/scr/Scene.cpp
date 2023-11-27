@@ -362,14 +362,14 @@ void Scene::Update()
 void Scene::Render()
 {
 	ImGui::Begin("Camera Controls");
-	ImGui::SliderFloat("Zoom", &z, 0.5f, 20.0f);
+	ImGui::SliderFloat("Zoom", &z, 0.1f, 10.0f);
 	ImGui::End();
 
 	GUIPanel::EntityHierarchy::Panel(m_entities);
 
 	m_renderSystem.Update();
 
-	DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
+	//DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
 
 	glm::mat4 projection = m_camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();

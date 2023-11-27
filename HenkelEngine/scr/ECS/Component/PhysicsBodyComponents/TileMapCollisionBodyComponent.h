@@ -13,6 +13,9 @@ public:
     TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap);
     ~TileMapCollisionBodyComponent();
 
+    glm::vec2 GetPosition();
+    void SetPosition(glm::vec2 pos);
+
     b2Body* GetBody() const;
 
 private:
