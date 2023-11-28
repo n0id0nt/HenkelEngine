@@ -29,6 +29,7 @@ Scene::Scene(const std::string& fileDir, const std::string& levelFile)
 	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities()
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_camera->SetOrthographic(true);
 
 	m_scriptSystem.BindToLua(*(Engine::GetInstance()->GetInput()));
 	m_scriptSystem.BindToLua(*(Engine::GetInstance()->GetTime()));

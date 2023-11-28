@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="11" nextobjectid="4">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="11" nextobjectid="5">
  <properties>
+  <property name="ActiveCamera" type="object" value="3"/>
   <property name="Pixels Per Meter" type="float" value="50"/>
  </properties>
  <tileset firstgid="1" source="cavesofgallet_tiles.tsx"/>
@@ -41,6 +42,15 @@
  </objectgroup>
  <objectgroup id="10" name="Cameras">
   <object id="3" name="Camera" x="0" y="0">
+   <properties>
+    <property name="Camera" type="class" propertytype="Camera"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" name="Camera2" x="871" y="216">
+   <properties>
+    <property name="Camera" type="class" propertytype="Camera"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
