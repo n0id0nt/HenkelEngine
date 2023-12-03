@@ -27,6 +27,9 @@ public:
 
 	glm::mat4 CalculateProjection(float width, float height);
 
+	glm::vec2 ScreenPosToWorldPos(glm::vec2 screenPosition);
+	glm::vec2 WorldPosToScreenPos(glm::vec2 worldPosition);
+
 private:
 	glm::vec3 m_Postition;
 	glm::vec3 m_Front;

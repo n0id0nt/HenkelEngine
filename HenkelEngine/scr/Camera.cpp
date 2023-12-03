@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include <Engine.h>
 
 Camera::Camera(glm::vec3 position, glm::vec3 up)
 	: m_Postition(position), m_Up(up), m_Front(glm::vec3(0.0f, 0.0f, -1.0f)), m_Fov(45.0f)
@@ -12,7 +13,14 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	return glm::mat4(1.f);//glm::lookAt(m_Postition, m_Postition + m_Front, m_Up);
+	if (m_Orthographic)
+	{
+		return glm::mat4(1.f);
+	}
+	else
+	{
+		return glm::lookAt(m_Postition, m_Postition + m_Front, m_Up);
+	}
 }
 
 float Camera::GetFov()
@@ -79,4 +87,22 @@ glm::mat4 Camera::CalculateProjection(float width, float height)
 	{
 		return glm::perspective(m_Fov, width / height, m_Near, m_Far);
 	}
+}
+
+glm::vec2 Camera::ScreenPosToWorldPos(glm::vec2 screenPosition)
+{
+
+	
+	return glm::vec2();
+}
+
+glm::vec2 Camera::WorldPosToScreenPos(glm::vec2 worldPosition)
+{
+	glm::mat4 view = GetViewMatrix();
+	glm::mat4 proj = CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
+
+	glm::vec4 screenPosition = proj * view * glm::vec4{worldPosition, 0.f, 1.f};
+	screenPosition /= screenPosition.w;
+
+	return glm::vec2(screenPosition.x, screenPosition.y);
 }

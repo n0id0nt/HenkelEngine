@@ -288,16 +288,19 @@ Input::Input()
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
         std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
         ASSERT(false);
+        return;
     }
 
     if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0) {
         std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
         ASSERT(false);
+        return;
     }
 
     if (SDL_NumJoysticks() < 1 || !SDL_IsGameController(0)) {
         std::cerr << "No game controller connected." << std::endl;
         ASSERT(false);
+        return;
     }
 
     // Open the first joystick
@@ -305,6 +308,7 @@ Input::Input()
     if (!m_joystick) {
         std::cerr << "Unable to open joystick: " << SDL_GetError() << std::endl;
         ASSERT(false);
+        return;
     }
 
     // Open the game controller
@@ -312,6 +316,7 @@ Input::Input()
     if (!m_gameController) {
         std::cerr << "Unable to open game controller: " << SDL_GetError() << std::endl;
         ASSERT(false);
+        return;
     }
 
     // Print joystick information

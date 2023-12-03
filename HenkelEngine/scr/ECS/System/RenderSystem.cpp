@@ -21,8 +21,6 @@ void RenderSystem::Update()
 
 		ASSERT(tilemapComponent || spriteComponent);
 
-		DebugRenderer::DrawCircle(Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetPosition(), 3.f, { 0.9f, 0.4f, 0.3f });
-
 		glm::mat4 projection = Engine::GetInstance()->GetCurrentScene()->GetCamera()->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();
 		glm::mat4 model = transformComponent->GetWorldMatrix();

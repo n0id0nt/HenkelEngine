@@ -195,8 +195,11 @@
     <ClCompile Include="scr\ECS\Component\SpriteAnimationComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\debug.frag" />
-    <None Include="res\shaders\debug.vert" />
+    <None Include="res\shaders\debug_ss.frag" />
+    <None Include="res\shaders\debug_ss.vert" />
+    <None Include="res\shaders\debug_ws.frag" />
+    <None Include="res\shaders\debug_ws.vert" />
+    <None Include="res\shaders\pixelPerfect.frag" />
     <None Include="res\shaders\sprite.frag" />
     <None Include="res\shaders\sprite.vert" />
   </ItemGroup>
