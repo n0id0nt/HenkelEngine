@@ -2,6 +2,7 @@
 #include <ECS\Component\CameraComponent.h>
 #include <ECS\Component\TransformComponent.h>
 #include "opengl\DebugRenderer.h"
+#include <Engine.h>
 
 CameraSystem::CameraSystem(Registry* registry) : m_registry(registry)
 {
@@ -9,6 +10,7 @@ CameraSystem::CameraSystem(Registry* registry) : m_registry(registry)
 
 void CameraSystem::Update(Camera* camera)
 {
+	float deltaTime = Engine::GetInstance()->GetTime()->GetDeltaTime();
 	auto view = m_registry->GetEntitiesWithComponents<CameraComponent, TransformComponent>();
 	for (auto& entity : view)
 	{
@@ -16,10 +18,56 @@ void CameraSystem::Update(Camera* camera)
 		if (cameraComponent->IsActiveCamera())
 		{
 			auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
+			glm::vec3 cameraComponentPos = transformComponent->GetWorldPosition();
+			glm::vec2 cameraComponentScreenPos = camera->WorldPosToScreenPos(cameraComponentPos);
 
-			glm::vec2 testPoint = camera->WorldPosToScreenPos(glm::vec2());
+			glm::vec2 newPos{};
+			// x
+			{
+				if (cameraComponent->GetOffset().x + cameraComponent->GetSoftZone().x < cameraComponentScreenPos.x)
+				{
+					newPos.x = glm::mix(cameraComponent->GetOffset().x + cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, 0.1f);
+				}
+				else if (cameraComponent->GetOffset().x - cameraComponent->GetSoftZone().x > cameraComponentScreenPos.x)
+				{
+					newPos.x = glm::mix(cameraComponent->GetOffset().x - cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, 0.1f);
+				}
+				else if (cameraComponent->GetOffset().x + cameraComponent->GetDeadZone().x < cameraComponentScreenPos.x)
+				{
+					newPos.x = glm::mix(cameraComponent->GetOffset().x + cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, 0.9f);
+				}
+				else if (cameraComponent->GetOffset().x - cameraComponent->GetDeadZone().x > cameraComponentScreenPos.x)
+				{
+					newPos.x = glm::mix(cameraComponent->GetOffset().x - cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, 0.9f);
+				}
+			}
+			// y 
+			{
+				if (cameraComponent->GetOffset().y + cameraComponent->GetSoftZone().y > cameraComponentScreenPos.y)
+				{
+					newPos.y = glm::mix(cameraComponent->GetOffset().y + cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, 0.1f);
+				}
+				else if (cameraComponent->GetOffset().y - cameraComponent->GetSoftZone().y < cameraComponentScreenPos.y)
+				{
+					newPos.y = glm::mix(cameraComponent->GetOffset().y - cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, 0.1f);
+				}
+				else if (cameraComponent->GetOffset().y + cameraComponent->GetDeadZone().y > cameraComponentScreenPos.y)
+				{
+					newPos.y = glm::mix(cameraComponent->GetOffset().y + cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, 0.05f);
+				}
+				else if (cameraComponent->GetOffset().y - cameraComponent->GetDeadZone().y < cameraComponentScreenPos.y)
+				{
+					newPos.y = glm::mix(cameraComponent->GetOffset().y - cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, 0.05f);
+				}
+			}
 
-			camera->SetPosition(transformComponent->GetWorldPosition());
+
+
+
+			//glm::vec3 newPos = glm::mix(camera->GetPosition(), cameraComponentPos, 0.2f);
+			
+			
+			camera->SetPosition(glm::vec3{camera->ScreenPosToWorldPos(newPos), 0.f});
 			camera->SetZoom(cameraComponent->GetZoom());
 
 			if (cameraComponent->debugLines)

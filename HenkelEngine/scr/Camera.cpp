@@ -91,9 +91,15 @@ glm::mat4 Camera::CalculateProjection(float width, float height)
 
 glm::vec2 Camera::ScreenPosToWorldPos(glm::vec2 screenPosition)
 {
+	glm::mat4 view = GetViewMatrix();
+	glm::mat4 proj = CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 
+	glm::mat4 inverseViewProjection = glm::inverse(proj * view);
+
+	glm::vec4 worldPosition = inverseViewProjection * glm::vec4(screenPosition, 0.0f, 1.0f);
+	worldPosition /= worldPosition.w;
 	
-	return glm::vec2();
+	return glm::vec2(worldPosition.x, worldPosition.y);
 }
 
 glm::vec2 Camera::WorldPosToScreenPos(glm::vec2 worldPosition)
