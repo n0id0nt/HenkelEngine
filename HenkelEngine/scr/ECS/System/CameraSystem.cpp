@@ -26,38 +26,38 @@ void CameraSystem::Update(Camera* camera)
 			{
 				if (cameraComponent->GetOffset().x + cameraComponent->GetSoftZone().x < cameraComponentScreenPos.x)
 				{
-					newPos.x = glm::mix(cameraComponent->GetOffset().x + cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, cameraComponent->GetHardDamping().x * deltaTime);
+					newPos.x = glm::mix(cameraComponent->GetOffset().x, cameraComponentScreenPos.x, cameraComponent->GetHardDamping().x * deltaTime);
 				}
 				else if (cameraComponent->GetOffset().x - cameraComponent->GetSoftZone().x > cameraComponentScreenPos.x)
 				{
-					newPos.x = glm::mix(cameraComponent->GetOffset().x - cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, cameraComponent->GetHardDamping().x * deltaTime);
+					newPos.x = glm::mix(cameraComponent->GetOffset().x, cameraComponentScreenPos.x, cameraComponent->GetHardDamping().x * deltaTime);
 				}
 				else if (cameraComponent->GetOffset().x + cameraComponent->GetDeadZone().x < cameraComponentScreenPos.x)
 				{
-					newPos.x = glm::mix(cameraComponent->GetOffset().x + cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, cameraComponent->GetSoftDamping().x * deltaTime);
+					newPos.x = glm::mix(cameraComponent->GetOffset().x, cameraComponentScreenPos.x, cameraComponent->GetSoftDamping().x * deltaTime);
 				}
 				else if (cameraComponent->GetOffset().x - cameraComponent->GetDeadZone().x > cameraComponentScreenPos.x)
 				{
-					newPos.x = glm::mix(cameraComponent->GetOffset().x - cameraComponent->GetDeadZone().x, cameraComponentScreenPos.x, cameraComponent->GetSoftDamping().x * deltaTime);
+					newPos.x = glm::mix(cameraComponent->GetOffset().x, cameraComponentScreenPos.x, cameraComponent->GetSoftDamping().x * deltaTime);
 				}
 			}
 			// y 
 			{
 				if (cameraComponent->GetOffset().y + cameraComponent->GetSoftZone().y > cameraComponentScreenPos.y)
 				{
-					newPos.y = glm::mix(cameraComponent->GetOffset().y + cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, cameraComponent->GetHardDamping().y * deltaTime);
+					newPos.y = glm::mix(cameraComponent->GetOffset().y, cameraComponentScreenPos.y, cameraComponent->GetHardDamping().y * deltaTime);
 				}
 				else if (cameraComponent->GetOffset().y - cameraComponent->GetSoftZone().y < cameraComponentScreenPos.y)
 				{
-					newPos.y = glm::mix(cameraComponent->GetOffset().y - cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, cameraComponent->GetHardDamping().y * deltaTime);
+					newPos.y = glm::mix(cameraComponent->GetOffset().y, cameraComponentScreenPos.y, cameraComponent->GetHardDamping().y * deltaTime);
 				}
 				else if (cameraComponent->GetOffset().y + cameraComponent->GetDeadZone().y > cameraComponentScreenPos.y)
 				{
-					newPos.y = glm::mix(cameraComponent->GetOffset().y + cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, cameraComponent->GetSoftDamping().y * deltaTime);
+					newPos.y = glm::mix(cameraComponent->GetOffset().y, cameraComponentScreenPos.y, cameraComponent->GetSoftDamping().y * deltaTime);
 				}
 				else if (cameraComponent->GetOffset().y - cameraComponent->GetDeadZone().y < cameraComponentScreenPos.y)
 				{
-					newPos.y = glm::mix(cameraComponent->GetOffset().y - cameraComponent->GetDeadZone().y, cameraComponentScreenPos.y, cameraComponent->GetSoftDamping().y * deltaTime);
+					newPos.y = glm::mix(cameraComponent->GetOffset().y, cameraComponentScreenPos.y, cameraComponent->GetSoftDamping().y * deltaTime);
 				}
 			}
 
