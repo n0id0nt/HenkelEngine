@@ -1,9 +1,10 @@
 #include "TransformComponent.h"
-#include "glm\gtx\matrix_decompose.hpp"
+#include "glm/gtx/matrix_decompose.hpp"
 #include "imgui.h"
-#include "PhysicsBodyComponents\PhysicsBodyComponent.h"
-#include "PhysicsBodyComponents\StaticBodyComponent.h"
-#include "PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
+#include "PhysicsBodyComponents/PhysicsBodyComponent.h"
+#include "PhysicsBodyComponents/StaticBodyComponent.h"
+#include "PhysicsBodyComponents/TileMapCollisionBodyComponent.h"
+#include <DebugGUIPanels/ImGuiHelper.h>
 
 TransformComponent::TransformComponent(Entity* entity, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
 	: m_position(position), m_rotation(rotation), m_scale(scale), m_entity(entity)
@@ -116,11 +117,10 @@ glm::mat4 TransformComponent::GetWorldMatrix()
 void TransformComponent::DrawDebugPanel()
 {
 	const float inputFieldWidth = 80.f;
-	ImGui::Text("Transform Component:");
-	ImGui::Text("Position:"); 
-	glm::vec3 pos = m_position;
-	ImGui::InputFloat("X", &pos.x);
-	ImGui::InputFloat("Y", &pos.y);
+	glm::vec2 pos = m_position;
+
+	ImGui::DrawVec2Control("Position", pos);
+
 	SetPosition(pos);
 }
 

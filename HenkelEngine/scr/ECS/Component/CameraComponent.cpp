@@ -1,6 +1,7 @@
 #include "CameraComponent.h"
 #include <Engine.h>
 #include "imgui.h"
+#include "DebugGUIPanels/ImGuiHelper.h"
 
 CameraComponent::CameraComponent() 
 	: m_zoom(1.f), m_isActiveCamera(false), debugLines(false), m_offset(glm::vec2()), 
@@ -41,27 +42,17 @@ void CameraComponent::MakeCameraInactive()
 
 void CameraComponent::DrawDebugPanel()
 {
-	const float inputFieldWidth = 80.f;
-	ImGui::Text("Camera Component:");
-	ImGui::SliderFloat("zoom", &m_zoom, 0.1f, 10.f);
+	ImGui::SliderFloat("Zoom", &m_zoom, 0.1f, 10.f);
 	bool isActive = m_isActiveCamera;
 	ImGui::Checkbox("Active Camera", &isActive);
+	ImGui::SameLine();
 	ImGui::Checkbox("Debug Lines", &debugLines);
-	ImGui::Text("Soft Damping:");
-	ImGui::InputFloat("X##UniqueID1", &m_softDamping.x);
-	ImGui::InputFloat("Y##UniqueID1", &m_softDamping.y);	
-	ImGui::Text("Hard Damping:");
-	ImGui::InputFloat("X##UniqueID2", &m_hardDamping.x);
-	ImGui::InputFloat("Y##UniqueID2", &m_hardDamping.y);	
-	ImGui::Text("Camera Offset:");
-	ImGui::SliderFloat("X##UniqueID3", &m_offset.x, -1.f, 1.f);
-	ImGui::SliderFloat("Y##UniqueID3", &m_offset.y, -1.f, 1.f);
-	ImGui::Text("Soft Zone:");
-	ImGui::SliderFloat("X##UniqueID5", &m_softZone.x, 0.f, 1.f);
-	ImGui::SliderFloat("Y##UniqueID5", &m_softZone.y, 0.f, 1.f);
-	ImGui::Text("Dead Zone:");
-	ImGui::SliderFloat("X##UniqueID4", &m_deadZone.x, 0.f, m_softZone.x);
-	ImGui::SliderFloat("Y##UniqueID4", &m_deadZone.y, 0.f, m_softZone.y);
+
+	ImGui::DrawVec2Control("Soft Damping", m_softDamping);
+	ImGui::DrawVec2Control("Hard Damping", m_hardDamping);
+	ImGui::DrawVec2Control("Camera Offset", m_offset);
+	ImGui::DrawVec2Control("Soft Zone", m_softZone);
+	ImGui::DrawVec2Control("Dead Zone", m_deadZone);
 
 	if (isActive != m_isActiveCamera)
 	{

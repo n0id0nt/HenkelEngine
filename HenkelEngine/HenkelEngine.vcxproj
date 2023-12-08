@@ -150,6 +150,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\DebugGUIPanels\ImGuiHelper.h" />
     <ClInclude Include="scr\ECS\System\CameraSystem.h" />
     <ClInclude Include="scr\ECS\Component\CameraComponent.h" />
     <ClInclude Include="scr\DebugGUIPanels\GUIPanels.h" />

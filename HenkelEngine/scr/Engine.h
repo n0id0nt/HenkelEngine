@@ -35,6 +35,7 @@ public:
 
 	std::string GetProjectDirectory() const;
 
+	void SetDarkThemeColors();
 private:
 	Engine();
 
