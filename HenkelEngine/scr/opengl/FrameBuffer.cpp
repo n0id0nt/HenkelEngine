@@ -1,6 +1,6 @@
 #include "FrameBuffer.h"
 
-#include "SOIL2.h"
+#include "SOIL2/soil2.h"
 #include "openglHelper.h"
 #include <iostream>
 

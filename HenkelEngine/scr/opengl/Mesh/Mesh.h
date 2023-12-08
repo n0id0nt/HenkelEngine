@@ -4,7 +4,7 @@
 #include "glm\glm.hpp"
 #include "opengl\openglHelper.h"
 
-#define QUAD_SIZE 4
+constexpr int QUAD_SIZE = 4;
 
 struct Vertex
 {

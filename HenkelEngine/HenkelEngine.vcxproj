@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -26,19 +18,6 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -74,56 +53,31 @@
     <PublicIncludeDirectories>
     </PublicIncludeDirectories>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)dependencies\zlib;$(ProjectDir)dependencies\zlib\lib;$(ProjectDir)dependencies\GLEW\lib\Release\Win32;$(ProjectDir)dependencies\SDL2\lib\x86;$(ProjectDir)dependencies\SOIL2\lib;$(ProjectDir)dependencies\Lua\lib;$(ProjectDir)dependencies\box2d\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;opengl32.lib;glew32s.lib;soil2.lib;zdll.lib;box2d.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)dependencies\zlib;$(ProjectDir)dependencies\zlib\lib;$(ProjectDir)dependencies\GLEW\lib\Release\Win32;$(ProjectDir)dependencies\SDL2\lib\x86;$(ProjectDir)dependencies\SOIL2\lib;$(ProjectDir)dependencies\Lua\lib;$(ProjectDir)dependencies\box2d\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;opengl32.lib;glew32s.lib;soil2.lib;zdll.lib;box2d.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>false</VcpkgUseStatic>
+    <VcpkgTriplet>x64-windows</VcpkgTriplet>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgTriplet>x64-windows</VcpkgTriplet>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)vcpkg_installed\x64-windows\x64-windows\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)dependencies\zlib;$(ProjectDir)dependencies\zlib\lib;$(ProjectDir)dependencies\GLEW\lib\Release\Win32;$(ProjectDir)dependencies\SDL2\lib\x86;$(ProjectDir)dependencies\SOIL2\lib;$(ProjectDir)dependencies\Lua\lib;$(ProjectDir)dependencies\box2d\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;opengl32.lib;glew32s.lib;soil2.lib;zdll.lib;box2d.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)vcpkg_installed\x64-windows\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,18 +86,18 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)dependencies\pugixml;$(ProjectDir)dependencies\nlohmann;$(ProjectDir)dependencies\zlib\include;$(ProjectDir)dependencies\SDL2\include;$(ProjectDir)dependencies\GLEW\include;$(ProjectDir)dependencies\SOIL2\include;$(ProjectDir)dependencies\imgui;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\entt\include\entt;$(ProjectDir)dependencies\box2d\include\box2d;$(ProjectDir)dependencies\lua\include;$(ProjectDir)dependencies\sol3\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dependencies\base64;$(ProjectDir)scr;$(ProjectDir)dependencies;$(ProjectDir)dependencies\sol3\include;$(ProjectDir)vcpkg_installed\x64-windows\x64-windows\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)dependencies\zlib;$(ProjectDir)dependencies\zlib\lib;$(ProjectDir)dependencies\GLEW\lib\Release\Win32;$(ProjectDir)dependencies\SDL2\lib\x86;$(ProjectDir)dependencies\SOIL2\lib;$(ProjectDir)dependencies\Lua\lib;$(ProjectDir)dependencies\box2d\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2test.lib;opengl32.lib;glew32s.lib;soil2.lib;zdll.lib;box2d.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)vcpkg_installed\x64-windows\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -163,15 +117,6 @@
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.cpp" />
     <ClCompile Include="scr\opengl\DebugRenderer.cpp" />
     <ClCompile Include="dependencies\base64\base64.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_impl_sdl2.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_stdlib.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
-    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="dependencies\pugixml\pugixml.cpp" />
     <ClCompile Include="scr\ECS\Component\RenderComponents\MaterialComponent.cpp" />
     <ClCompile Include="scr\Engine.cpp" />
     <ClCompile Include="scr\Camera.cpp" />
@@ -202,6 +147,7 @@
     <None Include="res\shaders\pixelPerfect.frag" />
     <None Include="res\shaders\sprite.frag" />
     <None Include="res\shaders\sprite.vert" />
+    <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scr\ECS\System\CameraSystem.h" />
@@ -222,61 +168,6 @@
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h" />
     <ClInclude Include="scr\opengl\DebugRenderer.h" />
     <ClInclude Include="dependencies\base64\base64.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_api.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_block_allocator.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_body.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_broad_phase.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_chain_shape.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_circle_shape.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_collision.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_common.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_contact.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_contact_manager.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_distance.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_distance_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_draw.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_dynamic_tree.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_edge_shape.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_fixture.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_friction_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_gear_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_growable_stack.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_math.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_motor_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_mouse_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_polygon_shape.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_prismatic_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_pulley_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_revolute_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_rope.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_settings.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_shape.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_stack_allocator.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_timer.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_time_of_impact.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_time_step.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_types.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_weld_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_wheel_joint.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_world.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\b2_world_callbacks.h" />
-    <ClInclude Include="dependencies\box2d\include\box2d\box2d.h" />
-    <ClInclude Include="dependencies\imgui\imconfig.h" />
-    <ClInclude Include="dependencies\imgui\imgui.h" />
-    <ClInclude Include="dependencies\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="dependencies\imgui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="dependencies\imgui\imgui_impl_sdl2.h" />
-    <ClInclude Include="dependencies\imgui\imgui_internal.h" />
-    <ClInclude Include="dependencies\imgui\imgui_stdlib.h" />
-    <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
-    <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
-    <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
-    <ClInclude Include="dependencies\nlohmann\json.h" />
-    <ClInclude Include="dependencies\pugixml\pugiconfig.hpp" />
-    <ClInclude Include="dependencies\pugixml\pugixml.hpp" />
-    <ClInclude Include="dependencies\zlib\include\zconf.h" />
-    <ClInclude Include="dependencies\zlib\include\zlib.h" />
     <ClInclude Include="scr\HelperFunctions.h" />
     <ClInclude Include="scr\ECS\Component\RenderComponents\MaterialComponent.h" />
     <ClInclude Include="scr\Engine.h" />

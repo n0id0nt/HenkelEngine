@@ -1,9 +1,9 @@
 #include "Engine.h"
-#include "opengl\openglHelper.h"
+#include "opengl/openglHelper.h"
 #include <imgui.h>
 #include <imgui_impl_sdl2.h>
-#include "opengl\DebugRenderer.h"
-#include <imgui_impl_opengl3.h>
+#include "opengl/DebugRenderer.h"
+#include "imgui_impl_opengl3.h"
 
 Engine*Engine::s_engine = nullptr;
 

@@ -1,6 +1,6 @@
 #include "CameraComponent.h"
 #include <Engine.h>
-#include "imgui\imgui.h"
+#include "imgui.h"
 
 CameraComponent::CameraComponent() 
 	: m_zoom(1.f), m_isActiveCamera(false), debugLines(false), m_offset(glm::vec2()), 

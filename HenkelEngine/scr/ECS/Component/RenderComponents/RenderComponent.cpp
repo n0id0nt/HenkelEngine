@@ -30,7 +30,7 @@ void RenderComponent::Render()
     {
 
         GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
-        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(m_Quads * QUAD_SIZE, m_Vertices.size() - indexOffset), &m_Vertices.at(indexOffset)));
+        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(static_cast<int>(m_Quads * QUAD_SIZE), static_cast<int>(m_Vertices.size() - indexOffset)), &m_Vertices.at(indexOffset)));
 
         GLCall(glDrawElements(GL_TRIANGLES, m_Indexes.size(), GL_UNSIGNED_INT, 0));
 

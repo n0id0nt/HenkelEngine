@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-#include "SOIL2.h"
+#include "SOIL2/SOIL2.h"
 #include "GL\glew.h"
 #include "openglHelper.h"
 

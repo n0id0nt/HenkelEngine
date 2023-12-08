@@ -157,9 +157,12 @@
   <ItemGroup>
     <None Include="res\shaders\sprite.frag" />
     <None Include="res\shaders\sprite.vert" />
-    <None Include="res\shaders\debug.frag" />
-    <None Include="res\shaders\debug.vert" />
     <None Include="res\shaders\pixelPerfect.frag" />
+    <None Include="res\shaders\debug_ss.frag" />
+    <None Include="res\shaders\debug_ss.vert" />
+    <None Include="res\shaders\debug_ws.frag" />
+    <None Include="res\shaders\debug_ws.vert" />
+    <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scr\Camera.h">

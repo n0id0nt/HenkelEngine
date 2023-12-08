@@ -100,15 +100,15 @@ function jumpArcSpeed()
 end
 
 function jumpGravity()
-    return jumpDist ~= 0 and (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpDist, 2) or 0
+    return jumpDist ~= 0 and (2 * jumpHeight * maxSpeed ^ 2) / jumpDist ^ 2 or 0
 end
 
 function jumpArcGravity()
-    return jumpArcDist ~= 0 and (2 * jumpArcHeight * math.pow(maxSpeed, 2)) / math.pow(jumpArcDist, 2) or 0
+    return jumpArcDist ~= 0 and (2 * jumpArcHeight * maxSpeed ^ 2) / jumpArcDist ^ 2 or 0
 end
 
 function fallGravity()
-    return jumpFallDist ~= 0 and (2 * jumpHeight * math.pow(maxSpeed, 2)) / math.pow(jumpFallDist, 2) or 0
+    return jumpFallDist ~= 0 and (2 * jumpHeight * maxSpeed ^ 2) / jumpFallDist * 2 or 0
 end
 
 -- these are for animation controls

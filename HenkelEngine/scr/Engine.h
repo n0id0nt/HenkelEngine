@@ -2,7 +2,7 @@
 
 #include <memory>
 #include "Window.h"
-#include <SDL.h>
+#include <SDL2\SDL.h>
 #include <string>
 #include "TimeHelper.h"
 #include "glm\glm.hpp"
