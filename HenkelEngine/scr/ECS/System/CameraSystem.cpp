@@ -43,13 +43,7 @@ void CameraSystem::Update(Camera* camera)
 				{
 					newPos.y = glm::mix(0.f, cameraComponentScreenPos.y - cameraComponent->GetOffset().y + cameraComponent->GetDeadZone().y, cameraComponent->GetDamping().y * deltaTime);
 				}
-			}
-
-
-			//newPos -= cameraComponent->GetOffset();
-
-			//glm::vec3 newPos = glm::mix(camera->GetPosition(), cameraComponentPos, 0.2f);
-			
+			}			
 			
 			camera->SetPosition(glm::vec3{camera->ScreenPosToWorldPos(newPos), 0.f});
 			camera->SetZoom(cameraComponent->GetZoom());
