@@ -5,7 +5,7 @@
 
 CameraComponent::CameraComponent() 
 	: m_zoom(1.f), m_isActiveCamera(false), debugLines(false), m_offset(glm::vec2()), 
-	m_deadZone(glm::vec2()), m_softZone(glm::vec2(0.5f, 0.5f)), m_softDamping(glm::vec2()), m_hardDamping(glm::vec2())
+	m_deadZone(glm::vec2()), m_damping(glm::vec2(1.f,1.f))
 {
 }
 
@@ -48,10 +48,8 @@ void CameraComponent::DrawDebugPanel()
 	ImGui::SameLine();
 	ImGui::Checkbox("Debug Lines", &debugLines);
 
-	ImGui::DrawVec2Control("Soft Damping", m_softDamping);
-	ImGui::DrawVec2Control("Hard Damping", m_hardDamping);
+	ImGui::DrawVec2Control("Damping", m_damping);
 	ImGui::DrawVec2Control("Camera Offset", m_offset);
-	ImGui::DrawVec2Control("Soft Zone", m_softZone);
 	ImGui::DrawVec2Control("Dead Zone", m_deadZone);
 
 	if (isActive != m_isActiveCamera)
@@ -87,32 +85,13 @@ glm::vec2 CameraComponent::GetDeadZone()
 	return m_deadZone;
 }
 
-void CameraComponent::SetSoftZone(glm::vec2 softZone)
+void CameraComponent::SetDamping(glm::vec2 damping)
 {
-	m_softZone = softZone;
+	m_damping = damping;
 }
 
-glm::vec2 CameraComponent::GetSoftZone()
+glm::vec2 CameraComponent::GetDamping()
 {
-	return m_softZone;
+	return m_damping;
 }
 
-void CameraComponent::SetSoftDamping(glm::vec2 softDamping)
-{
-	m_softDamping = softDamping;
-}
-
-glm::vec2 CameraComponent::GetSoftDamping()
-{
-	return m_softDamping;
-}
-
-void CameraComponent::SetHardDamping(glm::vec2 hardDamping)
-{
-	m_hardDamping = hardDamping;
-}
-
-glm::vec2 CameraComponent::GetHardDamping()
-{
-	return m_hardDamping;
-}

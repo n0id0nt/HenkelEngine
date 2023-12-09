@@ -22,16 +22,11 @@ public:
 	void SetDeadZone(glm::vec2 deadZone);
 	glm::vec2 GetDeadZone();	
 	
-	void SetSoftZone(glm::vec2 softZone);
-	glm::vec2 GetSoftZone();
-	
-	void SetSoftDamping(glm::vec2 softDamping);
-	glm::vec2 GetSoftDamping();
-	
-	void SetHardDamping(glm::vec2 hardDamping);
-	glm::vec2 GetHardDamping();
+	void SetDamping(glm::vec2 damping);
+	glm::vec2 GetDamping();
 
 	bool debugLines;
+
 private:
 
 	float m_zoom;
@@ -39,10 +34,8 @@ private:
 
 	glm::vec2 m_offset;
 	glm::vec2 m_deadZone;
-	glm::vec2 m_softZone;
 
-	glm::vec2 m_softDamping;
-	glm::vec2 m_hardDamping;
+	glm::vec2 m_damping;
 
 };
 
