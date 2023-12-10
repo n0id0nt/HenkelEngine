@@ -10,6 +10,5 @@ int main(int argc, char** argv)
 	Engine::GetInstance()->Loop();
 	Engine::GetInstance()->ExitEngine();
 
-
 	return 0;
 }

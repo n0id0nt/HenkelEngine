@@ -21,16 +21,16 @@
             "scale": 1,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 869.5,
-                "y": 215.5
+                "x": 800,
+                "y": 399.5
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {
             "scale": 2,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 760.25,
-                "y": 160.25
+                "x": 800,
+                "y": 159.75
             }
         },
         "Player.tmx": {
@@ -60,14 +60,14 @@
                 3
             ],
             "expandedObjectLayers": [
-                4,
-                6
+                6,
+                4
             ],
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 240,
-                "y": 159.75
+                "x": 246,
+                "y": 264.25
             }
         },
         "TestTiles.tsj": {

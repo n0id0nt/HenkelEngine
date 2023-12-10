@@ -62,6 +62,10 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 		{
 			pixelsPerMeter = property.attribute("value").as_float();
 		}
+		else if (name == "ActiveCamera")
+		{
+			m_activeCameraId = property.attribute("value").as_int();
+		}
 	}
 
 	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f, 0.f }, timeStep, velocityIterations, positionIterations, pixelsPerMeter);
@@ -301,7 +305,13 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		}
 		else if (splitPropertyName[0] == "Camera")
 		{
-			gameObjectEntity->CreateComponent<CameraComponent>();
+			auto* cameraComponent = gameObjectEntity->CreateComponent<CameraComponent>();
+			// is camera active camera
+			if (object.attribute("id").as_int() == m_activeCameraId)
+			{
+				cameraComponent->MakeCameraActive(m_camera.get());
+				cameraComponent->SetForcePosition(true);
+			}
 		}
 	}
 	auto* scriptComponent = gameObjectEntity->GetComponent<ScriptComponent>();

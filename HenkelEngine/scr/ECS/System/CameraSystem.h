@@ -9,6 +9,9 @@ public:
 
 	void Update(Camera* camera);
 
+	glm::vec3 CalculateSmoothedPosition(CameraComponent* cameraComponent, const glm::vec3& cameraComponentPos, Camera* camera);
+	glm::vec3 TargetPosition(CameraComponent* cameraComponent, const glm::vec3& cameraComponentPos, Camera* camera);
+
 private:
 
 	Registry* m_registry = nullptr;

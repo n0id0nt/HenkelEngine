@@ -5,7 +5,7 @@
 
 CameraComponent::CameraComponent() 
 	: m_zoom(1.f), m_isActiveCamera(false), debugLines(false), m_offset(glm::vec2()), 
-	m_deadZone(glm::vec2()), m_damping(glm::vec2(1.f,1.f))
+	m_deadZone(glm::vec2()), m_damping(glm::vec2(1.f,1.f)), m_forcePosition(false)
 {
 }
 
@@ -26,18 +26,28 @@ bool CameraComponent::IsActiveCamera() const
 
 void CameraComponent::MakeCameraActive()
 {
-	if (m_isActiveCamera) 
+	MakeCameraActive(Engine::GetInstance()->GetCurrentScene()->GetCamera());
+}
+
+void CameraComponent::MakeCameraActive(Camera* camera)
+{
+	if (m_isActiveCamera)
 		return;
-	Engine::GetInstance()->GetCurrentScene()->GetCamera()->SetActiveCameraComponent(this);
+	camera->SetActiveCameraComponent(this);
 	m_isActiveCamera = true;
 }
 
 void CameraComponent::MakeCameraInactive()
 {
-	if (!m_isActiveCamera)
+	MakeCameraInactive(Engine::GetInstance()->GetCurrentScene()->GetCamera());
+}
+
+void CameraComponent::MakeCameraInactive(Camera* camera)
+{
+	if (m_isActiveCamera)
 		return;
+	camera->SetActiveCameraComponent(nullptr);
 	m_isActiveCamera = false;
-	Engine::GetInstance()->GetCurrentScene()->GetCamera()->SetActiveCameraComponent(nullptr);
 }
 
 void CameraComponent::DrawDebugPanel()
@@ -47,6 +57,11 @@ void CameraComponent::DrawDebugPanel()
 	ImGui::Checkbox("Active Camera", &isActive);
 	ImGui::SameLine();
 	ImGui::Checkbox("Debug Lines", &debugLines);
+	ImGui::SameLine();
+	if (ImGui::Button("Force Position"))
+	{
+		SetForcePosition(true);
+	}
 
 	ImGui::DrawVec2Control("Damping", m_damping);
 	ImGui::DrawVec2Control("Camera Offset", m_offset);
@@ -93,5 +108,22 @@ void CameraComponent::SetDamping(glm::vec2 damping)
 glm::vec2 CameraComponent::GetDamping()
 {
 	return m_damping;
+}
+
+void CameraComponent::SetForcePosition(bool value)
+{
+	m_forcePosition = value;
+}
+
+bool CameraComponent::IsPositionForced()
+{
+	return m_forcePosition;
+}
+
+void CameraComponent::LUABind(sol::state& lua)
+{
+	lua.new_usertype<CameraComponent>("Camera",
+		"isActiveCamera", &CameraComponent::IsActiveCamera
+	);
 }
 

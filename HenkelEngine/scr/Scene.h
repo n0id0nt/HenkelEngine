@@ -53,5 +53,8 @@ private:
 	RenderSystem m_renderSystem;
 	ScriptSystem m_scriptSystem;
 	CameraSystem m_cameraSystem;
+
+	//TODO should probably remove this
+	int m_activeCameraId = 0;
 };
 
