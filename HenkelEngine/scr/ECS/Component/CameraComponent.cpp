@@ -4,8 +4,9 @@
 #include "DebugGUIPanels/ImGuiHelper.h"
 
 CameraComponent::CameraComponent() 
-	: m_zoom(1.f), m_isActiveCamera(false), debugLines(false), m_offset(glm::vec2()), 
-	m_deadZone(glm::vec2()), m_damping(glm::vec2(1.f,1.f)), m_forcePosition(false)
+	: m_zoom(1.f), m_angle(0.f), m_isActiveCamera(false), debugLines(false), m_offset(glm::vec2()), 
+	m_deadZone(glm::vec2()), m_damping(glm::vec2(1.f,1.f)), m_forcePosition(false),
+	m_trauma(0.f), m_traumaTime(0.f), m_maxOffset(0.f), m_maxAngle(0.f)
 {
 }
 
@@ -53,6 +54,7 @@ void CameraComponent::MakeCameraInactiveFromCamera(Camera* camera)
 void CameraComponent::DrawDebugPanel()
 {
 	ImGui::SliderFloat("Zoom", &m_zoom, 0.1f, 10.f);
+	ImGui::SliderFloat("Angle", &m_angle, -180.f, 180.f);
 	bool isActive = m_isActiveCamera;
 	ImGui::Checkbox("Active Camera", &isActive);
 	ImGui::SameLine();
@@ -110,6 +112,16 @@ glm::vec2 CameraComponent::GetDamping()
 	return m_damping;
 }
 
+void CameraComponent::SetAngle(float angle)
+{
+	m_angle = angle;
+}
+
+float CameraComponent::GetAngle()
+{
+	return m_angle;
+}
+
 void CameraComponent::ForcePosition()
 {
 	m_forcePosition = true;
@@ -123,6 +135,42 @@ void CameraComponent::SetForcePosition(bool value)
 bool CameraComponent::IsPositionForced()
 {
 	return m_forcePosition;
+}
+
+void CameraComponent::AddTrauma(float trauma)
+{
+	m_trauma += trauma;
+	if (m_trauma > 1.f) m_trauma = 1.f;
+}
+
+float CameraComponent::GetTrauma()
+{
+	return m_trauma;
+}
+
+void CameraComponent::SetTrauma(float trauma)
+{
+	m_trauma = trauma;
+}
+
+void CameraComponent::ResetTrauma()
+{
+	m_trauma = 0.f;
+}
+
+float CameraComponent::GetTraumaTime()
+{
+	return m_traumaTime;
+}
+
+float CameraComponent::GetMaxOffset()
+{
+	return m_maxOffset;
+}
+
+float CameraComponent::GetMaxAngle()
+{
+	return m_maxAngle;
 }
 
 void CameraComponent::LUABind(sol::state& lua)
@@ -139,7 +187,8 @@ void CameraComponent::LUABind(sol::state& lua)
 		"getDeadZone", &CameraComponent::GetDeadZone,
 		"setDamping", &CameraComponent::SetDamping,
 		"getDamping", &CameraComponent::GetDamping,
-		"forcePosition", &CameraComponent::ForcePosition
+		"forcePosition", &CameraComponent::ForcePosition,
+		"addShakeTrauma", &CameraComponent::AddTrauma
 	);
 }
 

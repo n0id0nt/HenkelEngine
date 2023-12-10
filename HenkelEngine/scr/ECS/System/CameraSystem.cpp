@@ -25,6 +25,8 @@ void CameraSystem::Update(Camera* camera)
 
 			camera->SetPosition(newPos);
 			camera->SetZoom(cameraComponent->GetZoom());
+			camera->SetAngle(cameraComponent->GetAngle());
+			CalculateCameraShake(cameraComponent, camera);
 
 			if (cameraComponent->debugLines)
 			{
@@ -73,4 +75,26 @@ glm::vec3 CameraSystem::TargetPosition(CameraComponent* cameraComponent, const g
 {
 	glm::vec2 cameraComponentScreenPos = camera->WorldPosToScreenPos(cameraComponentPos);
 	return glm::vec3{camera->ScreenPosToWorldPos(cameraComponentScreenPos - cameraComponent->GetOffset()), 0.f};
+}
+
+void CameraSystem::CalculateCameraShake(CameraComponent* cameraComponent, Camera* camera)
+{
+	float trauma = cameraComponent->GetTrauma();
+	if (trauma > 0.f)
+	{
+		const int seed = 0;
+		float shake = std::pow(trauma, 2.f);
+		//float angle = cameraComponent->GetMaxAngle() * shake * GetPerlinNoise(seed, time);
+		//float xOffset = cameraComponent->GetMaxAngle() * shake * GetPerlinNoise(seed + 1, time);
+		//float yOffset = cameraComponent->GetMaxAngle() * shake * GetPerlinNoise(seed + 2, time);
+
+		float deltaTime = Engine::GetInstance()->GetTime()->GetDeltaTime();
+		cameraComponent->SetTrauma(trauma - deltaTime / cameraComponent->GetTraumaTime());
+		camera->SetPosition(camera->GetPosition() + glm::vec3());
+		camera->SetAngle(camera->GetAngle() + 0.f);
+	}
+	else
+	{
+		cameraComponent->ResetTrauma();
+	}
 }

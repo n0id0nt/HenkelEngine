@@ -30,9 +30,20 @@ public:
 	void SetDamping(glm::vec2 damping);
 	glm::vec2 GetDamping();
 
+	void SetAngle(float angle);
+	float GetAngle();
+
 	void ForcePosition();
 	void SetForcePosition(bool value);
 	bool IsPositionForced();
+
+	void AddTrauma(float trauma);
+	float GetTrauma();
+	void SetTrauma(float trauma);
+	void ResetTrauma();
+	float GetTraumaTime();
+	float GetMaxOffset();
+	float GetMaxAngle();
 
 	bool debugLines;
 
@@ -50,5 +61,11 @@ private:
 
 	bool m_forcePosition;
 
+	float m_traumaTime;
+	float m_maxOffset;
+	float m_maxAngle;
+	float m_trauma;
+
+	float m_angle;
 };
 

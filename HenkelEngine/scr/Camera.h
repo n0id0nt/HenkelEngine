@@ -25,6 +25,9 @@ public:
 	void SetPosition(glm::vec3 position);
 	glm::vec3 GetPosition();
 
+	void SetAngle(float angle);
+	float GetAngle();
+
 	glm::mat4 CalculateProjection(float width, float height);
 
 	glm::vec2 ScreenPosToWorldPos(glm::vec2 screenPosition);
@@ -39,6 +42,7 @@ private:
 	float m_Near = 0.1f;
 	float m_Far = 1000.f;
 	float m_zoom = 1.f;
+	float m_angle = 0.f;
 	CameraComponent* m_activeCameraComponent = nullptr;
 };
 
