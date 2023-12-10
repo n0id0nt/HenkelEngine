@@ -1,6 +1,7 @@
 #include "ScriptComponent.h"
 #include <opengl\openglHelper.h>
 #include "imgui.h"
+#include <DebugGUIPanels\ImGuiHelper.h>
 
 ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Entity* entity)
 	: m_this(), m_entity(entity), m_properties(), m_lua(&lua)
@@ -114,6 +115,21 @@ void ScriptComponent::DrawDebugPanel()
 			ImGui::Checkbox(propertyPair.name.c_str(), &value);
 			(*m_lua)["temp"] = value;
 			propertyPair.value = (*m_lua)["temp"];
+			break;
+		}
+		case sol::type::userdata:
+		{
+			if (propertyPair.value.is<glm::vec2>())
+			{
+				glm::vec2 value = propertyPair.value.as<glm::vec2>();
+				ImGui::DrawVec2Control(propertyPair.name.c_str(), value);
+				(*m_lua)["temp"] = value;
+				propertyPair.value = (*m_lua)["temp"];
+			}
+			else
+			{
+				ImGui::Text((propertyPair.name + std::string(" is not a supported userdata type")).c_str());
+			}
 			break;
 		}
 		default:

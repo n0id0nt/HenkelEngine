@@ -18,6 +18,18 @@ function Clamp(value, minValue, maxValue)
     return math.max(minValue, math.min(value, maxValue))
 end
 
+function copyTable(originalTable)
+    local copy = {}
+    for key, value in pairs(originalTable) do
+        if type(value) == "table" then
+            copy[key] = copyTable(value) -- recursively copy subtables
+        else
+            copy[key] = value
+        end
+    end
+    return copy
+end
+
 --------------------------------------------------------------
 --INPUT
 --------------------------------------------------------------
@@ -69,7 +81,7 @@ end
 --JUMP
 --------------------------------------------------------------
 Script:property("jumpDist", 16 * 3)
-Script:property("jumpHeight", 16 * 5)
+Script:property("jumpHeight", 16 * 6)
 Script:property("jumpArcHeight", 16)
 Script:property("jumpArcDist", 16)
 Script:property("jumpFallDist", 16 * 2)
@@ -191,6 +203,7 @@ function dash()
     horizontalSpeed = horrizontalInput * dashSpeed
     verticalSpeed = 0
 end
+
 --------------------------------------------------------------
 --ANIMATION
 --------------------------------------------------------------
@@ -223,6 +236,29 @@ function tryPlayAnimation(animation)
         spriteAnimation:playAnimation(animation)
     end
 end
+
+--------------------------------------------------------------
+--CAMERA
+--------------------------------------------------------------
+Script:property("cameraLookAhead", 0.3)
+Script:property("cameraGroundedOffset", vec2.new(0, 0))
+Script:property("cameraInAirOffset", vec2.new(0, 0.3))
+Script:property("CameraGroundedDeadZone", vec2.new(0, 0))
+Script:property("CameraInAirDeadZone", vec2.new(0, 0.3))
+
+function updateCamera()
+    local offset = vec2.copy(isGrounded and cameraGroundedOffset or cameraInAirOffset)
+    local deadZone = vec2.copy(isGrounded and CameraGroundedDeadZone or CameraInAirDeadZone)
+    if horizontalInput > 0 then
+        offset.x = offset.x - cameraLookAhead
+    elseif horizontalInput < 0 then
+        offset.x = offset.x + cameraLookAhead
+    end
+    local camera = GO:getCamera()
+    camera:setDeadZone(deadZone)
+    camera:setOffset(offset)
+end
+
 --------------------------------------------------------------
 --SCRIPT EVENTS
 --------------------------------------------------------------
@@ -254,4 +290,5 @@ Script.update = function()
     GO:getPhysicsBody():setVelocity(vec2.new(horizontalSpeed, verticalSpeed))
 
     controlAnimations()
+    updateCamera()
 end
