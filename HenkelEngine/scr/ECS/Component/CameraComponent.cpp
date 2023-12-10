@@ -26,10 +26,10 @@ bool CameraComponent::IsActiveCamera() const
 
 void CameraComponent::MakeCameraActive()
 {
-	MakeCameraActive(Engine::GetInstance()->GetCurrentScene()->GetCamera());
+	MakeCameraActiveFromCamera(Engine::GetInstance()->GetCurrentScene()->GetCamera());
 }
 
-void CameraComponent::MakeCameraActive(Camera* camera)
+void CameraComponent::MakeCameraActiveFromCamera(Camera* camera)
 {
 	if (m_isActiveCamera)
 		return;
@@ -39,10 +39,10 @@ void CameraComponent::MakeCameraActive(Camera* camera)
 
 void CameraComponent::MakeCameraInactive()
 {
-	MakeCameraInactive(Engine::GetInstance()->GetCurrentScene()->GetCamera());
+	MakeCameraInactiveFromCamera(Engine::GetInstance()->GetCurrentScene()->GetCamera());
 }
 
-void CameraComponent::MakeCameraInactive(Camera* camera)
+void CameraComponent::MakeCameraInactiveFromCamera(Camera* camera)
 {
 	if (m_isActiveCamera)
 		return;
@@ -110,6 +110,11 @@ glm::vec2 CameraComponent::GetDamping()
 	return m_damping;
 }
 
+void CameraComponent::ForcePosition()
+{
+	m_forcePosition = true;
+}
+
 void CameraComponent::SetForcePosition(bool value)
 {
 	m_forcePosition = value;
@@ -123,7 +128,18 @@ bool CameraComponent::IsPositionForced()
 void CameraComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<CameraComponent>("Camera",
-		"isActiveCamera", &CameraComponent::IsActiveCamera
+		"setZoom", &CameraComponent::SetZoom,
+		"getZoom", &CameraComponent::GetZoom,
+		"isActiveCamera", &CameraComponent::IsActiveCamera,
+		"makeCameraActive", &CameraComponent::MakeCameraActive,
+		"makeCameraInactive", &CameraComponent::MakeCameraInactive,
+		"setOffset", &CameraComponent::SetOffset,
+		"getOffset", &CameraComponent::GetOffset,
+		"setDeadZone", &CameraComponent::SetDeadZone,
+		"getDeadZone", &CameraComponent::GetDeadZone,
+		"setDamping", &CameraComponent::SetDamping,
+		"getDamping", &CameraComponent::GetDamping,
+		"forcePosition", &CameraComponent::ForcePosition
 	);
 }
 

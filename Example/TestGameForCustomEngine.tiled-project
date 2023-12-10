@@ -51,6 +51,54 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 7,
+            "members": [
+                {
+                    "name": "Damping",
+                    "propertyType": "Vec2",
+                    "type": "class",
+                    "value": {
+                        "X": 1,
+                        "Y": 1
+                    }
+                },
+                {
+                    "name": "DeadZone",
+                    "propertyType": "Vec2",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "Offset",
+                    "propertyType": "Vec2",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "Zoom",
+                    "type": "float",
+                    "value": 1
+                }
+            ],
+            "name": "Camera",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "id": 1,
             "name": "ColliderType",
             "storageType": "string",
@@ -118,10 +166,20 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 7,
+            "id": 8,
             "members": [
+                {
+                    "name": "X",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "Y",
+                    "type": "float",
+                    "value": 0
+                }
             ],
-            "name": "Camera",
+            "name": "Vec2",
             "type": "class",
             "useAs": [
                 "property",

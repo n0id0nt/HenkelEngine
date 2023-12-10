@@ -36,7 +36,29 @@
  <objectgroup id="8" name="objects">
   <object id="1" template="Template/Player.tx" x="329" y="510">
    <properties>
-    <property name="Camera" type="class" propertytype="Camera"/>
+    <property name="Camera" type="class" propertytype="Camera">
+     <properties>
+      <property name="Damping" type="class" propertytype="Vec2">
+       <properties>
+        <property name="X" type="float" value="5"/>
+        <property name="Y" type="float" value="5"/>
+       </properties>
+      </property>
+      <property name="DeadZone" type="class" propertytype="Vec2">
+       <properties>
+        <property name="X" type="float" value="0.1"/>
+        <property name="Y" type="float" value="0.1"/>
+       </properties>
+      </property>
+      <property name="Offset" type="class" propertytype="Vec2">
+       <properties>
+        <property name="X" type="float" value="0.1"/>
+        <property name="Y" type="float" value="0.1"/>
+       </properties>
+      </property>
+      <property name="Zoom" type="float" value="2.5"/>
+     </properties>
+    </property>
    </properties>
   </object>
  </objectgroup>

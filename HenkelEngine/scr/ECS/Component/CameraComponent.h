@@ -15,9 +15,9 @@ public:
 
 	bool IsActiveCamera() const;
 	void MakeCameraActive();
-	void MakeCameraActive(Camera* camera);
+	void MakeCameraActiveFromCamera(Camera* camera);
 	void MakeCameraInactive();
-	void MakeCameraInactive(Camera* camera);
+	void MakeCameraInactiveFromCamera(Camera* camera);
 
 	void DrawDebugPanel();
 
@@ -30,6 +30,7 @@ public:
 	void SetDamping(glm::vec2 damping);
 	glm::vec2 GetDamping();
 
+	void ForcePosition();
 	void SetForcePosition(bool value);
 	bool IsPositionForced();
 

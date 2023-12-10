@@ -3,6 +3,7 @@
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
 #include "ECS/Component/RenderComponents/SpriteComponent.h"
 #include <ECS\Component\SpriteAnimationComponent.h>
+#include <ECS\Component\CameraComponent.h>
 
 Entity::Entity(const std::string& name, Registry* registry)
 	: m_name(name), m_registry(registry), m_parent(nullptr), m_children()
@@ -77,6 +78,7 @@ void Entity::LUABind(sol::state& lua)
 		"getTransform", &Entity::GetComponent<TransformComponent>,
 		"getSprite", &Entity::GetComponent<SpriteComponent>,
 		"getSpriteAnimation", &Entity::GetComponent<SpriteAnimationComponent>,
-		"getPhysicsBody", &Entity::GetComponent<PhysicsBodyComponent>
+		"getPhysicsBody", &Entity::GetComponent<PhysicsBodyComponent>,
+		"getCamera", &Entity::GetComponent<CameraComponent>
 	);
 }

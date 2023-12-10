@@ -309,8 +309,67 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 			// is camera active camera
 			if (object.attribute("id").as_int() == m_activeCameraId)
 			{
-				cameraComponent->MakeCameraActive(m_camera.get());
-				cameraComponent->SetForcePosition(true);
+				cameraComponent->MakeCameraActiveFromCamera(m_camera.get());
+				cameraComponent->ForcePosition();
+			}
+			for (auto& cameraProperty : property.child("properties").children())
+			{
+				std::string name = cameraProperty.attribute("name").as_string();
+				if (name == "Zoom")
+				{
+					cameraComponent->SetZoom(cameraProperty.attribute("value").as_float());
+				}
+				else if (name == "DeadZone")
+				{
+					glm::vec2 vec{};
+					for (auto& vecProperty : cameraProperty.child("properties").children())
+					{
+						std::string name = vecProperty.attribute("name").as_string();
+						if (name == "X")
+						{
+							vec.x = vecProperty.attribute("value").as_float();
+						}
+						else if (name == "Y")
+						{
+							vec.y = vecProperty.attribute("value").as_float();
+						}
+					}
+					cameraComponent->SetDeadZone(vec);
+				}
+				else if (name == "Offset")
+				{
+					glm::vec2 vec{};
+					for (auto& vecProperty : cameraProperty.child("properties").children())
+					{
+						std::string name = vecProperty.attribute("name").as_string();
+						if (name == "X")
+						{
+							vec.x = vecProperty.attribute("value").as_float();
+						}
+						else if (name == "Y")
+						{
+							vec.y = vecProperty.attribute("value").as_float();
+						}
+					}
+					cameraComponent->SetOffset(vec);
+				}
+				else if (name == "Damping")
+				{
+					glm::vec2 vec{};
+					for (auto& vecProperty : cameraProperty.child("properties").children())
+					{
+						std::string name = vecProperty.attribute("name").as_string();
+						if (name == "X")
+						{
+							vec.x = vecProperty.attribute("value").as_float();
+						}
+						else if (name == "Y")
+						{
+							vec.y = vecProperty.attribute("value").as_float();
+						}
+					}
+					cameraComponent->SetDamping(vec);
+				}
 			}
 		}
 	}

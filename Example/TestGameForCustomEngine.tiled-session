@@ -108,7 +108,7 @@
         "AutomappingRules/AutoTileRules.tmx"
     ],
     "project": "TestGameForCustomEngine.tiled-project",
-    "property.type": "object",
+    "property.type": "Vec2",
     "recentFiles": [
         "TestLevel.tmx",
         "adventurer-1.3-Sheet.tsx",
