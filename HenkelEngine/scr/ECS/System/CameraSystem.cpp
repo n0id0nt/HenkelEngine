@@ -3,8 +3,9 @@
 #include <ECS\Component\TransformComponent.h>
 #include "opengl\DebugRenderer.h"
 #include <Engine.h>
+#include <HelperFunctions.h>
 
-CameraSystem::CameraSystem(Registry* registry) : m_registry(registry)
+CameraSystem::CameraSystem(Registry* registry) : m_registry(registry), m_previousCameraPosition(), m_previousCameraAngle(0.f)
 {
 }
 
@@ -16,6 +17,7 @@ void CameraSystem::Update(Camera* camera)
 		auto* cameraComponent = m_registry->GetComponent<CameraComponent>(entity);
 		if (cameraComponent->IsActiveCamera())
 		{
+			camera->SetPosition(m_previousCameraPosition);
 			auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
 			glm::vec3 cameraComponentPos = transformComponent->GetWorldPosition();
 
@@ -26,6 +28,9 @@ void CameraSystem::Update(Camera* camera)
 			camera->SetPosition(newPos);
 			camera->SetZoom(cameraComponent->GetZoom());
 			camera->SetAngle(cameraComponent->GetAngle());
+			m_previousCameraPosition = newPos; 
+
+			// exclude shake from previous position
 			CalculateCameraShake(cameraComponent, camera);
 
 			if (cameraComponent->debugLines)
@@ -84,14 +89,15 @@ void CameraSystem::CalculateCameraShake(CameraComponent* cameraComponent, Camera
 	{
 		const int seed = 0;
 		float shake = std::pow(trauma, 2.f);
-		//float angle = cameraComponent->GetMaxAngle() * shake * GetPerlinNoise(seed, time);
-		//float xOffset = cameraComponent->GetMaxAngle() * shake * GetPerlinNoise(seed + 1, time);
-		//float yOffset = cameraComponent->GetMaxAngle() * shake * GetPerlinNoise(seed + 2, time);
+		float time = Engine::GetInstance()->GetTime()->GetTime();
+		float angle = cameraComponent->GetMaxAngle() * shake * HenkelEngine::PerlinNoise(seed, time / cameraComponent->GetShakeAmplitude());
+		float xOffset = cameraComponent->GetMaxOffset() * shake * HenkelEngine::PerlinNoise(seed + 1, time / cameraComponent->GetShakeAmplitude());
+		float yOffset = cameraComponent->GetMaxOffset() * shake * HenkelEngine::PerlinNoise(seed + 2, time / cameraComponent->GetShakeAmplitude());
 
 		float deltaTime = Engine::GetInstance()->GetTime()->GetDeltaTime();
 		cameraComponent->SetTrauma(trauma - deltaTime / cameraComponent->GetTraumaTime());
-		camera->SetPosition(camera->GetPosition() + glm::vec3());
-		camera->SetAngle(camera->GetAngle() + 0.f);
+		camera->SetPosition(camera->GetPosition() + glm::vec3(xOffset, yOffset, 0.f));
+		camera->SetAngle(camera->GetAngle() + angle);
 	}
 	else
 	{

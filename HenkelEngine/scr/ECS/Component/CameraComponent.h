@@ -44,6 +44,7 @@ public:
 	float GetTraumaTime();
 	float GetMaxOffset();
 	float GetMaxAngle();
+	float GetShakeAmplitude();
 
 	bool debugLines;
 
@@ -65,6 +66,7 @@ private:
 	float m_maxOffset;
 	float m_maxAngle;
 	float m_trauma;
+	float m_shakeAmplitude;
 
 	float m_angle;
 };

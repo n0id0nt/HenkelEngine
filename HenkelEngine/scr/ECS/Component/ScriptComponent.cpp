@@ -93,7 +93,7 @@ void ScriptComponent::DrawDebugPanel()
 		case sol::type::number:
 		{
 			float value = propertyPair.value.as<float>();
-			ImGui::InputFloat(propertyPair.name.c_str(), &value);
+			ImGui::DragFloat(propertyPair.name.c_str(), &value);
 			(*m_lua)["temp"] = value;
 			propertyPair.value = (*m_lua)["temp"];
 			break;

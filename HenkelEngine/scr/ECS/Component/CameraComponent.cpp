@@ -6,7 +6,7 @@
 CameraComponent::CameraComponent() 
 	: m_zoom(1.f), m_angle(0.f), m_isActiveCamera(false), debugLines(false), m_offset(glm::vec2()), 
 	m_deadZone(glm::vec2()), m_damping(glm::vec2(1.f,1.f)), m_forcePosition(false),
-	m_trauma(0.f), m_traumaTime(0.f), m_maxOffset(0.f), m_maxAngle(0.f)
+	m_trauma(0.f), m_traumaTime(1.f), m_maxOffset(4.f), m_maxAngle(3.f), m_shakeAmplitude(67.8f)
 {
 }
 
@@ -45,7 +45,7 @@ void CameraComponent::MakeCameraInactive()
 
 void CameraComponent::MakeCameraInactiveFromCamera(Camera* camera)
 {
-	if (m_isActiveCamera)
+	if (!m_isActiveCamera)
 		return;
 	camera->SetActiveCameraComponent(nullptr);
 	m_isActiveCamera = false;
@@ -80,6 +80,19 @@ void CameraComponent::DrawDebugPanel()
 			MakeCameraInactive();
 		}
 	}
+
+	static float debugTraumaAmount = 0.2f;
+	if (ImGui::Button("Add Trauma"))
+	{
+		AddTrauma(debugTraumaAmount);
+	}
+	ImGui::SameLine();
+	ImGui::SliderFloat("Trauma Amount", &debugTraumaAmount, 0.f, 1.f);
+	ImGui::DragFloat("Max Shake Angle", &m_maxAngle);
+	ImGui::DragFloat("Max Shake Offset", &m_maxOffset);
+	ImGui::DragFloat("Trauma Time", &m_traumaTime);
+	ImGui::DragFloat("Shake Amplitude", &m_shakeAmplitude);
+	ImGui::SliderFloat("Trauma Value", &m_trauma, 0.f, 1.f);
 }
 
 void CameraComponent::SetOffset(glm::vec2 offset)
@@ -171,6 +184,11 @@ float CameraComponent::GetMaxOffset()
 float CameraComponent::GetMaxAngle()
 {
 	return m_maxAngle;
+}
+
+float CameraComponent::GetShakeAmplitude()
+{
+	return m_shakeAmplitude;
 }
 
 void CameraComponent::LUABind(sol::state& lua)

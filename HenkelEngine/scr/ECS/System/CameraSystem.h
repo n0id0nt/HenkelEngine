@@ -16,5 +16,7 @@ public:
 private:
 
 	Registry* m_registry = nullptr;
+	glm::vec3 m_previousCameraPosition;
+	float m_previousCameraAngle;
 };
 
