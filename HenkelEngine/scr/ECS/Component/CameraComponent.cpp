@@ -47,8 +47,8 @@ void CameraComponent::MakeCameraInactiveFromCamera(Camera* camera)
 {
 	if (!m_isActiveCamera)
 		return;
-	camera->SetActiveCameraComponent(nullptr);
 	m_isActiveCamera = false;
+	camera->SetActiveCameraComponent(nullptr);
 }
 
 void CameraComponent::DrawDebugPanel()
