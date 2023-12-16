@@ -20,9 +20,9 @@
 #include "DebugGUIPanels\GUIPanels.h"
 #include <ECS\Component\CameraComponent.h>
 
-const float timeStep = 1.0f / FPS;
-const int velocityIterations = 6;
-const int positionIterations = 4;
+const float TIME_STEP = 1.0f / FPS;
+const int VELOCITY_ITERATIONS = 40;
+const int POSITION_ITERATIONS = 30;
 
 
 Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
@@ -68,7 +68,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 		}
 	}
 
-	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f, 0.f }, timeStep, velocityIterations, positionIterations, pixelsPerMeter);
+	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f, 0.f }, TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS, pixelsPerMeter);
 
 
 	TileSheet tileSheet(Engine::GetInstance()->GetProjectDirectory(), fileDir + doc.child("map").child("tileset").attribute("source").as_string());

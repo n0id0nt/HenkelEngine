@@ -10,7 +10,7 @@
             <binding type="controllerButton"    value="up"/>
         </bindings>
     </input>
-    <input name="Shoot" type="button">
+    <input name="Dash" type="button">
         <bindings>
             <binding type="keycode" value="lshift"/>
             <binding type="keycode" value="rshift"/>
