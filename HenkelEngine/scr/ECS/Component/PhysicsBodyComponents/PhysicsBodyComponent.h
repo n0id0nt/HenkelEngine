@@ -20,7 +20,8 @@ public:
 
     glm::vec2 GetCollisionShape();
 
-    bool CheckGrounded(float groundAngle);
+    bool CheckCollisionAtAngle(float angle, float groundAngleBuffer);
+    bool CheckGrounded(float groundAngleBuffer);
 
     static void LUABind(sol::state& lua);
 

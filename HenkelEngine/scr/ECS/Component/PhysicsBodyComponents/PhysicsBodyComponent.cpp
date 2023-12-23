@@ -1,6 +1,8 @@
 #include "PhysicsBodyComponent.h"
 #include "opengl/openglHelper.h"
 #include <glm\gtx\vector_angle.hpp>
+#include <opengl\DebugRenderer.h>
+#include <ECS\Entity\Entity.h>
 
 PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape) : m_world(world), m_collisionShape(collisionShape)
 {
@@ -54,19 +56,21 @@ glm::vec2 PhysicsBodyComponent::GetCollisionShape()
 	return m_collisionShape;
 }
 
-bool PhysicsBodyComponent::CheckGrounded(float groundAngle)
+bool PhysicsBodyComponent::CheckCollisionAtAngle(float angle, float groundAngleBuffer)
 {
 	for (auto& contact : GetContacts())
 	{
 		if (contact->IsTouching())
 		{
 			b2Vec2 normal = contact->GetManifold()->localNormal;
-			//glm::vec3 pos = GetEntity()->GetTransform()->GetWorldPosition();
-			//DebugRenderer::DrawLine(pos, glm::vec3{ normal.x * 8.f, normal.y * 8.f, 0.f } + pos, {1.f,0.f,0.f});
+			
 			bool isFixtureA = contact->GetFixtureA()->GetBody() == m_body;
-			float angle = glm::degrees(glm::angle(glm::vec2{ 0.f, 1.f }, (isFixtureA ? 1.f : -1.f)* glm::vec2{ normal.x, normal.y }));
-			if (angle < groundAngle)
+			float angleRadians = glm::radians(angle);
+			float angle = glm::degrees(glm::angle(glm::vec2{ glm::cos(angleRadians), glm::sin(angleRadians) }, (isFixtureA ? 1.f : -1.f) * glm::vec2{ normal.x, normal.y }));
+			if (angle < groundAngleBuffer)
 			{
+				glm::vec3 pos = glm::vec3{ m_body->GetPosition().x, m_body->GetPosition().y, 0 } * m_world->GetPixelsPerMeter();
+				DebugRenderer::DrawLine(pos, glm::vec3{ normal.x * 16.f, normal.y * 16.f, 0.f } + pos, { 0.9f,0.1f,0.2f });
 				return true;
 			}
 		}
@@ -74,12 +78,19 @@ bool PhysicsBodyComponent::CheckGrounded(float groundAngle)
 	return false;
 }
 
+bool PhysicsBodyComponent::CheckGrounded(float groundAngleBuffer)
+{
+	const float angle = 90.f;
+	return CheckCollisionAtAngle(angle, groundAngleBuffer);
+}
+
 void PhysicsBodyComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<PhysicsBodyComponent>("physicsBody",
 		"setVelocity", &PhysicsBodyComponent::SetVelocity,
 		"getVelocity", &PhysicsBodyComponent::GetVelocity,
-		"checkGrounded", &PhysicsBodyComponent::CheckGrounded
+		"checkGrounded", &PhysicsBodyComponent::CheckGrounded,
+		"checkCollisionAtAngle", &PhysicsBodyComponent::CheckCollisionAtAngle
 	);
 }
 

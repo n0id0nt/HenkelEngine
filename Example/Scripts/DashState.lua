@@ -1,6 +1,6 @@
 local DashState = {}
 
-Script:property("dashTime", 2000)
+Script:property("dashTime", 500)
 
 function DashState:new(stateMachine, movement, animations, playAnimation)
     local obj = {}

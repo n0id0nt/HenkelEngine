@@ -3,6 +3,7 @@ local Movement = require("Movement")
 local State_Machine = require("StateMachine")
 local Move_State = require("MoveState")
 local Dash_State = require("DashState")
+local Wall_Slide_State = require("WallSlideState")
 
 local movement = Movement:new()
 --------------------------------------------------------------
@@ -15,6 +16,7 @@ local animations = {
     jump = "Jump",
     upToFall = "UpToFall",
     fall = "Fall",
+    wallSlide = "WallSlide",
 }
 
 function tryPlayAnimation(animation)
@@ -32,6 +34,7 @@ local stateMachine = State_Machine:new()
 local states = {
     moveState = Move_State:new(stateMachine, movement, animations, tryPlayAnimation),
     dashState = Dash_State:new(stateMachine, movement, animations, tryPlayAnimation),
+    wallSlideState = Wall_Slide_State:new(stateMachine, movement, animations, tryPlayAnimation),
 }
 
 stateMachine.states = states

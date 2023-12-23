@@ -76,6 +76,13 @@ function Movement:move()
 end
 
 --------------------------------------------------------------
+--WALLSLIDE
+--------------------------------------------------------------
+Script:property("wallSideMaxFallSpeed", 10)
+
+Movement.isWallSliding = false
+
+--------------------------------------------------------------
 --JUMP
 --------------------------------------------------------------
 Script:property("jumpDist", 16 * 3)
@@ -132,12 +139,14 @@ function Movement:calculateGravity()
             end
         end
     end
-    if not self.isGrounded then
+    if not self.isGrounded then 
         local deltaSpeed = (self.verticalSpeed < 0 and (self.endJumpEarly and self:jumpArcGravity() or self:jumpGravity()) or self:fallGravity()) * Time:getDeltaTime()
         self.verticalSpeed = self.verticalSpeed + deltaSpeed
 
         -- clamp speed
-        if self.verticalSpeed > maxFallSpeed then 
+        if self.isWallSliding and self.verticalSpeed > wallSideMaxFallSpeed then
+            self.verticalSpeed = wallSideMaxFallSpeed
+        elseif self.verticalSpeed > maxFallSpeed then 
             self.verticalSpeed = maxFallSpeed
         end
     end
@@ -180,7 +189,7 @@ end
 --------------------------------------------------------------
 --DASH
 --------------------------------------------------------------
-Script:property("dashSpeed", 1)
+Script:property("dashSpeed", 500)
 
 function Movement:dash()
     self.canDash = false

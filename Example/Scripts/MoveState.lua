@@ -44,6 +44,8 @@ function MoveState:update()
 
     if Input:isInputDown("Dash") then
         self.stateMachine:changeState(self.stateMachine.states.dashState)
+    elseif not self.movement.isGrounded and self.movement.verticalSpeed > 0 and self.movement.horizontalInput ~= 0 and GO:getPhysicsBody():checkGrounded(180, groundAngle) then
+        self.stateMachine:changeState(self.stateMachine.states.wallSlideState)
     end
 end
 
