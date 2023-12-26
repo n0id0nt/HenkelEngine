@@ -1,6 +1,6 @@
 local MoveState = {}
 
-function MoveState:new(stateMachine, movement, animations, playAnimation)
+function MoveState:new(stateMachine, movement, animations, playAnimation, input)
     local obj = {}
     setmetatable(obj, self)
     self.__index = self
@@ -8,6 +8,7 @@ function MoveState:new(stateMachine, movement, animations, playAnimation)
     self.movement = movement
     self.animations = animations
     self.playAnimation = playAnimation
+    self.input = input
     return obj
 end
 
@@ -36,6 +37,12 @@ function MoveState:exit()
 end
 
 function MoveState:update()
+    self.movement:setHorizontalInput(self.input.horizontalInput)
+    if self.input.horizontalInput ~= 0 then
+        GO:getSprite().flipped = self.input.horizontalInput < 0
+    end
+    self.movement:setJumpInput(self.input.jumpInput)
+
     self.movement:move()
     self.movement:calculateGravity()
     self.movement:jump()
@@ -44,7 +51,7 @@ function MoveState:update()
 
     if Input:isInputDown("Dash") then
         self.stateMachine:changeState(self.stateMachine.states.dashState)
-    elseif not self.movement.isGrounded and self.movement.verticalSpeed > 0 and self.movement.horizontalInput ~= 0 and GO:getPhysicsBody():checkGrounded(180, groundAngle) then
+    elseif not self.movement.isGrounded and self.movement.verticalSpeed > 0 and self.movement.horizontalInput ~= 0 and GO:getPhysicsBody():checkCollisionAtAngle(self.movement.horizontalInput > 0 and 0 or 180, groundAngle) then
         self.stateMachine:changeState(self.stateMachine.states.wallSlideState)
     end
 end

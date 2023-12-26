@@ -4,8 +4,10 @@ local State_Machine = require("StateMachine")
 local Move_State = require("MoveState")
 local Dash_State = require("DashState")
 local Wall_Slide_State = require("WallSlideState")
+local Wall_Jump_State = require("WallJumpState")
 
 local movement = Movement:new()
+
 --------------------------------------------------------------
 --ANIMATION
 --------------------------------------------------------------
@@ -27,30 +29,32 @@ function tryPlayAnimation(animation)
 end
 
 --------------------------------------------------------------
+--INPUT
+--------------------------------------------------------------
+local input = {
+    horizontalInput = 0,
+    jumpInput = false,
+}
+
+local function getControllerInput()
+    input.horizontalInput = Input:getInputAxis("Horizontal")
+    input.jumpInput = Input:isInputDown("Jump")
+end
+
+--------------------------------------------------------------
 --STATES
 --------------------------------------------------------------
 local stateMachine = State_Machine:new()
 
 local states = {
-    moveState = Move_State:new(stateMachine, movement, animations, tryPlayAnimation),
-    dashState = Dash_State:new(stateMachine, movement, animations, tryPlayAnimation),
-    wallSlideState = Wall_Slide_State:new(stateMachine, movement, animations, tryPlayAnimation),
+    moveState = Move_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
+    dashState = Dash_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
+    wallSlideState = Wall_Slide_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
+    wallJumpState = Wall_Jump_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
 }
 
 stateMachine.states = states
 stateMachine:changeState(states.moveState)
-
---------------------------------------------------------------
---INPUT
---------------------------------------------------------------
-local horizontalInput = 0
-local jumpInput = false
-
-local function getControllerInput()
-    horizontalInput = Input:getInputAxis("Horizontal")
-    jumpInput = Input:isInputDown("Jump")
-end
-
 
 --------------------------------------------------------------
 --CAMERA
@@ -64,9 +68,9 @@ Script:property("CameraInAirDeadZone", vec2.new(0, 0.4))
 function updateCamera()
     local offset = vec2.copy(movement.isGrounded and cameraGroundedOffset or cameraInAirOffset)
     local deadZone = vec2.copy(movement.isGrounded and CameraGroundedDeadZone or CameraInAirDeadZone)
-    if horizontalInput > 0 then
+    if input.horizontalInput > 0 then
         offset.x = offset.x - cameraLookAhead
-    elseif horizontalInput < 0 then
+    elseif input.horizontalInput < 0 then
         offset.x = offset.x + cameraLookAhead
     end
     local camera = GO:getCamera()
@@ -79,11 +83,6 @@ end
 --------------------------------------------------------------
 Script.update = function()
     getControllerInput()
-    movement:setHorizontalInput(horizontalInput)
-    if horizontalInput ~= 0 then
-        GO:getSprite().flipped = horizontalInput < 0
-    end
-    movement:setJumpInput(jumpInput)
 
     local velocity = GO:getPhysicsBody():getVelocity()
     movement:setSpeed(velocity.x, velocity.y)

@@ -42,6 +42,11 @@ function Movement:setHorizontalInput(value)
     end
 end
 
+function Movement:flipHorizontalInput()
+    self.horizontalInput = -self.facing
+    self.facing = self.horizontalInput
+end
+
 function Movement:setJumpInput(value)
     if value then
         self.lastJumpPress = Time:getTime()
@@ -58,6 +63,10 @@ end
 Script:property("accelerationTime", 0.3)
 Script:property("deccelerationTime", 0.2)
 Script:property("maxSpeed", 80)
+
+function Movement:moveMaxSpeed()
+    self.horizontalSpeed = self.horizontalInput * maxSpeed
+end
 
 function Movement:move()
     self.curAcceleration = self.horizontalSpeed / maxSpeed
@@ -82,6 +91,18 @@ Script:property("wallSideMaxFallSpeed", 10)
 
 Movement.isWallSliding = false
 
+function Movement:wallSlide()
+    self.isGrounded = self.checkGrounded() -- TODO Improve grounded check so it is not being checked in multiple functions
+    
+    local deltaSpeed = self:fallGravity() * Time:getDeltaTime()
+    self.verticalSpeed = self.verticalSpeed + deltaSpeed
+
+    -- clamp speed
+    if self.verticalSpeed > wallSideMaxFallSpeed then
+        self.verticalSpeed = wallSideMaxFallSpeed
+    end
+end
+
 --------------------------------------------------------------
 --JUMP
 --------------------------------------------------------------
@@ -100,6 +121,10 @@ end
 
 function Movement:hasBufferJump()
     return self.isGrounded and (self.lastJumpPress + bufferTime > Time:getTime())
+end
+
+function Movement:hasWallJump()
+    return self.isWallSliding and self.lastJumpPress == Time:getTime()
 end
 
 function Movement:jumpSpeed()
@@ -144,9 +169,7 @@ function Movement:calculateGravity()
         self.verticalSpeed = self.verticalSpeed + deltaSpeed
 
         -- clamp speed
-        if self.isWallSliding and self.verticalSpeed > wallSideMaxFallSpeed then
-            self.verticalSpeed = wallSideMaxFallSpeed
-        elseif self.verticalSpeed > maxFallSpeed then 
+        if self.verticalSpeed > maxFallSpeed then 
             self.verticalSpeed = maxFallSpeed
         end
     end
@@ -154,7 +177,7 @@ end
 
 function Movement:jump()
     -- can jump if: grounded or within coyote threshold or sufficient jump buffer
-    if not self.jumpInputUsed and (self:hasBufferJump() or self:canUseCoyote()) then 
+    if not self.jumpInputUsed and (self:hasBufferJump() or self:canUseCoyote() or self:hasWallJump()) then 
         self.verticalSpeed = -self:jumpSpeed()
         self.jumpInputUsed = true
         self.endJumpEarly = false

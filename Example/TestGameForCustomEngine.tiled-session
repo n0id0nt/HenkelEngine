@@ -18,19 +18,19 @@
             "expandedObjectLayers": [
                 8
             ],
-            "scale": 2,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 363.75,
-                "y": 526.5
+                "x": 661,
+                "y": 517
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {
             "scale": 2,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 800,
-                "y": 159.75
+                "x": 799.5,
+                "y": 159.5
             }
         },
         "Player.tmx": {
@@ -66,8 +66,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 246,
-                "y": 264.25
+                "x": 236,
+                "y": 299.5
             }
         },
         "TestTiles.tsj": {

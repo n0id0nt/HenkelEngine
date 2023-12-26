@@ -1,6 +1,6 @@
 local WallSlideState = {}
 
-function WallSlideState:new(stateMachine, movement, animations, playAnimation)
+function WallSlideState:new(stateMachine, movement, animations, playAnimation, input)
     local obj = {}
     setmetatable(obj, self)
     self.__index = self
@@ -8,6 +8,7 @@ function WallSlideState:new(stateMachine, movement, animations, playAnimation)
     self.movement = movement
     self.animations = animations
     self.playAnimation = playAnimation
+    self.input = input
     return obj
 end
 
@@ -21,12 +22,14 @@ function WallSlideState:exit()
 end
 
 function WallSlideState:update()
-    self.movement:calculateGravity()
+    self.movement:wallSlide()
 
-    if self.movement.isGrounded or GO:getPhysicsBody():checkGrounded(180, groundAngle) then
+    if self.movement.isGrounded or not GO:getPhysicsBody():checkCollisionAtAngle(self.movement.horizontalInput > 0 and 0 or 180, groundAngle) then
         self.stateMachine:changeState(self.stateMachine.states.moveState)
     elseif Input:isInputDown("Jump") then
-        self.stateMachine:changeState(self.stateMachine.states.dashState)
+        self.movement:setJumpInput(true)
+        self.movement:jump()
+        self.stateMachine:changeState(self.stateMachine.states.wallJumpState)
     end
 end
 
