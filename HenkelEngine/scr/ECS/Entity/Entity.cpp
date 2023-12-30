@@ -11,7 +11,7 @@ Entity::Entity(const std::string& name, Registry* registry)
 	m_entity = m_registry->CreateEntity();
 }
 
-EntityId Entity::GetEntity() const
+EntityId Entity::GetEntityId() const
 {
 	return m_entity;
 }

@@ -4,11 +4,13 @@
 #include <vector>
 #include "Physics\PhysicsWorld.h"
 #include <sol\sol.hpp>
+#include <ECS\Registry.h>
+#include <ECS\Entity\Entity.h>
 
 class PhysicsBodyComponent
 {
 public:
-    PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape);
+    PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity);
     PhysicsBodyComponent(const PhysicsBodyComponent&) = delete;
     ~PhysicsBodyComponent();
     

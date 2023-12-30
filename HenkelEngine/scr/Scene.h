@@ -36,6 +36,8 @@ public :
 
 	PhysicsWorld* GetPhysicsWorld() const { return m_world.get(); }
 
+	sol::state& GetLuaState();
+
 	void LUABind(sol::state& lua);
 
 private:

@@ -69,6 +69,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	}
 
 	m_world = std::make_unique<PhysicsWorld>(glm::vec2{ 0.f, 0.f }, TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS, pixelsPerMeter);
+	m_world->SetContactListener(m_physicsSystem.GetContactListener());
 
 
 	TileSheet tileSheet(Engine::GetInstance()->GetProjectDirectory(), fileDir + doc.child("map").child("tileset").attribute("source").as_string());
@@ -102,7 +103,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				std::string propertyName = property.attribute("name").as_string();
 				if (propertyName == "ColliderType")
 				{
-					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), *tilemap);
+					std::string colliderType = property.attribute("value").as_string();
+					bool isSensor = colliderType == "Sensor";
+					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), *tilemap, tilemapEntity, isSensor);
 				}
 			}
 		}
@@ -392,12 +395,12 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		float height = colliderHeight ? colliderHeight : object.attribute("height").as_float();
 		if (colliderType == "Dynamic")
 		{
-			auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ width, height });
+			auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity);
 			physicsBody->SetPosition(transform->GetWorldPosition());
 		}
 		else if (colliderType == "Static")
 		{
-			auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ width, height });
+			auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity);
 			staticsBody->SetPosition(transform->GetWorldPosition());
 		}
 	}
@@ -438,6 +441,11 @@ void Scene::Render()
 	glm::mat4 projection = m_camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
+}
+
+sol::state& Scene::GetLuaState()
+{
+	return m_scriptSystem.GetSolState();
 }
 
 void Scene::LUABind(sol::state& lua)

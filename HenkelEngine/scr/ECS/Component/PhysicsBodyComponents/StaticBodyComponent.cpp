@@ -2,13 +2,13 @@
 #include "opengl\openglHelper.h"
 #include "glm\glm.hpp"
 
-StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape) : m_world(world), m_collisionShape(collisionShape)
+StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity) : m_world(world), m_collisionShape(collisionShape)
 {
 	b2BodyDef bodyDef;
 	bodyDef.fixedRotation = true;
 	bodyDef.type = b2_staticBody;
 	bodyDef.position = b2Vec2(bodyDef.position.x / m_world->GetPixelsPerMeter(), bodyDef.position.y / m_world->GetPixelsPerMeter());
-	//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
+	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(entity);
 
 	b2FixtureDef fixtureDef;
 	b2PolygonShape shape;

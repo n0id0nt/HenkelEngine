@@ -43,7 +43,7 @@ namespace GUIPanel
 
 		static void DrawComponentList(Entity* entity)
 		{
-			ImGui::Text(std::format("Id: {},\tName: {}", entity->GetEntity(), entity->GetName()).c_str());
+			ImGui::Text(std::format("Id: {},\tName: {}", entity->GetEntityId(), entity->GetName()).c_str());
 			ImGui::Separator();
 			auto* transform = entity->GetComponent<TransformComponent>();
 			auto* camera = entity->GetComponent<CameraComponent>();
@@ -70,10 +70,10 @@ namespace GUIPanel
 
 		static void RenderTreeNode(Entity* entity)
 		{
-			bool isNodeOpen = ImGui::CollapsingHeader(std::format("Id: {},\tName: {}", entity->GetEntity(), entity->GetName()).c_str());
+			bool isNodeOpen = ImGui::CollapsingHeader(std::format("Id: {},\tName: {}", entity->GetEntityId(), entity->GetName()).c_str());
 			if (isNodeOpen) {
 				ImGui::Indent(s_indentAmount);
-				if (ImGui::Button(std::format("View Component List##UniqueID{}", entity->GetEntity()).c_str())) {
+				if (ImGui::Button(std::format("View Component List##UniqueID{}", entity->GetEntityId()).c_str())) {
 					s_isComponetWindowOpen = true;
 					s_focusedComponet = entity;
 				}

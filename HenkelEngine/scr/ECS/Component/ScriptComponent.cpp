@@ -4,7 +4,7 @@
 #include <DebugGUIPanels\ImGuiHelper.h>
 
 ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Entity* entity)
-	: m_this(), m_entity(entity), m_properties(), m_lua(&lua)
+	: m_this(), m_entity(entity), m_properties(), m_lua(&lua)//, m_hasCollisionEnterEvent(false), m_hasCollisionExitEvent(false)
 {
 	lua.set("Script", this);
 	lua.script_file(script);
@@ -17,7 +17,29 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 	else
 	{
 		std::cerr << "Lua script loading no Script.update(deltaTime) function provided" << std::endl;
-		ASSERT(false);
+		ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
+	}
+
+	if (m_onCollisionEnterFunction)
+	{
+		lua.script("function onCollisionEnter(other) Script.onCollisionEnter(other) end");
+		m_onCollisionEnter = lua["onCollisionEnter"];
+	}
+	else
+	{
+		std::cerr << "Lua script loading no Script.onCollisionEnter(other) function provided" << std::endl;
+		ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
+	}
+
+	if (m_onCollisionExitFunction)
+	{
+		lua.script("function onCollisionExit(other) Script.onCollisionExit(other) end");
+		m_onCollisionExit = lua["onCollisionExit"];
+	}
+	else
+	{
+		std::cerr << "Lua script loading no Script.onCollisionExit(other) function provided" << std::endl;
+		ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
 	}
 	lua.set("Script", sol::nil);
 }
@@ -29,6 +51,44 @@ void ScriptComponent::Update()
 		sol::protected_function updateScript = m_update;
 
 		sol::protected_function_result result = updateScript();
+
+		// Check if the execution was successful
+		if (!result.valid()) {
+			// An error occurred; retrieve and handle the error message
+			sol::error err = result;
+			std::cerr << "Lua script execution error: " << err.what() << std::endl;
+
+			ASSERT(false);
+		}
+	}
+}
+
+void ScriptComponent::OnCollisionEnter(Entity* Other)
+{
+	if (m_onCollisionEnter.valid())
+	{
+		sol::protected_function onCollisionEnterScript = m_onCollisionEnter;
+
+		sol::protected_function_result result = onCollisionEnterScript();
+
+		// Check if the execution was successful
+		if (!result.valid()) {
+			// An error occurred; retrieve and handle the error message
+			sol::error err = result;
+			std::cerr << "Lua script execution error: " << err.what() << std::endl;
+
+			ASSERT(false);
+		}
+	}
+}
+
+void ScriptComponent::OnCollisionExit(Entity* Other)
+{
+	if (m_onCollisionExit.valid())
+	{
+		sol::protected_function onCollisionExitScript = m_onCollisionExit;
+
+		sol::protected_function_result result = onCollisionExitScript();
 
 		// Check if the execution was successful
 		if (!result.valid()) {
@@ -139,11 +199,35 @@ void ScriptComponent::DrawDebugPanel()
 	}
 }
 
+//void ScriptComponent::InvokeCollisionEnterEvent()
+//{
+//	m_hasCollisionEnterEvent = true;
+//}
+//
+//void ScriptComponent::InvokeCollisionExitEvent()
+//{
+//	m_hasCollisionExitEvent = true;
+//}
+//
+//void ScriptComponent::UpdateEvents()
+//{
+//	if (m_hasCollisionEnterEvent)
+//	{
+//		OnCollisionEnter();
+//	}
+//	if (m_hasCollisionExitEvent)
+//	{
+//		OnCollisionExit();
+//	}
+//}
+
 void ScriptComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<ScriptComponent>("Script",
 		"property", &ScriptComponent::AddScriptProperty,
-		"update", &ScriptComponent::m_updateFunction
+		"update", &ScriptComponent::m_updateFunction,
+		"onCollisionEnter", &ScriptComponent::m_onCollisionEnterFunction,
+		"onCollisionExit", &ScriptComponent::m_onCollisionExitFunction
 	);
 }
 

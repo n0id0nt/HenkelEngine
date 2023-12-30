@@ -94,3 +94,11 @@ Script.update = function()
 
     updateCamera()
 end
+
+Script.onCollisionEnter = function()
+    print("Collision Begin")
+end
+
+Script.onCollisionExit = function()
+    print("Collision End")
+end

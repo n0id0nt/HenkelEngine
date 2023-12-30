@@ -47,7 +47,7 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 						for (int i = 1; i < chainShape->m_count; ++i)
 						{
 							b2Vec2 vertex = tileMap->GetBody()->GetWorldPoint(chainShape->m_vertices[i]);
-							DebugRenderer::DrawLine(glm::vec3{prevVertex.x * world->GetPixelsPerMeter(), prevVertex.y * world->GetPixelsPerMeter(), 0.f}, glm::vec3{vertex.x * world->GetPixelsPerMeter(), vertex.y * world->GetPixelsPerMeter(), 0.f}, { 0.8f, 0.5f, 0.f });
+							DebugRenderer::DrawLine(glm::vec3{prevVertex.x * world->GetPixelsPerMeter(), prevVertex.y * world->GetPixelsPerMeter(), 0.f}, glm::vec3{vertex.x * world->GetPixelsPerMeter(), vertex.y * world->GetPixelsPerMeter(), 0.f}, fixture->IsSensor() ? glm::vec3{ 0.2f, 0.8f, 0.8f } : glm::vec3{ 0.8f, 0.5f, 0.f });
 							prevVertex = vertex;
 						}
 					}
@@ -68,4 +68,9 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 			DebugRenderer::DrawRectangle(glm::vec3{physicsBody->GetPosition(), 0.f}, collisionShape.x, collisionShape.y);
 		}
 	}
+}
+
+ContactListener* PhysicsSystem::GetContactListener()
+{
+	return &m_contactListenter;
 }

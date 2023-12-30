@@ -22,6 +22,9 @@ public:
 
 	void Update();
 
+	void OnCollisionEnter(Entity* Other); // TODO change from other entity to a contact object that is most likely a wrapper for a box2d contact object to give more specific collision info
+	void OnCollisionExit(Entity* Other);
+
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);
 
@@ -30,11 +33,24 @@ public:
 
 	void DrawDebugPanel();
 
+	//void InvokeCollisionEnterEvent();
+	//void InvokeCollisionExitEvent();
+
+	//void UpdateEvents();
+
 	static void LUABind(sol::state& lua);
 
 private:
 	sol::protected_function m_update;
 	std::function<void()> m_updateFunction;
+
+	sol::protected_function m_onCollisionEnter;
+	std::function<void()> m_onCollisionEnterFunction;
+	//bool m_hasCollisionEnterEvent;
+
+	sol::protected_function m_onCollisionExit;
+	std::function<void()> m_onCollisionExitFunction;
+	//bool m_hasCollisionExitEvent;
 
 	Entity* m_entity = nullptr;
 

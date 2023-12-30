@@ -6,11 +6,13 @@
 #include <array>
 #include "../RenderComponents/TileMapComponent.h"
 #include "Physics\PhysicsWorld.h"
+#include <ECS\Registry.h>
+#include <ECS\Entity\Entity.h>
 
 class TileMapCollisionBodyComponent 
 {
 public:
-    TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap);
+    TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap, Entity* entity, bool isSensor);
     ~TileMapCollisionBodyComponent();
 
     glm::vec2 GetPosition();
@@ -45,7 +47,7 @@ private:
     Dir PreviousDir(Dir inputDir);
     bool IsNextDirClear(glm::ivec2 tile, const TileMapComponent& tilemap, Dir inputDir);
     glm::ivec2 GetTileInDir(glm::ivec2 tile, Dir inputDir);
-    void CreateLoop(Dir inputDir, glm::ivec2 inputTile, std::unordered_set<glm::ivec2, IVec2Hash>& checkedTiles, const TileMapComponent& tilemap);
+    void CreateLoop(Dir inputDir, glm::ivec2 inputTile, std::unordered_set<glm::ivec2, IVec2Hash>& checkedTiles, const TileMapComponent& tilemap, bool isSensor);
     std::array<b2Vec2, 2> GetSideLine(Dir inputDir, glm::ivec2 inputTile, const TileMapComponent& tilemap);
 
     b2Body* m_body;

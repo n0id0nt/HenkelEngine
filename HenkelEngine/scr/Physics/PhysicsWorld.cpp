@@ -25,6 +25,11 @@ void PhysicsWorld::DestroyBody(b2Body* body)
 	m_world.DestroyBody(body);
 }
 
+void PhysicsWorld::SetContactListener(b2ContactListener* contactListener)
+{
+	m_world.SetContactListener(contactListener);
+}
+
 float PhysicsWorld::GetPixelsPerMeter() const
 {
 	return m_pixelsPerMeter;

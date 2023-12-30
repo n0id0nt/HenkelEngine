@@ -12,7 +12,7 @@ public:
 	Entity(const std::string& name, Registry* registry);
 	Entity(const Entity&) = delete;
 
-	EntityId GetEntity() const;
+	EntityId GetEntityId() const;
 
 	std::string GetName() const;
 

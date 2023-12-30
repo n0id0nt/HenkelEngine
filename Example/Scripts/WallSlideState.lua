@@ -26,8 +26,8 @@ function WallSlideState:update()
 
     if self.movement.isGrounded or not GO:getPhysicsBody():checkCollisionAtAngle(self.movement.horizontalInput > 0 and 0 or 180, groundAngle) then
         self.stateMachine:changeState(self.stateMachine.states.moveState)
-    elseif Input:isInputDown("Jump") then
-        self.movement:setJumpInput(true)
+    elseif Input:isInputJustPressed("Jump") then
+        self.movement:setJumpInput(true) -- Don't like this should be doeing this in enter function of wall jump state but not wall sliding then
         self.movement:jump()
         self.stateMachine:changeState(self.stateMachine.states.wallJumpState)
     end

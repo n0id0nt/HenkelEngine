@@ -4,13 +4,13 @@
 #include <opengl\DebugRenderer.h>
 #include <ECS\Entity\Entity.h>
 
-PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape) : m_world(world), m_collisionShape(collisionShape)
+PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity) : m_world(world), m_collisionShape(collisionShape)
 {
 	b2BodyDef bodyDef;
 	bodyDef.fixedRotation = true;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position = b2Vec2(bodyDef.position.x / m_world->GetPixelsPerMeter(), bodyDef.position.y / m_world->GetPixelsPerMeter());
-	//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(gameObjectEntity);
+	bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(entity);
 
 	b2FixtureDef fixtureDef;
 	b2PolygonShape shape;
@@ -56,6 +56,18 @@ glm::vec2 PhysicsBodyComponent::GetCollisionShape()
 	return m_collisionShape;
 }
 
+//TODO move this to a helper class
+bool IsBodySensor(b2Body* body) {
+	// Iterate through all fixtures of the body
+	for (b2Fixture* fixture = body->GetFixtureList(); fixture; fixture = fixture->GetNext()) {
+		// Check if the fixture is a sensor
+		if (fixture->IsSensor()) {
+			return true; // At least one sensor fixture found
+		}
+	}
+	return false; // No sensor fixtures found
+}
+
 bool PhysicsBodyComponent::CheckCollisionAtAngle(float angle, float groundAngleBuffer)
 {
 	for (auto& contact : GetContacts())
@@ -65,6 +77,8 @@ bool PhysicsBodyComponent::CheckCollisionAtAngle(float angle, float groundAngleB
 			b2Vec2 normal = contact->GetManifold()->localNormal;
 			
 			bool isFixtureA = contact->GetFixtureA()->GetBody() == m_body;
+			b2Body* other = isFixtureA ? contact->GetFixtureA()->GetBody() : contact->GetFixtureB()->GetBody();
+			if (IsBodySensor(other)) continue;
 			float angleRadians = glm::radians(angle);
 			float angle = glm::degrees(glm::angle(glm::vec2{ glm::cos(angleRadians), glm::sin(angleRadians) }, (isFixtureA ? 1.f : -1.f) * glm::vec2{ normal.x, normal.y }));
 			if (angle < groundAngleBuffer)

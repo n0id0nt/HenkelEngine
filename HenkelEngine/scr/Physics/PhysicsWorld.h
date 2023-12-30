@@ -14,6 +14,8 @@ public:
 	b2Body* CreateBody(const b2BodyDef* bodyDef);
 	void DestroyBody(b2Body* body);
 
+	void SetContactListener(b2ContactListener* contactListener);
+
 	float GetPixelsPerMeter() const;
 
 private:
