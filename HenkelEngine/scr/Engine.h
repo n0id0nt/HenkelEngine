@@ -8,6 +8,7 @@
 #include "glm\glm.hpp"
 #include "Input.h"
 #include "ResourcePool.h"
+#include <Physics\CollisionLayers.h>
 
 const unsigned int FPS = 60;
 const unsigned int FRAME_DELAY = 1000 / FPS;
@@ -36,6 +37,9 @@ public:
 	std::string GetProjectDirectory() const;
 
 	void SetDarkThemeColors();
+
+	unsigned int GetCollisionLayer(std::string layerName);
+
 private:
 	Engine();
 
@@ -51,6 +55,8 @@ private:
 	std::unique_ptr<ResourcePool> m_resourcePool;
 
 	std::string m_projectDirectory;
+
+	CollisionLayers m_collisionLayers;
 
 	Uint32 m_frameStart;
 	unsigned int m_frameTime;

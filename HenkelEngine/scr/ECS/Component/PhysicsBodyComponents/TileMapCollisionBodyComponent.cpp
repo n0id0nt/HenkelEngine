@@ -84,7 +84,7 @@ std::array<b2Vec2, 2> TileMapCollisionBodyComponent::GetSideLine(Dir inputDir, g
 	return std::array<b2Vec2, 2>{};
 }
 
-void TileMapCollisionBodyComponent::CreateLoop(Dir inputDir, glm::ivec2 inputTile, std::unordered_set<glm::ivec2, IVec2Hash>& checkedTiles, const TileMapComponent& tilemap, bool isSensor)
+void TileMapCollisionBodyComponent::CreateLoop(Dir inputDir, glm::ivec2 inputTile, std::unordered_set<glm::ivec2, IVec2Hash>& checkedTiles, const TileMapComponent& tilemap, bool isSensor, const b2Filter& filter)
 {
 	std::vector<b2Vec2> vertices;
 
@@ -92,6 +92,7 @@ void TileMapCollisionBodyComponent::CreateLoop(Dir inputDir, glm::ivec2 inputTil
 	fixtureDef.friction = 0.f;
 	fixtureDef.density = 1.f;
 	fixtureDef.isSensor = isSensor;
+	fixtureDef.filter = filter;
 
 	b2ChainShape chainShape;
 
@@ -123,9 +124,13 @@ void TileMapCollisionBodyComponent::CreateLoop(Dir inputDir, glm::ivec2 inputTil
 	m_body->CreateFixture(&fixtureDef);
 }
 
-TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap, Entity* entity, bool isSensor)
+TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap, Entity* entity, bool isSensor, uint16 categoryBits, uint16 maskBits)
 	: m_world(world)
 {
+	b2Filter filter;
+	filter.categoryBits = categoryBits;
+	filter.maskBits = maskBits;
+
 	b2BodyDef bodyDef;
 	bodyDef.fixedRotation = true;
 	bodyDef.type = b2_staticBody;
@@ -147,19 +152,19 @@ TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(PhysicsWorld* world
 				checkedTiles.insert(tilePos);
 				if (IsTileClearAtDir(tilePos, tilemap, Dir::Left))
 				{
-					CreateLoop(Dir::Left, tilePos, checkedTiles, tilemap, isSensor);
+					CreateLoop(Dir::Left, tilePos, checkedTiles, tilemap, isSensor, filter);
 				}
 				else if (IsTileClearAtDir(tilePos, tilemap, Dir::Up))
 				{
-					CreateLoop(Dir::Up, tilePos, checkedTiles, tilemap, isSensor);
+					CreateLoop(Dir::Up, tilePos, checkedTiles, tilemap, isSensor, filter);
 				}
 				else if (IsTileClearAtDir(tilePos, tilemap, Dir::Right))
 				{
-					CreateLoop(Dir::Right, tilePos, checkedTiles, tilemap, isSensor);
+					CreateLoop(Dir::Right, tilePos, checkedTiles, tilemap, isSensor, filter);
 				}
 				else if (IsTileClearAtDir(tilePos, tilemap, Dir::Down))
 				{
-					CreateLoop(Dir::Down, tilePos, checkedTiles, tilemap, isSensor);
+					CreateLoop(Dir::Down, tilePos, checkedTiles, tilemap, isSensor, filter);
 				}
 			}
 		}

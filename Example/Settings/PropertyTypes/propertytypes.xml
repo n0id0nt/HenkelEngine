@@ -14,6 +14,7 @@
  </objecttype>
  <objecttype name="Collider" color="#a0a0a4">
   <property name="Category" type="string" propertytype="CollisionLayers" default="None"/>
+  <property name="ColliderShape" type="class" propertytype="RectangleCollider" default=""/>
   <property name="ColliderType" type="string" propertytype="ColliderType" default="Static"/>
   <property name="Mask" type="string" propertytype="CollisionLayers" default="All"/>
   <property name="Sensor" type="bool" default="false"/>

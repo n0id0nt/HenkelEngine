@@ -4,8 +4,12 @@
 #include <opengl\DebugRenderer.h>
 #include <ECS\Entity\Entity.h>
 
-PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor) : m_world(world), m_collisionShape(collisionShape)
+PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor, uint16 categoryBits, uint16 maskBits) : m_world(world), m_collisionShape(collisionShape)
 {
+	b2Filter filter;
+	filter.categoryBits = categoryBits;
+	filter.maskBits = maskBits;
+
 	b2BodyDef bodyDef;
 	bodyDef.fixedRotation = true;
 	bodyDef.type = b2_dynamicBody;
@@ -19,6 +23,7 @@ PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collis
 	fixtureDef.friction = 0.f;
 	fixtureDef.density = 1.f;
 	fixtureDef.isSensor = isSensor;
+	fixtureDef.filter = filter;
 
 	m_body = m_world->CreateBody(&bodyDef);
 	m_body->CreateFixture(&fixtureDef);

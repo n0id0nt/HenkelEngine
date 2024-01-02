@@ -231,3 +231,8 @@ void Engine::SetDarkThemeColors()
 	colors[ImGuiCol_CheckMark] = primaryColorHighlight;
 
 }
+
+unsigned int Engine::GetCollisionLayer(std::string layerName)
+{
+	return m_collisionLayers.GetLayer(layerName);
+}
