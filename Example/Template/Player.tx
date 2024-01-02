@@ -120,13 +120,17 @@
      <property name="startFrame" type="int" value="61"/>
     </properties>
    </property>
-   <property name="Collider" type="class" propertytype="RectangleCollider">
+   <property name="Collider" type="class" propertytype="Collider">
     <properties>
-     <property name="Height" type="float" value="30"/>
-     <property name="Width" type="float" value="13"/>
+     <property name="ColliderShape" type="class" propertytype="RectangleCollider">
+      <properties>
+       <property name="Height" type="float" value="30"/>
+       <property name="Width" type="float" value="13"/>
+      </properties>
+     </property>
+     <property name="ColliderType" propertytype="ColliderType" value="Dynamic"/>
     </properties>
    </property>
-   <property name="ColliderType" propertytype="ColliderType" value="Dynamic"/>
    <property name="DefaultAnimation" value="Idle"/>
    <property name="Script" type="file" value="../Scripts/Player.lua"/>
    <property name="Script#maxSpeed" type="float" value="100"/>

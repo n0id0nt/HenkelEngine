@@ -2,7 +2,7 @@
 #include "opengl\openglHelper.h"
 #include "glm\glm.hpp"
 
-StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity) : m_world(world), m_collisionShape(collisionShape)
+StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor) : m_world(world), m_collisionShape(collisionShape)
 {
 	b2BodyDef bodyDef;
 	bodyDef.fixedRotation = true;
@@ -16,7 +16,7 @@ StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisio
 	fixtureDef.shape = &shape;
 	fixtureDef.friction = 0.f;
 	fixtureDef.density = 1.f;
-
+	fixtureDef.isSensor = isSensor;
 
 	m_body = m_world->CreateBody(&bodyDef);
 	m_body->CreateFixture(&fixtureDef);

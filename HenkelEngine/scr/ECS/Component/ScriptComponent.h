@@ -22,8 +22,8 @@ public:
 
 	void Update();
 
-	void OnCollisionEnter(Entity* Other); // TODO change from other entity to a contact object that is most likely a wrapper for a box2d contact object to give more specific collision info
-	void OnCollisionExit(Entity* Other);
+	void OnCollisionEnter(Entity* other); // TODO change from other entity to a contact object that is most likely a wrapper for a box2d contact object to give more specific collision info
+	void OnCollisionExit(Entity* other);
 
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);

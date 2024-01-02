@@ -7,7 +7,7 @@
 class StaticBodyComponent 
 {
 public:
-    StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity);
+    StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor);
     ~StaticBodyComponent();
 
     glm::vec2 GetPosition();

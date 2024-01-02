@@ -7,6 +7,7 @@
 #include <typeinfo>
 #include <memory>
 #include <any>
+#include "opengl\openglHelper.h"
 
 typedef unsigned int EntityId;
 
@@ -45,7 +46,7 @@ public:
                 return component;
             }
         }
-
+        //ASSERT(false); // No component of type found
         return nullptr;
     }
 

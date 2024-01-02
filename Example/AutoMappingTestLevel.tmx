@@ -7,7 +7,11 @@
  <tileset firstgid="1" source="cavesofgallet_tiles.tsx"/>
  <layer id="4" name="water_input" width="100" height="50">
   <properties>
-   <property name="ColliderType" propertytype="ColliderType" value="Sensor"/>
+   <property name="Collider" type="class" propertytype="Collider">
+    <properties>
+     <property name="Sensor" type="bool" value="true"/>
+    </properties>
+   </property>
   </properties>
   <data encoding="base64" compression="zlib">
    eJzt2EEOgyAUAFHvyf3v0WXRQEH6wTHMS4guiDF/XBiOQ5KktvT0C+jEHiw9PVK2NJc9WOzBYg8We7DYgyEVVs9ezWEPpnS51vb0NlMMe7yHPVjswWIPFnuw2IPFHiz2YLHHmFnzsMeY1T1SYY++7MFROq+Nmo897rMHjz1YdujxtubXGUU90x7/sweLPVjswWIPFnuw2IPFHiz2YIl499q5WGvNsnOP0Rb2KLMHiz1Y7MFiD5bI/6v8vjb/Ff+8u/fIn/OrjdpWfKv26OecWEZ6fAC1Z4EK
@@ -33,6 +37,40 @@
    eJzt2u1tgzAQBmD/aCR2YAbWSDaAjMPoLRGWLifSOMTn+/D7SBYpAmxs/N2UAEDTLaVVOw3/ubIAem7aCYDTeD0qqVel10G5LQ9L6tHWLtN8t1z3clpLvPsOvwmfsJ6nNfBviAfp96fxgy1H4z4PbU1ktB1FGdhhfY4EACBl0E6AceNf/zAqxBupXHIe5kDOPcKZZ85f3g+xaNSXSN9fpPampbmg/OcT93in9c6l8dz3sIimxhaJ973vx4UcF3IeoDdH44J97Lsmcszn2TVP19N7+DNG9qwjPfbrP9oJAFN6GG9FU7Pd6rEN/ATqhy0tysNandjGMhftRADAaeNzUNk3iQDzF/t6LyO2TvEIfM3Xk57WgQEkWJtTtPKuL5Ca19SeJw4vflNTxfii7J2DrIEFC2rWg8zz+OmVvB/skVR55P6i5XoX/R+8/W++97jSOTvm7wC+ROw/AGrxUD+0x7dTkhnbHsXjAU9n7XRr7L1PqV05e4R8AZD1C9ShO58=
   </data>
  </layer>
+ <objectgroup id="10" name="Cameras">
+  <object id="3" name="Camera" x="0" y="0">
+   <properties>
+    <property name="Camera" type="class" propertytype="Camera"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="4" name="Camera2" x="871" y="216">
+   <properties>
+    <property name="Camera" type="class" propertytype="Camera"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <layer id="11" name="Ladders" width="100" height="50">
+  <properties>
+   <property name="Collider" type="class" propertytype="Collider">
+    <properties>
+     <property name="Sensor" type="bool" value="true"/>
+    </properties>
+   </property>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt0UENwDAQwLCy2vgj6/tGoFFnI4iUtQAAAAAAgFs9pwMY/Gjxo8WPFj9a/Gjxo8WPFj8AoO89HcDgR4sfLX60+NHiR8v3hz8tfrT40eJHix8tfrT4AQAAwJ9t4pEFAA==
+  </data>
+ </layer>
+ <layer id="2" name="ground" width="100" height="50">
+  <properties>
+   <property name="Collider" type="class" propertytype="Collider"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztm81OHDEMgMMBqhaK1IoLFRwolMvujfIOnNo+0j56Yxa3rrEdOz+zYbuWLEAzSWb8xT9JhpTq5adDf6S0aRjiIAF5ynpU0KcDD7esGm114NFXWnl8T2Uev/IYs8es/Hw7j6+3edxVh348TGb2EWCR58zzcz6m5/fZ7OI5Vp14gJSYzMwDnt3LgfqRt27hbbT7evIAsZjMzMMjaFP0Iy0uS5ygzSNRjXtvHiBafsdn9cZmax62aDQ3eDhI6rE/l4cFeZTmkDSnIu/vVTq+h42nfqy1vySt9RUXjMUjbBnVx4JqdR/1Tc+86BmLe/NAQS5erbGnpZ45CnOfx1Faa3nV4gE17Nf8k+utcv8oHlHh/JaoOemYyKUmTmo8gMVNVqmNlidm4bFr8eYJSbW5A/n5Wmlz4GGLFl81e5ZYUEEuqNAu+40Ytw48yrJSYk5tTKX9IZcVudb6vG9F3m91E20n8WhZJ0hxjHOZVcCGHxzqsfNl1tN8X6QNiGU/rU6K9Ev7np0H2PA460naPu8J0aOXa6CfnLa9JP1426BIftKDC+17FA+c1zXxgUu2m5lTP6eYbYHJl+3P0LNpeYRyKa0vNHkYzKP2na2+LO0xTkksHiU+HkYj9hP3WSI8ImsOlBH7ifss1vruuqDeWPQ/1bu9hPvJhcOGF2k/eHjr3R7qrT1qeXhyytrzAAvKWdaPRM/Tv3EB6tRj9je9fszuoX+fCH3Q694ajcctLw8pxj2w+2bjIT33Evou1a9H8pzZnBltz9LrecU5oMzMo5QfZ+FR8hH+ThoLkFl5lGJAbz+KrilBKA8rV3vX3nfpmUfoGUZLDY9e/tPCA3K1deZnxSiUdVqWB62VMN5q+dvLQ7uvxn9grzGyv8PrLOuMyVPrLs0D9qGwxkE7anZr5XGV6vwm4iO8zqI+Ame1+PvMPLi9R/EotdNY0f1479pEOl+6IQzeAo+rl3G1eXzl5AG1Jo13Vt2J7Uoxjq5XQEv7lQ/J/mZB4kG/O0E/2gUPqGOic5oK5htez1t+RXPUuTG+5Kve+GWdIUo8pNpsFA9tj+M01cUYKpo/WX7F7az5FL8vsiaR9hpn4YHnFdTv6R4Ht4cnzrRIqdayclm05qJnsJQHr3XpfXhtdLwqnetF8neLtPCoWSei4F6td892CR7wPj158PWKx8+onaXvVEfxQInygHX6txe9axib5w3MFz15lNYVUj9oZ2nurUkb6HvEWXCUxzr9fZ8Wf8H1Hn7z4WXRI15Z6xEvj6WF+gHofXrNo+U75kh8OvDYjs3tQHm05pJI/uYq1Vw0H2h5g9eqUj+4VtF48DYjzxb52LPyqKl9PNf5u3psQpWfKfLv8Y5S7GwRBWLVvfKMPXnw89O3zsOrUR7auPvCo7RuB5Vy48w87re1759+75Jd//Lru4xXtdKDR80axcODM6HrRYkNvQ5rj8h6Y594lPa5eF2Lta2HBzLBNvR3Hs/W5PoIFqBY+2j7uVpdJimfT1pOrVGLR4S5xENTtH2J8awqzadefXPb0L2OKI/o/yajlr45L2kp//ZWns/xvXv0bf3PdcS+0OY3y7wVOQ==
+  </data>
+ </layer>
  <objectgroup id="8" name="objects">
   <object id="1" template="Template/Player.tx" x="331.667" y="514">
    <properties>
@@ -50,42 +88,4 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="10" name="Cameras">
-  <object id="3" name="Camera" x="0" y="0">
-   <properties>
-    <property name="Camera" type="class" propertytype="Camera"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="4" name="Camera2" x="871" y="216">
-   <properties>
-    <property name="Camera" type="class" propertytype="Camera"/>
-   </properties>
-   <point/>
-  </object>
- </objectgroup>
- <layer id="2" name="ground" width="100" height="50">
-  <properties>
-   <property name="ColliderType" propertytype="ColliderType" value="Static"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJztm81OHDEMgMMBqhaK1IoLFRwolMvujfIOnNo+0j56Yxa3rrEdOz+zYbuWLEAzSWb8xT9JhpTq5adDf6S0aRjiIAF5ynpU0KcDD7esGm114NFXWnl8T2Uev/IYs8es/Hw7j6+3edxVh348TGb2EWCR58zzcz6m5/fZ7OI5Vp14gJSYzMwDnt3LgfqRt27hbbT7evIAsZjMzMMjaFP0Iy0uS5ygzSNRjXtvHiBafsdn9cZmax62aDQ3eDhI6rE/l4cFeZTmkDSnIu/vVTq+h42nfqy1vySt9RUXjMUjbBnVx4JqdR/1Tc+86BmLe/NAQS5erbGnpZ45CnOfx1Faa3nV4gE17Nf8k+utcv8oHlHh/JaoOemYyKUmTmo8gMVNVqmNlidm4bFr8eYJSbW5A/n5Wmlz4GGLFl81e5ZYUEEuqNAu+40Ytw48yrJSYk5tTKX9IZcVudb6vG9F3m91E20n8WhZJ0hxjHOZVcCGHxzqsfNl1tN8X6QNiGU/rU6K9Ev7np0H2PA460naPu8J0aOXa6CfnLa9JP1426BIftKDC+17FA+c1zXxgUu2m5lTP6eYbYHJl+3P0LNpeYRyKa0vNHkYzKP2na2+LO0xTkksHiU+HkYj9hP3WSI8ImsOlBH7ifss1vruuqDeWPQ/1bu9hPvJhcOGF2k/eHjr3R7qrT1qeXhyytrzAAvKWdaPRM/Tv3EB6tRj9je9fszuoX+fCH3Q694ajcctLw8pxj2w+2bjIT33Evou1a9H8pzZnBltz9LrecU5oMzMo5QfZ+FR8hH+ThoLkFl5lGJAbz+KrilBKA8rV3vX3nfpmUfoGUZLDY9e/tPCA3K1deZnxSiUdVqWB62VMN5q+dvLQ7uvxn9grzGyv8PrLOuMyVPrLs0D9qGwxkE7anZr5XGV6vwm4iO8zqI+Ame1+PvMPLi9R/EotdNY0f1479pEOl+6IQzeAo+rl3G1eXzl5AG1Jo13Vt2J7Uoxjq5XQEv7lQ/J/mZB4kG/O0E/2gUPqGOic5oK5htez1t+RXPUuTG+5Kve+GWdIUo8pNpsFA9tj+M01cUYKpo/WX7F7az5FL8vsiaR9hpn4YHnFdTv6R4Ht4cnzrRIqdayclm05qJnsJQHr3XpfXhtdLwqnetF8neLtPCoWSei4F6td892CR7wPj158PWKx8+onaXvVEfxQInygHX6txe9axib5w3MFz15lNYVUj9oZ2nurUkb6HvEWXCUxzr9fZ8Wf8H1Hn7z4WXRI15Z6xEvj6WF+gHofXrNo+U75kh8OvDYjs3tQHm05pJI/uYq1Vw0H2h5g9eqUj+4VtF48DYjzxb52LPyqKl9PNf5u3psQpWfKfLv8Y5S7GwRBWLVvfKMPXnw89O3zsOrUR7auPvCo7RuB5Vy48w87re1759+75Jd//Lru4xXtdKDR80axcODM6HrRYkNvQ5rj8h6Y594lPa5eF2Lta2HBzLBNvR3Hs/W5PoIFqBY+2j7uVpdJimfT1pOrVGLR4S5xENTtH2J8awqzadefXPb0L2OKI/o/yajlr45L2kp//ZWns/xvXv0bf3PdcS+0OY3y7wVOQ==
-  </data>
- </layer>
- <layer id="11" name="Ladders" width="100" height="50">
-  <properties>
-   <property name="ColliderType" propertytype="ColliderType" value="Sensor"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJzt0UENwDAQwLCy2vgj6/tGoFFnI4iUtQAAAAAAgFs9pwMY/Gjxo8WPFj9a/Gjxo8WPFj8AoO89HcDgR4sfLX60+NHiR8v3hz8tfrT40eJHix8tfrT4AQAAwJ9t4pEFAA==
-  </data>
- </layer>
- <layer id="9" name="Collision" width="100" height="50">
-  <properties>
-   <property name="ColliderType" propertytype="ColliderType" value="Static"/>
-  </properties>
-  <data encoding="base64" compression="zlib">
-   eJzt1cEJwDAMBMFT/03nG0wI+ekCM+AGvHCaJBNazO3RYaJLEz36vHXQqosewF+c99527Xr6ez326NHl3Cd7tc/t6KUHAAAAAAAAAAAAAAAAAMB3F7H+ACg=
-  </data>
- </layer>
 </map>

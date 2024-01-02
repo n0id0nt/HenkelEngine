@@ -99,14 +99,78 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 10,
+            "members": [
+                {
+                    "name": "Category",
+                    "propertyType": "CollisionLayers",
+                    "type": "string",
+                    "value": "None"
+                },
+                {
+                    "name": "ColliderShape",
+                    "propertyType": "RectangleCollider",
+                    "type": "class",
+                    "value": {
+                    }
+                },
+                {
+                    "name": "ColliderType",
+                    "propertyType": "ColliderType",
+                    "type": "string",
+                    "value": "Static"
+                },
+                {
+                    "name": "Mask",
+                    "propertyType": "CollisionLayers",
+                    "type": "string",
+                    "value": "All"
+                },
+                {
+                    "name": "Sensor",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "Collider",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "id": 1,
             "name": "ColliderType",
             "storageType": "string",
             "type": "enum",
             "values": [
                 "Static",
-                "Dynamic",
-                "Sensor"
+                "Dynamic"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 9,
+            "name": "CollisionLayers",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "Ground",
+                "Player",
+                "Ladder",
+                "Water",
+                "All",
+                "None"
             ],
             "valuesAsFlags": false
         },

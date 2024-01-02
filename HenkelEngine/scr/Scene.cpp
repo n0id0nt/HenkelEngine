@@ -101,10 +101,18 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			for (auto& property : layer.child("properties").children())
 			{
 				std::string propertyName = property.attribute("name").as_string();
-				if (propertyName == "ColliderType")
+				if (propertyName == "Collider")
 				{
 					std::string colliderType = property.attribute("value").as_string();
-					bool isSensor = colliderType == "Sensor";
+					bool isSensor = false;
+					for (auto& colliderProperty : property.child("properties").children())
+					{
+						std::string name = colliderProperty.attribute("name").as_string();
+						if (name == "Sensor")
+						{
+							isSensor = colliderProperty.attribute("value").as_bool();
+						}
+					}
 					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), *tilemap, tilemapEntity, isSensor);
 				}
 			}
@@ -190,6 +198,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 	std::unordered_map<std::string, SpriteAnimation> spriteAnimations;
 	std::string defaultAnimation;
 	std::string colliderType;
+	bool isSensor = false;
 	float colliderWidth = 0.f;
 	float colliderHeight = 0.f;
 
@@ -236,10 +245,36 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 				gameObjectEntity->CreateComponent<ScriptComponent>(fileDir + script, m_scriptSystem.GetSolState(), gameObjectEntity);
 			}
 		}
-		else if (splitPropertyName[0] == "ColliderType")
+		else if (splitPropertyName[0] == "Collider")
 		{
-			colliderType = property.attribute("value").as_string();
-			ASSERT(colliderType == "Dynamic" || colliderType == "Static");
+			colliderType = "Static";
+			for (auto& colliderProperty : property.child("properties").children())
+			{
+				std::string name = colliderProperty.attribute("name").as_string();
+				if (name == "Sensor")
+				{
+					isSensor = colliderProperty.attribute("value").as_bool();
+				}
+				else if (name == "ColliderType")
+				{
+					colliderType = colliderProperty.attribute("value").as_string();
+				}
+				else if (name == "ColliderShape")
+				{
+					for (auto& colliderShapeProperty : colliderProperty.child("properties").children())
+					{
+						std::string shapeName = colliderShapeProperty.attribute("name").as_string();
+						if (shapeName == "Width")
+						{
+							colliderWidth = colliderShapeProperty.attribute("value").as_float();
+						}
+						else if(shapeName == "Height")
+						{
+							colliderHeight = colliderShapeProperty.attribute("value").as_float();
+						}
+					}
+				}
+			}
 		}
 		else if (splitPropertyName[0] == "Animation")
 		{
@@ -288,21 +323,6 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 				else if(name == "YOffset")
 				{
 					sprite->yOffset = spriteProperty.attribute("value").as_float();
-				}
-			}
-		}
-		else if (splitPropertyName[0] == "Collider")
-		{
-			for (auto& colliderProperty : property.child("properties").children())
-			{
-				std::string name = colliderProperty.attribute("name").as_string();
-				if (name == "Width")
-				{
-					colliderWidth = colliderProperty.attribute("value").as_float();
-				}
-				else if(name == "Height")
-				{
-					colliderHeight = colliderProperty.attribute("value").as_float();
 				}
 			}
 		}
@@ -395,12 +415,12 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		float height = colliderHeight ? colliderHeight : object.attribute("height").as_float();
 		if (colliderType == "Dynamic")
 		{
-			auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity);
+			auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity, isSensor);
 			physicsBody->SetPosition(transform->GetWorldPosition());
 		}
 		else if (colliderType == "Static")
 		{
-			auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity);
+			auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity, isSensor);
 			staticsBody->SetPosition(transform->GetWorldPosition());
 		}
 	}

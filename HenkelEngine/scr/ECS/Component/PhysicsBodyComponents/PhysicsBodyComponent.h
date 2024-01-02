@@ -10,7 +10,7 @@
 class PhysicsBodyComponent
 {
 public:
-    PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity);
+    PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor);
     PhysicsBodyComponent(const PhysicsBodyComponent&) = delete;
     ~PhysicsBodyComponent();
     

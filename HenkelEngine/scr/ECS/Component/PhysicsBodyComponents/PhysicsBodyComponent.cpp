@@ -4,7 +4,7 @@
 #include <opengl\DebugRenderer.h>
 #include <ECS\Entity\Entity.h>
 
-PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity) : m_world(world), m_collisionShape(collisionShape)
+PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor) : m_world(world), m_collisionShape(collisionShape)
 {
 	b2BodyDef bodyDef;
 	bodyDef.fixedRotation = true;
@@ -18,7 +18,7 @@ PhysicsBodyComponent::PhysicsBodyComponent(PhysicsWorld* world, glm::vec2 collis
 	fixtureDef.shape = &shape;
 	fixtureDef.friction = 0.f;
 	fixtureDef.density = 1.f;
-
+	fixtureDef.isSensor = isSensor;
 
 	m_body = m_world->CreateBody(&bodyDef);
 	m_body->CreateFixture(&fixtureDef);
@@ -77,7 +77,7 @@ bool PhysicsBodyComponent::CheckCollisionAtAngle(float angle, float groundAngleB
 			b2Vec2 normal = contact->GetManifold()->localNormal;
 			
 			bool isFixtureA = contact->GetFixtureA()->GetBody() == m_body;
-			b2Body* other = isFixtureA ? contact->GetFixtureA()->GetBody() : contact->GetFixtureB()->GetBody();
+			b2Body* other = isFixtureA ? contact->GetFixtureB()->GetBody() : contact->GetFixtureA()->GetBody();
 			if (IsBodySensor(other)) continue;
 			float angleRadians = glm::radians(angle);
 			float angle = glm::degrees(glm::angle(glm::vec2{ glm::cos(angleRadians), glm::sin(angleRadians) }, (isFixtureA ? 1.f : -1.f) * glm::vec2{ normal.x, normal.y }));

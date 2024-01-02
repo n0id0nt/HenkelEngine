@@ -75,6 +75,7 @@ Entity* Entity::GetParent() const
 void Entity::LUABind(sol::state& lua)
 {
 	lua.new_usertype<Entity>("GO",
+		"getName", &Entity::GetName,
 		"getTransform", &Entity::GetComponent<TransformComponent>,
 		"getSprite", &Entity::GetComponent<SpriteComponent>,
 		"getSpriteAnimation", &Entity::GetComponent<SpriteAnimationComponent>,

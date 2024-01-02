@@ -11,12 +11,12 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 
 	if (m_updateFunction)
 	{
-		lua.script("function update(deltaTime) Script.update(deltaTime) end");
+		lua.script("function update() Script.update() end");
 		m_update = lua["update"];
 	}
 	else
 	{
-		std::cerr << "Lua script loading no Script.update(deltaTime) function provided" << std::endl;
+		std::cerr << "Lua script loading no Script.update() function provided" << std::endl;
 		ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
 	}
 
@@ -25,22 +25,22 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 		lua.script("function onCollisionEnter(other) Script.onCollisionEnter(other) end");
 		m_onCollisionEnter = lua["onCollisionEnter"];
 	}
-	else
-	{
-		std::cerr << "Lua script loading no Script.onCollisionEnter(other) function provided" << std::endl;
-		ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
-	}
+	//else
+	//{
+	//	std::cerr << "Lua script loading no Script.onCollisionEnter(other) function provided" << std::endl;
+	//	ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
+	//}
 
 	if (m_onCollisionExitFunction)
 	{
 		lua.script("function onCollisionExit(other) Script.onCollisionExit(other) end");
 		m_onCollisionExit = lua["onCollisionExit"];
 	}
-	else
-	{
-		std::cerr << "Lua script loading no Script.onCollisionExit(other) function provided" << std::endl;
-		ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
-	}
+	//else
+	//{
+	//	std::cerr << "Lua script loading no Script.onCollisionExit(other) function provided" << std::endl;
+	//	ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
+	//}
 	lua.set("Script", sol::nil);
 }
 
@@ -63,13 +63,13 @@ void ScriptComponent::Update()
 	}
 }
 
-void ScriptComponent::OnCollisionEnter(Entity* Other)
+void ScriptComponent::OnCollisionEnter(Entity* other)
 {
 	if (m_onCollisionEnter.valid())
 	{
 		sol::protected_function onCollisionEnterScript = m_onCollisionEnter;
 
-		sol::protected_function_result result = onCollisionEnterScript();
+		sol::protected_function_result result = onCollisionEnterScript("Test");
 
 		// Check if the execution was successful
 		if (!result.valid()) {
@@ -82,13 +82,13 @@ void ScriptComponent::OnCollisionEnter(Entity* Other)
 	}
 }
 
-void ScriptComponent::OnCollisionExit(Entity* Other)
+void ScriptComponent::OnCollisionExit(Entity* other)
 {
 	if (m_onCollisionExit.valid())
 	{
 		sol::protected_function onCollisionExitScript = m_onCollisionExit;
 
-		sol::protected_function_result result = onCollisionExitScript();
+		sol::protected_function_result result = onCollisionExitScript("Test2");
 
 		// Check if the execution was successful
 		if (!result.valid()) {
