@@ -45,11 +45,11 @@ private:
 	std::function<void()> m_updateFunction;
 
 	sol::protected_function m_onCollisionEnter;
-	std::function<void()> m_onCollisionEnterFunction;
+	std::function<void(Entity*)> m_onCollisionEnterFunction;
 	//bool m_hasCollisionEnterEvent;
 
 	sol::protected_function m_onCollisionExit;
-	std::function<void()> m_onCollisionExitFunction;
+	std::function<void(Entity*)> m_onCollisionExitFunction;
 	//bool m_hasCollisionExitEvent;
 
 	Entity* m_entity = nullptr;

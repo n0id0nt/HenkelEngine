@@ -69,7 +69,7 @@ void ScriptComponent::OnCollisionEnter(Entity* other)
 	{
 		sol::protected_function onCollisionEnterScript = m_onCollisionEnter;
 
-		sol::protected_function_result result = onCollisionEnterScript("Test");
+		sol::protected_function_result result = onCollisionEnterScript(other);
 
 		// Check if the execution was successful
 		if (!result.valid()) {
@@ -88,7 +88,7 @@ void ScriptComponent::OnCollisionExit(Entity* other)
 	{
 		sol::protected_function onCollisionExitScript = m_onCollisionExit;
 
-		sol::protected_function_result result = onCollisionExitScript("Test2");
+		sol::protected_function_result result = onCollisionExitScript(other);
 
 		// Check if the execution was successful
 		if (!result.valid()) {

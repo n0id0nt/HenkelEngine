@@ -96,11 +96,9 @@ Script.update = function()
 end
 
 Script.onCollisionEnter = function(other)
-    print(other)
     print(other and other:getName() or "No Name", "Collision Begin")
 end
 
 Script.onCollisionExit = function(other)
-    print(other)
     print(other and other:getName() or "No Name", "Collision End")
 end
