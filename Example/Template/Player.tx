@@ -122,6 +122,7 @@
    </property>
    <property name="Collider" type="class" propertytype="Collider">
     <properties>
+     <property name="Category" propertytype="CollisionLayers" value="Player"/>
      <property name="ColliderShape" type="class" propertytype="RectangleCollider">
       <properties>
        <property name="Height" type="float" value="30"/>
@@ -129,6 +130,7 @@
       </properties>
      </property>
      <property name="ColliderType" propertytype="ColliderType" value="Dynamic"/>
+     <property name="Mask" propertytype="CollisionLayers" value="All"/>
     </properties>
    </property>
    <property name="DefaultAnimation" value="Idle"/>

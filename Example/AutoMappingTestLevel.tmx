@@ -9,6 +9,7 @@
   <properties>
    <property name="Collider" type="class" propertytype="Collider">
     <properties>
+     <property name="Category" propertytype="CollisionLayers" value="Water"/>
      <property name="Sensor" type="bool" value="true"/>
     </properties>
    </property>
@@ -55,6 +56,7 @@
   <properties>
    <property name="Collider" type="class" propertytype="Collider">
     <properties>
+     <property name="Category" propertytype="CollisionLayers" value="Ladder"/>
      <property name="Sensor" type="bool" value="true"/>
     </properties>
    </property>
@@ -65,7 +67,11 @@
  </layer>
  <layer id="2" name="ground" width="100" height="50">
   <properties>
-   <property name="Collider" type="class" propertytype="Collider"/>
+   <property name="Collider" type="class" propertytype="Collider">
+    <properties>
+     <property name="Category" propertytype="CollisionLayers" value="Ground"/>
+    </properties>
+   </property>
   </properties>
   <data encoding="base64" compression="zlib">
    eJztm81OHDEMgMMBqhaK1IoLFRwolMvujfIOnNo+0j56Yxa3rrEdOz+zYbuWLEAzSWb8xT9JhpTq5adDf6S0aRjiIAF5ynpU0KcDD7esGm114NFXWnl8T2Uev/IYs8es/Hw7j6+3edxVh348TGb2EWCR58zzcz6m5/fZ7OI5Vp14gJSYzMwDnt3LgfqRt27hbbT7evIAsZjMzMMjaFP0Iy0uS5ygzSNRjXtvHiBafsdn9cZmax62aDQ3eDhI6rE/l4cFeZTmkDSnIu/vVTq+h42nfqy1vySt9RUXjMUjbBnVx4JqdR/1Tc+86BmLe/NAQS5erbGnpZ45CnOfx1Faa3nV4gE17Nf8k+utcv8oHlHh/JaoOemYyKUmTmo8gMVNVqmNlidm4bFr8eYJSbW5A/n5Wmlz4GGLFl81e5ZYUEEuqNAu+40Ytw48yrJSYk5tTKX9IZcVudb6vG9F3m91E20n8WhZJ0hxjHOZVcCGHxzqsfNl1tN8X6QNiGU/rU6K9Ev7np0H2PA460naPu8J0aOXa6CfnLa9JP1426BIftKDC+17FA+c1zXxgUu2m5lTP6eYbYHJl+3P0LNpeYRyKa0vNHkYzKP2na2+LO0xTkksHiU+HkYj9hP3WSI8ImsOlBH7ifss1vruuqDeWPQ/1bu9hPvJhcOGF2k/eHjr3R7qrT1qeXhyytrzAAvKWdaPRM/Tv3EB6tRj9je9fszuoX+fCH3Q694ajcctLw8pxj2w+2bjIT33Evou1a9H8pzZnBltz9LrecU5oMzMo5QfZ+FR8hH+ThoLkFl5lGJAbz+KrilBKA8rV3vX3nfpmUfoGUZLDY9e/tPCA3K1deZnxSiUdVqWB62VMN5q+dvLQ7uvxn9grzGyv8PrLOuMyVPrLs0D9qGwxkE7anZr5XGV6vwm4iO8zqI+Ame1+PvMPLi9R/EotdNY0f1479pEOl+6IQzeAo+rl3G1eXzl5AG1Jo13Vt2J7Uoxjq5XQEv7lQ/J/mZB4kG/O0E/2gUPqGOic5oK5htez1t+RXPUuTG+5Kve+GWdIUo8pNpsFA9tj+M01cUYKpo/WX7F7az5FL8vsiaR9hpn4YHnFdTv6R4Ht4cnzrRIqdayclm05qJnsJQHr3XpfXhtdLwqnetF8neLtPCoWSei4F6td892CR7wPj158PWKx8+onaXvVEfxQInygHX6txe9axib5w3MFz15lNYVUj9oZ2nurUkb6HvEWXCUxzr9fZ8Wf8H1Hn7z4WXRI15Z6xEvj6WF+gHofXrNo+U75kh8OvDYjs3tQHm05pJI/uYq1Vw0H2h5g9eqUj+4VtF48DYjzxb52LPyqKl9PNf5u3psQpWfKfLv8Y5S7GwRBWLVvfKMPXnw89O3zsOrUR7auPvCo7RuB5Vy48w87re1759+75Jd//Lru4xXtdKDR80axcODM6HrRYkNvQ5rj8h6Y594lPa5eF2Lta2HBzLBNvR3Hs/W5PoIFqBY+2j7uVpdJimfT1pOrVGLR4S5xENTtH2J8awqzadefXPb0L2OKI/o/yajlr45L2kp//ZWns/xvXv0bf3PdcS+0OY3y7wVOQ==

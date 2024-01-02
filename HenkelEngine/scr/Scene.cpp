@@ -105,6 +105,8 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				{
 					std::string colliderType = property.attribute("value").as_string();
 					bool isSensor = false;
+					uint16 categoryLayer = Engine::GetInstance()->GetCollisionLayer("All");
+					uint16 maskLayer = Engine::GetInstance()->GetCollisionLayer("All");
 					for (auto& colliderProperty : property.child("properties").children())
 					{
 						std::string name = colliderProperty.attribute("name").as_string();
@@ -112,8 +114,16 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 						{
 							isSensor = colliderProperty.attribute("value").as_bool();
 						}
+						else if (name == "Category")
+						{
+							categoryLayer = Engine::GetInstance()->GetCollisionLayer(colliderProperty.attribute("value").as_string());
+						}
+						else if (name == "Mask")
+						{
+							maskLayer = Engine::GetInstance()->GetCollisionLayer(colliderProperty.attribute("value").as_string());
+						}
 					}
-					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), *tilemap, tilemapEntity, isSensor, Engine::GetInstance()->GetCollisionLayer("All"), Engine::GetInstance()->GetCollisionLayer("All"));
+					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), *tilemap, tilemapEntity, isSensor, categoryLayer, maskLayer);
 				}
 			}
 		}
@@ -201,6 +211,8 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 	bool isSensor = false;
 	float colliderWidth = 0.f;
 	float colliderHeight = 0.f;
+	uint16 categoryLayer = Engine::GetInstance()->GetCollisionLayer("All");
+	uint16 maskLayer = Engine::GetInstance()->GetCollisionLayer("All");
 
 	for (auto& property : object.child("properties").children())
 	{
@@ -273,6 +285,14 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 							colliderHeight = colliderShapeProperty.attribute("value").as_float();
 						}
 					}
+				}
+				else if (name == "Category")
+				{
+					categoryLayer = Engine::GetInstance()->GetCollisionLayer(colliderProperty.attribute("value").as_string());
+				}
+				else if (name == "Mask")
+				{
+					maskLayer = Engine::GetInstance()->GetCollisionLayer(colliderProperty.attribute("value").as_string());
 				}
 			}
 		}
@@ -415,12 +435,12 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		float height = colliderHeight ? colliderHeight : object.attribute("height").as_float();
 		if (colliderType == "Dynamic")
 		{
-			auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity, isSensor, Engine::GetInstance()->GetCollisionLayer("All"), Engine::GetInstance()->GetCollisionLayer("All"));
+			auto* physicsBody = gameObjectEntity->CreateComponent<PhysicsBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity, isSensor, categoryLayer, maskLayer);
 			physicsBody->SetPosition(transform->GetWorldPosition());
 		}
 		else if (colliderType == "Static")
 		{
-			auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity, isSensor, Engine::GetInstance()->GetCollisionLayer("All"), Engine::GetInstance()->GetCollisionLayer("All"));
+			auto* staticsBody = gameObjectEntity->CreateComponent<StaticBodyComponent>(m_world.get(), glm::vec2{ width, height }, gameObjectEntity, isSensor, categoryLayer, maskLayer);
 			staticsBody->SetPosition(transform->GetWorldPosition());
 		}
 	}

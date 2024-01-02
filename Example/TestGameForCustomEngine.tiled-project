@@ -107,7 +107,7 @@
                     "name": "Category",
                     "propertyType": "CollisionLayers",
                     "type": "string",
-                    "value": "None"
+                    "value": "All"
                 },
                 {
                     "name": "ColliderShape",
