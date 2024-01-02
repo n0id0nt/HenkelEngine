@@ -95,10 +95,10 @@ Script.update = function()
     updateCamera()
 end
 
-Script.onCollisionEnter = function(other)
-    print(other and other:getName() or "No Name", "Collision Begin")
+Script.onCollisionEnter = function(contact)
+    print(contact and contact.other:getName() or "No Name", "Collision Begin")
 end
 
-Script.onCollisionExit = function(other)
-    print(other and other:getName() or "No Name", "Collision End")
+Script.onCollisionExit = function(contact)
+    print(contact and contact.other:getName() or "No Name", "Collision End")
 end

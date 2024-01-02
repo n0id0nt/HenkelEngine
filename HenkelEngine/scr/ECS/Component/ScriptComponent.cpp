@@ -22,25 +22,15 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 
 	if (m_onCollisionEnterFunction)
 	{
-		lua.script("function onCollisionEnter(other) Script.onCollisionEnter(other) end");
+		lua.script("function onCollisionEnter(contact) Script.onCollisionEnter(contact) end");
 		m_onCollisionEnter = lua["onCollisionEnter"];
 	}
-	//else
-	//{
-	//	std::cerr << "Lua script loading no Script.onCollisionEnter(other) function provided" << std::endl;
-	//	ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
-	//}
 
 	if (m_onCollisionExitFunction)
 	{
-		lua.script("function onCollisionExit(other) Script.onCollisionExit(other) end");
+		lua.script("function onCollisionExit(contact) Script.onCollisionExit(contact) end");
 		m_onCollisionExit = lua["onCollisionExit"];
 	}
-	//else
-	//{
-	//	std::cerr << "Lua script loading no Script.onCollisionExit(other) function provided" << std::endl;
-	//	ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
-	//}
 	lua.set("Script", sol::nil);
 }
 
@@ -63,7 +53,7 @@ void ScriptComponent::Update()
 	}
 }
 
-void ScriptComponent::OnCollisionEnter(Entity* other)
+void ScriptComponent::OnCollisionEnter(const ContactListener::Contact& other)
 {
 	if (m_onCollisionEnter.valid())
 	{
@@ -82,7 +72,7 @@ void ScriptComponent::OnCollisionEnter(Entity* other)
 	}
 }
 
-void ScriptComponent::OnCollisionExit(Entity* other)
+void ScriptComponent::OnCollisionExit(const ContactListener::Contact& other)
 {
 	if (m_onCollisionExit.valid())
 	{

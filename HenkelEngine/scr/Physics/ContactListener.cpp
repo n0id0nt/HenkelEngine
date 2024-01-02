@@ -4,23 +4,27 @@
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
+	if (!contact->IsTouching()) return;
+
 	Entity *entityA = nullptr, *entityB = nullptr;
 	GetContactEntities(contact, entityA, entityB);
 	// call the collision events
 	auto scriptComponentA = entityA->GetComponent<ScriptComponent>();
 	if (scriptComponentA)
 	{
+		Contact contact{ entityB, sol::table(), 0.f, 0.f };
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
 		scriptComponentA->Bind(lua); // TODO Might be a little slow to be rebinbinging and unbinding scripts on each collision event think up more efficent way
-		scriptComponentA->OnCollisionEnter(entityB);
+		scriptComponentA->OnCollisionEnter(contact);
 		scriptComponentA->Unbind(lua);
 	}
 	auto scriptComponentB = entityB->GetComponent<ScriptComponent>();
 	if (scriptComponentB)
 	{
+		Contact contact{ entityA, sol::table(), 0.f, 0.f };
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
 		scriptComponentB->Bind(lua);
-		scriptComponentB->OnCollisionEnter(entityA);
+		scriptComponentB->OnCollisionEnter(contact);
 		scriptComponentB->Unbind(lua);
 	}
 }
@@ -33,17 +37,19 @@ void ContactListener::EndContact(b2Contact* contact)
 	auto scriptComponentA = entityA->GetComponent<ScriptComponent>();
 	if (scriptComponentA)
 	{
+		Contact contact{ entityB, sol::table(), 0.f, 0.f};
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
 		scriptComponentA->Bind(lua); // TODO Might be a little slow to be rebinbinging and unbinding scripts on each collision event think up more efficent way
-		scriptComponentA->OnCollisionExit(entityB);
+		scriptComponentA->OnCollisionExit(contact);
 		scriptComponentA->Unbind(lua);
 	}
 	auto scriptComponentB = entityB->GetComponent<ScriptComponent>();
 	if (scriptComponentB)
 	{
+		Contact contact{ entityA, sol::table(), 0.f, 0.f };
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
 		scriptComponentB->Bind(lua);
-		scriptComponentB->OnCollisionExit(entityA);
+		scriptComponentB->OnCollisionExit(contact);
 		scriptComponentB->Unbind(lua);
 	}
 }

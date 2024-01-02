@@ -3,6 +3,7 @@
 #include <regex>
 #include "sol\sol.hpp"
 #include "glm\glm.hpp"
+#include "Physics/ContactListener.h"
 
 namespace HenkelEngine
 {
@@ -39,6 +40,11 @@ namespace HenkelEngine
                 return glm::vec3(original);
             }
         );
+        lua.new_usertype<ContactListener::Contact>("contact",
+            "other", &ContactListener::Contact::other,
+            "contactPoints", &ContactListener::Contact::contactPoints,
+            "impulse", &ContactListener::Contact::impulse,
+            "velocity", &ContactListener::Contact::velocity);
     }
 
     static std::string GetFileDir(const std::string& filePath)
