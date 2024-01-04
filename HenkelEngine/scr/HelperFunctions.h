@@ -43,7 +43,8 @@ namespace HenkelEngine
         lua.new_usertype<ContactListener::Contact>("contact",
             "other", &ContactListener::Contact::other,
             "contactPoints", &ContactListener::Contact::contactPoints,
-            "impulse", &ContactListener::Contact::impulse,
+            "impulses", &ContactListener::Contact::impulses,
+            "normal", &ContactListener::Contact::normal,
             "velocity", &ContactListener::Contact::velocity);
     }
 

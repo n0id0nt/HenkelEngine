@@ -3,6 +3,7 @@
 #include <Box2D/Box2D.h>
 #include <ECS\Entity\Entity.h>
 #include <vector>
+#include "glm\glm.hpp"
 
 class ContactListener : public b2ContactListener {
 public:
@@ -11,8 +12,9 @@ public:
 
         Entity* other;
         sol::table contactPoints;
-        float impulse;
-        float velocity;
+        sol::table impulses;
+        glm::vec2 velocity;
+        glm::vec2 normal;
     };
 
     void BeginContact(b2Contact* contact) override;

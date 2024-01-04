@@ -69,17 +69,27 @@ void ContactListener::GetContactEntities(b2Contact* contact, Entity*& entityA, E
 ContactListener::Contact::Contact(Entity* other, b2Contact* contact, sol::state* lua)
 {
 	sol::table contactPoints = lua->create_table();
+	sol::table implulses = lua->create_table();
 
 	b2WorldManifold worldManifold;
 	contact->GetWorldManifold(&worldManifold);
+	b2Manifold* manifold = contact->GetManifold();
 
-	for (int i = 0; i < contact->GetManifold()->pointCount; ++i) {
+	for (int i = 0; i < manifold->pointCount; ++i) {
 		b2Vec2 point = worldManifold.points[i];
 		contactPoints.add(glm::vec2(point.x, point.y));
+		implulses.add(manifold->points[i].normalImpulse);
 	}
+
+	b2Body* bodyA = contact->GetFixtureA()->GetBody();
+	b2Body* bodyB = contact->GetFixtureB()->GetBody();
+	b2Vec2 relativeVelocity = bodyB->GetLinearVelocity() - bodyA->GetLinearVelocity();
+
+	b2Vec2 normal = worldManifold.normal;
 
 	this->other = other;
 	this->contactPoints = contactPoints;
-	impulse = 0.f;
-	velocity = 0.f;
+	this->impulses = implulses;
+	this->velocity = glm::vec2{relativeVelocity.x, relativeVelocity.y};
+	this->normal = glm::vec2{ normal.x, normal.y};
 }

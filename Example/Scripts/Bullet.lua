@@ -30,8 +30,9 @@ Script.onCollisionEnter = function(contact)
     if hit then return end
     hit = true
 
-    print(contact and contact.other:getName() or "No Name", "Collision Begin Bullet")
+    print(contact.other:getName() or "No Name", "Collision Begin Bullet", "at", contact.velocity, "normal", "x", contact.normal.x, "y", contact.normal.y)
     for i, point in ipairs(contact.contactPoints) do
         print("\tPoint", i, "x", point.x, "y", point.y)
+        print("\tImpulse", i, contact.impulses[i])
     end
 end
