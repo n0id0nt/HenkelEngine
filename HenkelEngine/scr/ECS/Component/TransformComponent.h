@@ -14,10 +14,12 @@ public:
 	void SetPosition(glm::vec3 position);
 	void SetPosition(glm::vec2 position);
 	glm::vec3 GetPosition();	
+	glm::vec2 GetPosition2();	
 
 	void SetWorldPosition(glm::vec3 position);
 	void SetWorldPosition(glm::vec2 position);
 	glm::vec3 GetWorldPosition();
+	glm::vec2 GetWorldPosition2();
 
 	void SetRotation(glm::vec3 rotation);
 	glm::vec3 GetRotation();
@@ -37,8 +39,6 @@ public:
 private:
 
 	void UpdateComponentsTransforms();
-
-	void LUASetPosition(glm::vec2 position);
 
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;

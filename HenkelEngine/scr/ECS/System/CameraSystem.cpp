@@ -19,7 +19,7 @@ void CameraSystem::Update(Camera* camera)
 		{
 			camera->SetPosition(m_previousCameraPosition);
 			auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
-			glm::vec3 cameraComponentPos = transformComponent->GetWorldPosition();
+			glm::vec cameraComponentPos = transformComponent->GetWorldPosition();
 
 			glm::vec3 newPos = cameraComponent->IsPositionForced() ? TargetPosition(cameraComponent, cameraComponentPos, camera) 
 				: CalculateSmoothedPosition(cameraComponent, cameraComponentPos, camera);

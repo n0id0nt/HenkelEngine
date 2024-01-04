@@ -27,6 +27,11 @@ glm::vec3 TransformComponent::GetPosition()
 	return m_position;
 }
 
+glm::vec2 TransformComponent::GetPosition2()
+{
+	return GetPosition();
+}
+
 void TransformComponent::SetPosition(glm::vec2 position)
 {
 	m_position = { position, 0.f };
@@ -58,6 +63,11 @@ glm::vec3 TransformComponent::GetWorldPosition()
 	glm::vec4 perspective;
 	glm::decompose(GetWorldMatrix(), scale, rotation, translation, skew, perspective);
 	return translation;
+}
+
+glm::vec2 TransformComponent::GetWorldPosition2()
+{
+	return GetWorldPosition();
 }
 
 void TransformComponent::SetRotation(glm::vec3 rotation)
@@ -150,19 +160,16 @@ void TransformComponent::UpdateComponentsTransforms()
 	}
 }
 
-void TransformComponent::LUASetPosition(glm::vec2 position)
-{
-	SetPosition(position);
-}
-
 void TransformComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<TransformComponent>("transform",
-		"setPosition", &TransformComponent::LUASetPosition,
-		"getPosition", &TransformComponent::GetPosition,
+		"setPosition", sol::resolve<void(glm::vec2)>(&TransformComponent::SetPosition),
+		"getPosition", &TransformComponent::GetPosition2,
 		"setRotation", &TransformComponent::SetRotation,
 		"getRotation", &TransformComponent::GetRotation,
 		"setScale", &TransformComponent::SetScale,
-		"getScale", &TransformComponent::GetScale
+		"getScale", &TransformComponent::GetScale,
+		"setWorldPosition", sol::resolve<void(glm::vec2)>(&TransformComponent::SetWorldPosition),
+		"getWorldPosition", &TransformComponent::GetWorldPosition2
 	);
 }

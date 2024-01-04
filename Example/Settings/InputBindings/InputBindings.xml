@@ -16,6 +16,11 @@
             <binding type="keycode" value="rshift"/>
         </bindings>
     </input>
+    <input name="Shoot" type="button">
+        <bindings>
+            <binding type="keycode" value="tab"/>
+        </bindings>
+    </input>
     <input name="Pressure" type="variable">
         <bindings>
             <binding type="keycode" value="e"/>

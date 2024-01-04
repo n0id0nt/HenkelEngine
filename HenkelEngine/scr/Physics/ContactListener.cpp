@@ -12,19 +12,19 @@ void ContactListener::BeginContact(b2Contact* contact)
 	auto scriptComponentA = entityA->GetComponent<ScriptComponent>();
 	if (scriptComponentA)
 	{
-		Contact contact{ entityB, sol::table(), 0.f, 0.f };
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
+		Contact contactStruct(entityA, contact, &lua);
 		scriptComponentA->Bind(lua); // TODO Might be a little slow to be rebinbinging and unbinding scripts on each collision event think up more efficent way
-		scriptComponentA->OnCollisionEnter(contact);
+		scriptComponentA->OnCollisionEnter(contactStruct);
 		scriptComponentA->Unbind(lua);
 	}
 	auto scriptComponentB = entityB->GetComponent<ScriptComponent>();
 	if (scriptComponentB)
 	{
-		Contact contact{ entityA, sol::table(), 0.f, 0.f };
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
+		Contact contactStruct(entityA, contact, &lua);
 		scriptComponentB->Bind(lua);
-		scriptComponentB->OnCollisionEnter(contact);
+		scriptComponentB->OnCollisionEnter(contactStruct);
 		scriptComponentB->Unbind(lua);
 	}
 }
@@ -37,19 +37,19 @@ void ContactListener::EndContact(b2Contact* contact)
 	auto scriptComponentA = entityA->GetComponent<ScriptComponent>();
 	if (scriptComponentA)
 	{
-		Contact contact{ entityB, sol::table(), 0.f, 0.f};
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
+		Contact contactStruct(entityA, contact, &lua);
 		scriptComponentA->Bind(lua); // TODO Might be a little slow to be rebinbinging and unbinding scripts on each collision event think up more efficent way
-		scriptComponentA->OnCollisionExit(contact);
+		scriptComponentA->OnCollisionExit(contactStruct);
 		scriptComponentA->Unbind(lua);
 	}
 	auto scriptComponentB = entityB->GetComponent<ScriptComponent>();
 	if (scriptComponentB)
 	{
-		Contact contact{ entityA, sol::table(), 0.f, 0.f };
 		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
+		Contact contactStruct(entityA, contact, &lua);
 		scriptComponentB->Bind(lua);
-		scriptComponentB->OnCollisionExit(contact);
+		scriptComponentB->OnCollisionExit(contactStruct);
 		scriptComponentB->Unbind(lua);
 	}
 }
@@ -64,4 +64,22 @@ void ContactListener::GetContactEntities(b2Contact* contact, Entity*& entityA, E
 	entityA = reinterpret_cast<Entity*>(fixtureA->GetBody()->GetUserData().pointer);
 	entityB = reinterpret_cast<Entity*>(fixtureB->GetBody()->GetUserData().pointer);
 
+}
+
+ContactListener::Contact::Contact(Entity* other, b2Contact* contact, sol::state* lua)
+{
+	sol::table contactPoints = lua->create_table();
+
+	b2WorldManifold worldManifold;
+	contact->GetWorldManifold(&worldManifold);
+
+	for (int i = 0; i < contact->GetManifold()->pointCount; ++i) {
+		b2Vec2 point = worldManifold.points[i];
+		contactPoints.add(glm::vec2(point.x, point.y));
+	}
+
+	this->other = other;
+	this->contactPoints = contactPoints;
+	impulse = 0.f;
+	velocity = 0.f;
 }

@@ -93,6 +93,13 @@ Script.update = function()
     GO:getPhysicsBody():setVelocity(vec2.new(horizontalSpeed, verticalSpeed))
 
     updateCamera()
+
+    if Input:isInputJustPressed("Shoot") then 
+        print("Shoot")
+        local potion = Scene:createTemplatedObject("Template/Potion.tx")
+        local transform = potion:getTransform()
+        transform:setWorldPosition(GO:getTransform():getWorldPosition())
+    end
 end
 
 Script.onCollisionEnter = function(contact)

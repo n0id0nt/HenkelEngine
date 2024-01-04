@@ -7,6 +7,8 @@
 class ContactListener : public b2ContactListener {
 public:
     struct Contact {
+        Contact(Entity* other, b2Contact* contact, sol::state* lua);
+
         Entity* other;
         sol::table contactPoints;
         float impulse;
