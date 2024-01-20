@@ -6,6 +6,7 @@
 #include <sol\sol.hpp>
 #include <ECS\Registry.h>
 #include <ECS\Entity\Entity.h>
+#include <set>
 
 class PhysicsBodyComponent
 {
@@ -24,6 +25,11 @@ public:
 
     bool CheckCollisionAtAngle(float angle, float groundAngleBuffer);
     bool CheckGrounded(float groundAngleBuffer);
+
+    unsigned int GetCollisionLayersMask();
+    std::set<std::string> GetCollisionLayers();
+
+    sol::table LUAGetCollisionLayers();
 
     static void LUABind(sol::state& lua);
 

@@ -103,6 +103,21 @@ bool PhysicsBodyComponent::CheckGrounded(float groundAngleBuffer)
 	return CheckCollisionAtAngle(angle, groundAngleBuffer);
 }
 
+unsigned int PhysicsBodyComponent::GetCollisionLayersMask()
+{
+	return m_body->GetFixtureList()->GetFilterData().maskBits;
+}
+
+std::set<std::string> PhysicsBodyComponent::GetCollisionLayers()
+{
+	return std::set<std::string>();
+}
+
+sol::table PhysicsBodyComponent::LUAGetCollisionLayers()
+{
+	return sol::table();
+}
+
 void PhysicsBodyComponent::LUABind(sol::state& lua)
 {
 	lua.new_usertype<PhysicsBodyComponent>("physicsBody",

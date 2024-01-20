@@ -23,8 +23,8 @@ MaterialComponent::~MaterialComponent()
 
 void MaterialComponent::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
-    Engine::GetInstance()->GetResourcePool()->RetriveShader(m_vertexShader, m_fragmentShader)->Bind();
-    Engine::GetInstance()->GetResourcePool()->RetriveTexture(m_texture)->Bind();
+    Engine::GetInstance()->GetResourcePool()->RetrieveShader(m_vertexShader, m_fragmentShader)->Bind();
+    Engine::GetInstance()->GetResourcePool()->RetrieveTexture(m_texture)->Bind();
 
     SetWorldMatrices(model, view, projection);
 
@@ -33,8 +33,8 @@ void MaterialComponent::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projecti
 
 void MaterialComponent::Unbind()
 {
-    Engine::GetInstance()->GetResourcePool()->RetriveShader(m_vertexShader, m_fragmentShader)->Unbind();
-    Engine::GetInstance()->GetResourcePool()->RetriveTexture(m_texture)->Unbind();
+    Engine::GetInstance()->GetResourcePool()->RetrieveShader(m_vertexShader, m_fragmentShader)->Unbind();
+    Engine::GetInstance()->GetResourcePool()->RetrieveTexture(m_texture)->Unbind();
 }
 
 void MaterialComponent::SetColor(glm::vec4 color)
@@ -44,7 +44,7 @@ void MaterialComponent::SetColor(glm::vec4 color)
 
 void MaterialComponent::SetWorldMatrices(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
-    Shader* shader = Engine::GetInstance()->GetResourcePool()->RetriveShader(m_vertexShader, m_fragmentShader);
+    Shader* shader = Engine::GetInstance()->GetResourcePool()->RetrieveShader(m_vertexShader, m_fragmentShader);
     shader->SetUniformMat4f("U_Model", model);
     shader->SetUniformMat4f("U_ViewProjection", projection * view);
 }

@@ -21,7 +21,7 @@ void ResourcePool::CreateShader(const std::string& vertexShaderFilePath, const s
 		it->second.count++;
 }
 
-Shader* ResourcePool::RetriveShader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath)
+Shader* ResourcePool::RetrieveShader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath)
 {
 	std::string key = vertexShaderFilePath + fragmentShaderFilePath;
 	auto it = m_shaders.find(key);
@@ -53,7 +53,7 @@ void ResourcePool::CreateTexture(const std::string& path)
 		it->second.count++;
 }
 
-Texture* ResourcePool::RetriveTexture(const std::string& path)
+Texture* ResourcePool::RetrieveTexture(const std::string& path)
 {
 	std::string key = path;
 	auto it = m_textures.find(key);

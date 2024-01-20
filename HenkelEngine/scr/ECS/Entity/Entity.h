@@ -4,6 +4,7 @@
 #include <memory>
 #include "sol\sol.hpp"
 #include "ECS\Registry.h"
+#include <set>
 
 class Entity
 {
@@ -21,6 +22,10 @@ public:
 
 	void RemoveChild(Entity* entity);
 	void RemoveParent(Entity* entity);
+
+	void AddTag(std::string tag);
+	void RemoveTag(std::string tag);
+	bool HasTag(std::string tag);
 
 	std::vector<Entity*> GetChildren() const;
 	Entity* GetParent() const;
@@ -51,6 +56,7 @@ private:
 
 	Entity* m_parent;
 	std::vector<Entity*> m_children;
+	std::set<std::string> m_tags;
 
 	std::string m_name;
 };

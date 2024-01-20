@@ -6,7 +6,7 @@
 #include <ECS\Component\CameraComponent.h>
 
 Entity::Entity(const std::string& name, Registry* registry)
-	: m_name(name), m_registry(registry), m_parent(nullptr), m_children()
+	: m_name(name), m_registry(registry), m_parent(nullptr), m_children(), m_tags()
 {
 	m_entity = m_registry->CreateEntity();
 }
@@ -62,6 +62,21 @@ void Entity::RemoveParent(Entity* entity)
 	entity->m_children.erase(std::remove(m_children.begin(), m_children.end(), entity), m_children.end());
 }
 
+void Entity::AddTag(std::string tag)
+{
+	m_tags.insert(tag);
+}
+
+void Entity::RemoveTag(std::string tag)
+{
+	m_tags.erase(tag);
+}
+
+bool Entity::HasTag(std::string tag)
+{
+	return m_tags.contains(tag);
+}
+
 std::vector<Entity*> Entity::GetChildren() const
 {
 	return m_children;
@@ -80,6 +95,9 @@ void Entity::LUABind(sol::state& lua)
 		"getSprite", &Entity::GetComponent<SpriteComponent>,
 		"getSpriteAnimation", &Entity::GetComponent<SpriteAnimationComponent>,
 		"getPhysicsBody", &Entity::GetComponent<PhysicsBodyComponent>,
-		"getCamera", &Entity::GetComponent<CameraComponent>
+		"getCamera", &Entity::GetComponent<CameraComponent>,
+		"addTag", &Entity::AddTag,
+		"removeTag", &Entity::RemoveTag,
+		"hasTag", &Entity::HasTag
 	);
 }

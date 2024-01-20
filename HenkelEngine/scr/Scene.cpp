@@ -101,6 +101,15 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			for (auto& property : layer.child("properties").children())
 			{
 				std::string propertyName = property.attribute("name").as_string();
+				// Define the regex pattern
+				std::regex pattern("#");
+
+				// Use regex_iterator to split the string
+				std::sregex_token_iterator iterator(propertyName.begin(), propertyName.end(), pattern, -1);
+				std::sregex_token_iterator end;
+
+				std::vector<std::string> splitPropertyName(iterator, end);
+
 				if (propertyName == "Collider")
 				{
 					std::string colliderType = property.attribute("value").as_string();
@@ -124,6 +133,10 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 						}
 					}
 					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(m_world.get(), *tilemap, tilemapEntity, isSensor, categoryLayer, maskLayer);
+				}
+				else if (splitPropertyName[0] == "Tag")
+				{
+					tilemapEntity->AddTag(splitPropertyName[1]);
 				}
 			}
 		}
@@ -328,6 +341,10 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		else if (splitPropertyName[0] == "DefaultAnimation")
 		{
 			defaultAnimation = property.attribute("value").as_string();
+		}
+		else if (splitPropertyName[0] == "Tag")
+		{
+			gameObjectEntity->AddTag(splitPropertyName[1]);
 		}
 		else if (splitPropertyName[0] == "Sprite")
 		{

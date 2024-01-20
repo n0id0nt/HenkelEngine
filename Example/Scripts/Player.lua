@@ -104,6 +104,9 @@ end
 
 Script.onCollisionEnter = function(contact)
     print(contact and contact.other:getName() or "No Name", "Collision Begin")
+    if contact and contact.other:hasTag("Ladder") then
+        print "Ladder"
+    end
 end
 
 Script.onCollisionExit = function(contact)

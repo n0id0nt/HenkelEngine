@@ -20,11 +20,11 @@ public:
 	~ResourcePool();
 
 	void CreateShader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
-	Shader* RetriveShader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
+	Shader* RetrieveShader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
 	void ReleaseShader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
 
 	void CreateTexture(const std::string& path);
-	Texture* RetriveTexture(const std::string& path);
+	Texture* RetrieveTexture(const std::string& path);
 	void ReleaseTexture(const std::string& path);
 
 private:
