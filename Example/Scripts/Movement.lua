@@ -8,6 +8,7 @@ function Movement:new()
     self.__index = self
     --input
     obj.horizontalInput = 0
+    obj.verticalInput = 0
     obj.jumpInput = false
     obj.jumpInputUsed = true
     obj.lastJumpPress = 0
@@ -35,6 +36,10 @@ end
 --------------------------------------------------------------
 --INPUT
 --------------------------------------------------------------
+function Movement:setVerticalInput(value)
+    self.verticalInput = value
+end
+
 function Movement:setHorizontalInput(value)
     self.horizontalInput = value
     if value ~= 0 then
@@ -82,6 +87,15 @@ function Movement:move()
         self.curAcceleration = Helper_Functions.MoveTowards(self.curAcceleration, 0, deltaAcceleration)
     end
     self.horizontalSpeed = self.curAcceleration * maxSpeed
+end
+
+--------------------------------------------------------------
+--CLIMB
+--------------------------------------------------------------
+Script:property("climbSpeed", 40)
+
+function Movement:climb()
+    self.verticalSpeed = self.verticalInput * climbSpeed
 end
 
 --------------------------------------------------------------
@@ -225,6 +239,14 @@ end
 --------------------------------------------------------------
 function Movement:setSpeed(x, y)
     self.horizontalSpeed = x
+    self.verticalSpeed = y
+end
+
+function Movement:setHorizontalSpeed(x)
+    self.horizontalSpeed = x
+end
+
+function Movement:setVerticalSpeed(y)
     self.verticalSpeed = y
 end
 

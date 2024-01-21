@@ -5,8 +5,14 @@ local Move_State = require("MoveState")
 local Dash_State = require("DashState")
 local Wall_Slide_State = require("WallSlideState")
 local Wall_Jump_State = require("WallJumpState")
+local Climb_State = require("ClimbState")
 
 local movement = Movement:new()
+
+-- params are a set of shared variable across all states
+local params = {
+    ladder = 0
+}
 
 --------------------------------------------------------------
 --ANIMATION
@@ -19,6 +25,7 @@ local animations = {
     upToFall = "UpToFall",
     fall = "Fall",
     wallSlide = "WallSlide",
+    climb = "Climb",
 }
 
 function tryPlayAnimation(animation)
@@ -38,6 +45,7 @@ local input = {
 
 local function getControllerInput()
     input.horizontalInput = Input:getInputAxis("Horizontal")
+    input.verticalInput = Input:getInputAxis("Vertical")
     input.jumpInput = Input:isInputDown("Jump")
 end
 
@@ -47,10 +55,11 @@ end
 local stateMachine = State_Machine:new()
 
 local states = {
-    moveState = Move_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
-    dashState = Dash_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
-    wallSlideState = Wall_Slide_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
-    wallJumpState = Wall_Jump_State:new(stateMachine, movement, animations, tryPlayAnimation, input),
+    moveState = Move_State:new(stateMachine, movement, animations, tryPlayAnimation, input, params),
+    dashState = Dash_State:new(stateMachine, movement, animations, tryPlayAnimation, input, params),
+    wallSlideState = Wall_Slide_State:new(stateMachine, movement, animations, tryPlayAnimation, input, params),
+    wallJumpState = Wall_Jump_State:new(stateMachine, movement, animations, tryPlayAnimation, input, params),
+    climbState = Climb_State:new(stateMachine, movement, animations, tryPlayAnimation, input, params),
 }
 
 stateMachine.states = states
@@ -105,10 +114,15 @@ end
 Script.onCollisionEnter = function(contact)
     print(contact and contact.other:getName() or "No Name", "Collision Begin")
     if contact and contact.other:hasTag("Ladder") then
-        print "Ladder"
+        params.ladder = params.ladder + 1
+        print("Ladder Collision Enter", params.ladder)
     end
 end
 
 Script.onCollisionExit = function(contact)
     print(contact and contact.other:getName() or "No Name", "Collision End")
+    if contact and contact.other:hasTag("Ladder") then
+        params.ladder = params.ladder - 1
+        print("Ladder Collision exit", params.ladder)
+    end
 end

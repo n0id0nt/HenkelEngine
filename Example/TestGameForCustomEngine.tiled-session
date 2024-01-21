@@ -19,18 +19,18 @@
                 8
             ],
             "scale": 1,
-            "selectedLayer": 7,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 800,
-                "y": 399.5
+                "x": 1075,
+                "y": 463
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {
             "scale": 2,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 800,
-                "y": 159.75
+                "x": 799.5,
+                "y": 159.5
             }
         },
         "Player.tmx": {
@@ -109,7 +109,7 @@
         "AutomappingRules/AutoTileRules.tmx"
     ],
     "project": "TestGameForCustomEngine.tiled-project",
-    "property.type": "Tag",
+    "property.type": "Animation",
     "recentFiles": [
         "TestLevel.tmx",
         "adventurer-1.3-Sheet.tsx",

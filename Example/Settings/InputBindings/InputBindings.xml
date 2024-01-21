@@ -16,6 +16,11 @@
             <binding type="keycode" value="rshift"/>
         </bindings>
     </input>
+    <input name="Grab" type="button">
+        <bindings>
+            <binding type="keycode" value="q"/>
+        </bindings>
+    </input>
     <input name="Shoot" type="button">
         <bindings>
             <binding type="keycode" value="tab"/>
@@ -38,6 +43,19 @@
             <binding type="keycode"             value="d"       component="positive"/>
 
             <binding type="controllerAxis"      value="leftx"/>
+        </bindings>
+    </input>
+    <input name="Vertical" type="axis">
+        <bindings>
+            <binding type="controllerButton"    value="down"    component="positive"/>
+            <binding type="keycode"             value="down"    component="positive"/>
+            <binding type="keycode"             value="s"       component="positive"/>
+
+            <binding type="controllerButton"    value="up"      component="negetive"/>
+            <binding type="keycode"             value="up"      component="negetive"/>
+            <binding type="keycode"             value="w"       component="negetive"/>
+
+            <binding type="controllerAxis"      value="lefty"/>
         </bindings>
     </input>
     <input name="Move" type="axis2">

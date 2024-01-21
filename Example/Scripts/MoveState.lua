@@ -1,6 +1,6 @@
 local MoveState = {}
 
-function MoveState:new(stateMachine, movement, animations, playAnimation, input)
+function MoveState:new(stateMachine, movement, animations, playAnimation, input, params)
     local obj = {}
     setmetatable(obj, self)
     self.__index = self
@@ -9,6 +9,7 @@ function MoveState:new(stateMachine, movement, animations, playAnimation, input)
     self.animations = animations
     self.playAnimation = playAnimation
     self.input = input
+    self.params = params
     return obj
 end
 
@@ -51,6 +52,8 @@ function MoveState:update()
 
     if Input:isInputDown("Dash") then
         self.stateMachine:changeState(self.stateMachine.states.dashState)
+    elseif Input:isInputDown("Grab") and self.params.ladder > 0 then
+        self.stateMachine:changeState(self.stateMachine.states.climbState)
     elseif not self.movement.isGrounded and self.movement.verticalSpeed > 0 and self.movement.horizontalInput ~= 0 and GO:getPhysicsBody():checkCollisionAtAngle(self.movement.horizontalInput > 0 and 0 or 180, groundAngle) then
         self.stateMachine:changeState(self.stateMachine.states.wallSlideState)
     end

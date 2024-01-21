@@ -10,6 +10,14 @@
      <property name="startFrame" type="int" value="15"/>
     </properties>
    </property>
+   <property name="Animation#Climb" type="class" propertytype="Animation">
+    <properties>
+     <property name="animationTime" type="float" value="1000"/>
+     <property name="endFrame" type="int" value="99"/>
+     <property name="loop" type="bool" value="true"/>
+     <property name="startFrame" type="int" value="92"/>
+    </properties>
+   </property>
    <property name="Animation#Crouch" type="class" propertytype="Animation">
     <properties>
      <property name="animationTime" type="float" value="1000"/>
