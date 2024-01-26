@@ -84,6 +84,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			unsigned int width = layer.attribute("width").as_uint();
 			unsigned int height = layer.attribute("height").as_uint();
 
+			std::vector<ScriptProperty> scriptProperties;
+
+
 			// retrieve level data
 			ASSERT(std::string(layer.child("data").attribute("encoding").as_string()) == "base64");
 			std::string base64Data = layer.child("data").text().as_string();
@@ -137,6 +140,44 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 				else if (splitPropertyName[0] == "Tag")
 				{
 					tilemapEntity->AddTag(splitPropertyName[1]);
+				}
+				else if (splitPropertyName[0] == "Script")
+				{
+					if (splitPropertyName.size() > 1)
+					{
+						std::string type = property.attribute("type").as_string();
+						sol::state& lua = m_scriptSystem.GetSolState();
+						if (type == "float")
+						{
+							lua["temp"] = property.attribute("value").as_float();
+						}
+						else if (type == "int")
+						{
+							lua["temp"] = property.attribute("value").as_int();
+						}
+						else if (type == "bool")
+						{
+							lua["temp"] = property.attribute("value").as_bool();
+						}
+						else if (type == "string" || type == "file")
+						{
+							lua["temp"] = property.attribute("value").as_string();
+						}
+						scriptProperties.push_back({ splitPropertyName[1], lua["temp"] });
+					}
+					else
+					{
+						std::string script = property.attribute("value").as_string();
+						tilemapEntity->CreateComponent<ScriptComponent>(fileDir + script, m_scriptSystem.GetSolState(), tilemapEntity);
+					}
+				}
+			}
+			auto* scriptComponent = tilemapEntity->GetComponent<ScriptComponent>();
+			if (scriptComponent)
+			{
+				for (auto& scriptProperty : scriptProperties)
+				{
+					scriptComponent->SetScriptProperty(scriptProperty.name, scriptProperty.value);
 				}
 			}
 		}

@@ -101,6 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.cpp" />
     <ClCompile Include="scr\Physics\CollisionLayers.cpp" />
     <ClCompile Include="scr\Physics\ContactListener.cpp" />
     <ClCompile Include="scr\ECS\System\CameraSystem.cpp" />
@@ -152,6 +153,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.h" />
     <ClInclude Include="scr\Physics\CollisionLayers.h" />
     <ClInclude Include="scr\Physics\ContactListener.h" />
     <ClInclude Include="scr\DebugGUIPanels\ImGuiHelper.h" />

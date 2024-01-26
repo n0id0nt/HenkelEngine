@@ -125,7 +125,7 @@ void TileMapCollisionBodyComponent::CreateLoop(Dir inputDir, glm::ivec2 inputTil
 }
 
 TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap, Entity* entity, bool isSensor, uint16 categoryBits, uint16 maskBits)
-	: m_world(world)
+	: CollisionBodyComponent(world)
 {
 	b2Filter filter;
 	filter.categoryBits = categoryBits;
@@ -171,25 +171,11 @@ TileMapCollisionBodyComponent::TileMapCollisionBodyComponent(PhysicsWorld* world
 	}	
 }
 
-TileMapCollisionBodyComponent::~TileMapCollisionBodyComponent()
+void TileMapCollisionBodyComponent::LUABind(sol::state& lua)
 {
-	m_world->DestroyBody(m_body);
-}
-
-glm::vec2 TileMapCollisionBodyComponent::GetPosition()
-{
-	b2Vec2 pos = m_body->GetPosition();
-	return glm::vec2(pos.x * m_world->GetPixelsPerMeter(), pos.y * m_world->GetPixelsPerMeter());
-}
-
-void TileMapCollisionBodyComponent::SetPosition(glm::vec2 pos)
-{
-	m_body->SetTransform(b2Vec2(pos.x / m_world->GetPixelsPerMeter(), pos.y / m_world->GetPixelsPerMeter()), 0.f);
-}
-
-b2Body* TileMapCollisionBodyComponent::GetBody() const
-{
-	return m_body;
+	lua.new_usertype<TileMapCollisionBodyComponent>("tileMapCollisionBodyComponent",
+		sol::base_classes, sol::bases<CollisionBodyComponent>()
+	);
 }
 
 

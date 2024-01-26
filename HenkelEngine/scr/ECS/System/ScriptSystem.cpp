@@ -1,6 +1,9 @@
 #include "ScriptSystem.h"
 #include "ECS\Component\TransformComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 #include "ECS/Component/ScriptComponent.h"
 #include "ECS/Component/RenderComponents/SpriteComponent.h"
 #include "HelperFunctions.h"
@@ -22,7 +25,10 @@ ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 	HenkelEngine::LUABindLibraries(m_lua);
 	Entity::LUABind(m_lua);
 	TransformComponent::LUABind(m_lua);
+	CollisionBodyComponent::LUABind(m_lua);
 	PhysicsBodyComponent::LUABind(m_lua);
+	TileMapCollisionBodyComponent::LUABind(m_lua);
+	StaticBodyComponent::LUABind(m_lua);
 	ScriptComponent::LUABind(m_lua);
 	SpriteComponent::LUABind(m_lua);
 	SpriteAnimationComponent::LUABind(m_lua);

@@ -8,17 +8,14 @@
 #include "Physics\PhysicsWorld.h"
 #include <ECS\Registry.h>
 #include <ECS\Entity\Entity.h>
+#include "CollisionBodyComponent.h"
 
-class TileMapCollisionBodyComponent 
+class TileMapCollisionBodyComponent : public CollisionBodyComponent
 {
 public:
     TileMapCollisionBodyComponent(PhysicsWorld* world, const TileMapComponent& tilemap, Entity* entity, bool isSensor, uint16 categoryBits, uint16 maskBits);
-    ~TileMapCollisionBodyComponent();
 
-    glm::vec2 GetPosition();
-    void SetPosition(glm::vec2 pos);
-
-    b2Body* GetBody() const;
+    static void LUABind(sol::state& lua);
 
 private:
 
@@ -49,8 +46,5 @@ private:
     glm::ivec2 GetTileInDir(glm::ivec2 tile, Dir inputDir);
     void CreateLoop(Dir inputDir, glm::ivec2 inputTile, std::unordered_set<glm::ivec2, IVec2Hash>& checkedTiles, const TileMapComponent& tilemap, bool isSensor, const b2Filter& filter);
     std::array<b2Vec2, 2> GetSideLine(Dir inputDir, glm::ivec2 inputTile, const TileMapComponent& tilemap);
-
-    b2Body* m_body;
-    PhysicsWorld* m_world;
 };
 

@@ -1,6 +1,8 @@
 #include "Entity.h"
 #include "ECS\Component\TransformComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 #include "ECS/Component/RenderComponents/SpriteComponent.h"
 #include <ECS\Component\SpriteAnimationComponent.h>
 #include <ECS\Component\CameraComponent.h>
@@ -95,6 +97,8 @@ void Entity::LUABind(sol::state& lua)
 		"getSprite", &Entity::GetComponent<SpriteComponent>,
 		"getSpriteAnimation", &Entity::GetComponent<SpriteAnimationComponent>,
 		"getPhysicsBody", &Entity::GetComponent<PhysicsBodyComponent>,
+		"getStaticBody", &Entity::GetComponent<StaticBodyComponent>,
+		"getTileMapCollisionBodyComponent", &Entity::GetComponent<TileMapCollisionBodyComponent>,
 		"getCamera", &Entity::GetComponent<CameraComponent>,
 		"addTag", &Entity::AddTag,
 		"removeTag", &Entity::RemoveTag,

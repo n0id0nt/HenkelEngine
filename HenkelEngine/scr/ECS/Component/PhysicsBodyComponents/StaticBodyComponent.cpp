@@ -2,7 +2,7 @@
 #include "opengl\openglHelper.h"
 #include "glm\glm.hpp"
 
-StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor, uint16 categoryBits, uint16 maskBits) : m_world(world), m_collisionShape(collisionShape)
+StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisionShape, Entity* entity, bool isSensor, uint16 categoryBits, uint16 maskBits) : CollisionBodyComponent(world)
 {
 	b2Filter filter;
 	filter.categoryBits = categoryBits;
@@ -27,23 +27,9 @@ StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisio
 	m_body->CreateFixture(&fixtureDef);
 }
 
-StaticBodyComponent::~StaticBodyComponent()
+void StaticBodyComponent::LUABind(sol::state& lua)
 {
-	m_world->DestroyBody(m_body);
-}
-
-glm::vec2 StaticBodyComponent::GetPosition()
-{
-	b2Vec2 pos = m_body->GetPosition();
-	return glm::vec2(pos.x * m_world->GetPixelsPerMeter(), pos.y * m_world->GetPixelsPerMeter());
-}
-
-void StaticBodyComponent::SetPosition(glm::vec2 pos)
-{
-	m_body->SetTransform(b2Vec2(pos.x / m_world->GetPixelsPerMeter(), pos.y / m_world->GetPixelsPerMeter()), 0.f);
-}
-
-glm::vec2 StaticBodyComponent::GetCollisionShape()
-{
-	return m_collisionShape;
+	lua.new_usertype<StaticBodyComponent>("staticBodyComponent",
+		sol::base_classes, sol::bases<CollisionBodyComponent>()
+	);
 }
