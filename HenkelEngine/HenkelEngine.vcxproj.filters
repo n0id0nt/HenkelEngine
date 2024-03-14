@@ -135,6 +135,12 @@
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\ECS\System\UISystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\sprite.frag" />
@@ -277,6 +283,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\ECS\System\UISystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

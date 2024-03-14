@@ -526,6 +526,8 @@ void Scene::Update()
 	m_animationSystem.Update();
 
 	m_cameraSystem.Update(m_camera.get());
+
+	m_uiSystem.Update();
 }
 
 void Scene::Render()

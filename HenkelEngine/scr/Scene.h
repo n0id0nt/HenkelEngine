@@ -11,6 +11,7 @@
 #include "ECS\System\PhysicsSystem.h"
 #include "ECS\System\RenderSystem.h"
 #include "ECS\System\ScriptSystem.h"
+#include "ECS\System\UISystem.h"
 #include "pugixml.hpp"
 #include "Resourse\TileSheet.h"
 #include "sol\sol.hpp"
@@ -55,6 +56,7 @@ private:
 	RenderSystem m_renderSystem;
 	ScriptSystem m_scriptSystem;
 	CameraSystem m_cameraSystem;
+	UISystem m_uiSystem;
 
 	//TODO should probably remove this
 	int m_activeCameraId = 0;

@@ -141,6 +141,8 @@
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\StaticBodyComponent.cpp" />
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp" />
     <ClCompile Include="scr\ECS\Component\SpriteAnimationComponent.cpp" />
+    <ClCompile Include="scr\ECS\System\UISystem.cpp" />
+    <ClCompile Include="UIComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\debug_ss.frag" />
@@ -197,6 +199,8 @@
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h" />
     <ClInclude Include="scr\TimeHelper.h" />
     <ClInclude Include="scr\ECS\Component\SpriteAnimationComponent.h" />
+    <ClInclude Include="scr\ECS\System\UISystem.h" />
+    <ClInclude Include="UIComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
