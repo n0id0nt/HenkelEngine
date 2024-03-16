@@ -27,7 +27,7 @@ const int POSITION_ITERATIONS = 30;
 
 
 Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
-	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities(), m_uiSystem(&m_registry)
+	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities(), m_uiSystem(&m_registry), m_uiRenderSystem(&m_registry)
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_camera->SetOrthographic(true);
@@ -211,6 +211,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	Entity* uiEntity = CreateEntity("UIArea");
 	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
 	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
+
 }
 
 Entity* Scene::LoadTemplate(const std::string& fileDir, const std::string& levelFile)
@@ -525,13 +526,9 @@ Entity* Scene::CreateEntity(const std::string& name)
 void Scene::Update()
 {
 	m_physicsSystem.Update(m_world.get());
-
 	m_scriptSystem.Update();
-
 	m_animationSystem.Update();
-
 	m_cameraSystem.Update(m_camera.get());
-
 	m_uiSystem.Update();
 }
 
@@ -540,12 +537,12 @@ void Scene::Render()
 	GUIPanel::EntityHierarchy::Panel(m_entities);
 
 	m_renderSystem.Update();
-
-	//DebugRenderer::DrawRectangle({ 29.f * 8.f, 19.f * 8.f, 0.f }, 30.f * 16.f, 20.f * 16.f, {0.5f,0.5f,0.5f});
+	m_uiRenderSystem.Update();
 
 	glm::mat4 projection = m_camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
+
 }
 
 sol::state& Scene::GetLuaState()

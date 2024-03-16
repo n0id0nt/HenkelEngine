@@ -3,14 +3,16 @@
 #include <vector>
 #include "glm\glm.hpp"
 #include <memory>
+#include "opengl\BatchRenderer.h"
 
 class UIArea
 {
 public:
 	UIArea();
+	~UIArea();
 
-	void Update();
-	void Render();
+	virtual void Update();
+	virtual void Render(BatchRenderer* batchRenderer);
 
 	void AddChild(std::unique_ptr<UIArea> area);
 
@@ -39,7 +41,5 @@ private:
 	float m_width, m_height;
 
 	std::vector<std::unique_ptr<UIArea>> m_children;
-
-
 };
 

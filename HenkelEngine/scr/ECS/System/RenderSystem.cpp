@@ -39,7 +39,7 @@ void RenderSystem::Update()
 		if (spriteComponent)
 		{
 			renderComponent->SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index), spriteComponent->flipped);
-			model = glm::translate(glm::mat4(1.f), glm::vec3{spriteComponent->xOffset* (spriteComponent->flipped ? -1.f : 1.f), spriteComponent->yOffset, 0.f})* model;
+			model = glm::translate(glm::mat4(1.0f), glm::vec3{spriteComponent->xOffset * (spriteComponent->flipped ? -1.0f : 1.0f), spriteComponent->yOffset, 0.0f}) * model;
 		}
 
 		materialComponent->Bind(model, view, projection);

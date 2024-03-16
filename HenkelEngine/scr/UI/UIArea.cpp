@@ -1,6 +1,11 @@
 #include "UIArea.h"
 #include "opengl\DebugRenderer.h"
+
 UIArea::UIArea() : m_children(), m_x(0.0f), m_y(0.0f), m_width(0.0f), m_height(0.0f)
+{
+}
+
+UIArea::~UIArea()
 {
 }
 
@@ -9,7 +14,7 @@ void UIArea::Update()
 	DebugRenderer::DrawScreenRectangle(glm::vec3(m_x, m_y, 0.0f), m_width, m_height);
 }
 
-void UIArea::Render()
+void UIArea::Render(BatchRenderer* batchRenderer)
 {
 }
 

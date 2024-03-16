@@ -101,8 +101,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\opengl\BatchRenderer.cpp" />
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.cpp" />
     <ClCompile Include="scr\ECS\Component\UIComponent.cpp" />
+    <ClCompile Include="scr\ECS\System\UIRenderSystem.cpp" />
     <ClCompile Include="scr\Physics\CollisionLayers.cpp" />
     <ClCompile Include="scr\Physics\ContactListener.cpp" />
     <ClCompile Include="scr\ECS\System\CameraSystem.cpp" />
@@ -144,8 +146,11 @@
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.cpp" />
     <ClCompile Include="scr\ECS\Component\SpriteAnimationComponent.cpp" />
     <ClCompile Include="scr\ECS\System\UISystem.cpp" />
+    <ClCompile Include="scr\UI\UIQuad.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\UI.frag" />
+    <None Include="res\shaders\UI.vert" />
     <None Include="res\shaders\debug_ss.frag" />
     <None Include="res\shaders\debug_ss.vert" />
     <None Include="res\shaders\debug_ws.frag" />
@@ -156,8 +161,10 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\opengl\BatchRenderer.h" />
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.h" />
     <ClInclude Include="scr\ECS\Component\UIComponent.h" />
+    <ClInclude Include="scr\ECS\System\UIRenderSystem.h" />
     <ClInclude Include="scr\Physics\CollisionLayers.h" />
     <ClInclude Include="scr\Physics\ContactListener.h" />
     <ClInclude Include="scr\DebugGUIPanels\ImGuiHelper.h" />
@@ -203,6 +210,7 @@
     <ClInclude Include="scr\TimeHelper.h" />
     <ClInclude Include="scr\ECS\Component\SpriteAnimationComponent.h" />
     <ClInclude Include="scr\ECS\System\UISystem.h" />
+    <ClInclude Include="scr\UI\UIQuad.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

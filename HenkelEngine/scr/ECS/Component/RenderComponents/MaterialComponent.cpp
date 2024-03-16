@@ -7,12 +7,6 @@ MaterialComponent::MaterialComponent(std::string texture, std::string vertexShad
 {
     Engine::GetInstance()->GetResourcePool()->CreateShader(m_vertexShader, m_fragmentShader);
     Engine::GetInstance()->GetResourcePool()->CreateTexture(m_texture);
-
-
-    //m_Shader = std::make_unique<Shader>(vertexShader, fragmentShader);
-    //m_Shader->Bind();
-    //m_Shader->SetUniform1i("u_Texture", 0);
-    //m_Texture = std::make_unique<Texture>(texture);
 }
 
 MaterialComponent::~MaterialComponent()

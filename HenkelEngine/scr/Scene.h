@@ -12,6 +12,7 @@
 #include "ECS\System\RenderSystem.h"
 #include "ECS\System\ScriptSystem.h"
 #include "ECS\System\UISystem.h"
+#include "ECS\System\UIRenderSystem.h"
 #include "pugixml.hpp"
 #include "Resourse\TileSheet.h"
 #include "sol\sol.hpp"
@@ -57,6 +58,7 @@ private:
 	ScriptSystem m_scriptSystem;
 	CameraSystem m_cameraSystem;
 	UISystem m_uiSystem;
+	UIRenderSystem m_uiRenderSystem;
 
 	//TODO should probably remove this
 	int m_activeCameraId = 0;

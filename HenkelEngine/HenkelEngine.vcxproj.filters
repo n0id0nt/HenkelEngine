@@ -144,6 +144,15 @@
     <ClCompile Include="scr\UI\UIArea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\ECS\System\UIRenderSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\opengl\BatchRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\UI\UIQuad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\sprite.frag" />
@@ -154,6 +163,8 @@
     <None Include="res\shaders\debug_ws.frag" />
     <None Include="res\shaders\debug_ws.vert" />
     <None Include="vcpkg.json" />
+    <None Include="res\shaders\UI.frag" />
+    <None Include="res\shaders\UI.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scr\Camera.h">
@@ -295,6 +306,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\UI\UIArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\ECS\System\UIRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\opengl\BatchRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\UI\UIQuad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

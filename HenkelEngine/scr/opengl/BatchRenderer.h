@@ -6,13 +6,12 @@
 #include <array>
 #include <memory>
 #include "opengl/Mesh/Mesh.h"
-#include "opengl/BatchRenderer.h"
 
-class RenderComponent
+class BatchRenderer
 {
 public:
-	RenderComponent(unsigned int quads = 1);
-	~RenderComponent();
+	BatchRenderer(unsigned int quads = 1);
+	~BatchRenderer();
 
 	void Render();
 
@@ -26,7 +25,16 @@ public:
 	void ClearBatch();
 
 private:
-	BatchRenderer m_batchRenderer;
+	void InitRenderData();
 
+	bool IsBatching();
+	bool m_batchValid;
+
+	std::vector<Vertex> m_Vertices;
+	std::vector<GLuint> m_Indexes;
+
+	GLuint m_VAO, m_VBO, m_IBO;
+
+	unsigned int m_Quads; // the size of the batch
 };
 
