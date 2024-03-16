@@ -39,11 +39,11 @@ void BatchRenderer::Render()
     GLCall(glBindVertexArray(0));
 }
 
-void BatchRenderer::AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize, const glm::vec2& anchorPoint, const glm::vec4& color)
+void BatchRenderer::AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize, const glm::vec2& anchorPoint, const glm::vec4& color, const glm::vec2& size)
 {
     ASSERT(IsBatching());
     std::vector<Vertex> vertices;
-    Mesh::setQuadData(vertices, pos, { uvPos, uvSize }, false, anchorPoint, color);
+    Mesh::setQuadData(vertices, pos, { uvPos, uvSize }, false, anchorPoint, color, size);
     m_Vertices.insert(m_Vertices.end(), vertices.begin(), vertices.end());
 }
 

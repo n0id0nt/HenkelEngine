@@ -14,7 +14,7 @@ void UIQuad::Update()
 
 void UIQuad::Render(BatchRenderer* batchRenderer)
 {
-	batchRenderer->AddQuadToBatch(glm::vec2(GetX(), GetY()), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f), GetAnchorPoint(), m_color);
+	batchRenderer->AddQuadToBatch(glm::vec2(GetX(), GetY()), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f), GetAnchorPoint(), m_color, glm::vec2(GetWidth(), GetHeight()));
 }
 
 void UIQuad::SetColor(glm::vec4 color)

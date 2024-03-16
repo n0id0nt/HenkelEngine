@@ -215,6 +215,15 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
 	std::unique_ptr<UIQuad> quad = std::make_unique<UIQuad>();
 	quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
+	quad->SetPosition(glm::vec2(100.0f, 220.3f));
+	quad->SetDimensions(glm::vec2(220.6f, 110.3f));
+	
+	std::unique_ptr<UIQuad> quad2 = std::make_unique<UIQuad>();
+	quad2->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
+	quad2->SetPosition(glm::vec2(20.6f, 20.3f));
+	quad2->SetDimensions(glm::vec2(20.6f, 20.3f));
+	quad->AddChild(std::move(quad2));
+
 	uiComponent->GetRootArea()->AddChild(std::move(quad));
 }
 

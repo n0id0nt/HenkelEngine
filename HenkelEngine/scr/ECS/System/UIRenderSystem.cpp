@@ -33,7 +33,13 @@ void UIRenderSystem::Update()
 		m_batchRenderer.ValidateBatch();
 	}
 
-	Engine::GetInstance()->GetResourcePool()->RetrieveShader(VERTEX_SHADER, FREGMENT_SHADER)->Bind();
+	Shader* shader = Engine::GetInstance()->GetResourcePool()->RetrieveShader(VERTEX_SHADER, FREGMENT_SHADER);
+	shader->Bind();
+	float width = Engine::GetInstance()->GetWindow()->GetWidth();
+	float height = Engine::GetInstance()->GetWindow()->GetHeight();
+	glm::mat4 projection = glm::ortho(0.0f, width, height, 0.0f);
+	shader->SetUniformMat4f("U_Projection", projection);
+
 	m_batchRenderer.Render();
 	Engine::GetInstance()->GetResourcePool()->RetrieveShader(VERTEX_SHADER, FREGMENT_SHADER)->Unbind();
 }

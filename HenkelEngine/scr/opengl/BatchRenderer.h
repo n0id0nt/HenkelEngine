@@ -15,7 +15,7 @@ public:
 
 	void Render();
 
-	void AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize, const glm::vec2& anchorPoint = glm::vec2(0.5f, 0.5f), const glm::vec4& color = glm::vec4(1.f, 1.f, 1.f, 1.f));
+	void AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize, const glm::vec2& anchorPoint = glm::vec2(0.5f, 0.5f), const glm::vec4& color = glm::vec4(1.f, 1.f, 1.f, 1.f), const glm::vec2& size = glm::vec2(1.0f, 1.0f));
 
 	void SetQuadUVs(const glm::vec4& rect, const bool& flipped);
 
