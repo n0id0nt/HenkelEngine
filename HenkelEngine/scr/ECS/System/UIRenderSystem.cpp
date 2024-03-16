@@ -15,15 +15,22 @@ UIRenderSystem::~UIRenderSystem()
 
 void UIRenderSystem::Update()
 {
-	auto view = m_registry->GetEntitiesWithComponents<UIComponent, TransformComponent>();
-	for (auto& entity : view)
+	//TODO check if ui batch is valid
+
+	if (!m_batchRenderer.BatchValid())
 	{
-		auto* uiComponent = m_registry->GetComponent<UIComponent>(entity);
-		auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
+		m_batchRenderer.ClearBatch();
+		auto view = m_registry->GetEntitiesWithComponent<UIComponent>();
+		for (auto& entity : view)
+		{
+			auto* uiComponent = m_registry->GetComponent<UIComponent>(entity);
+			//auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
 
-		glm::mat4 model = transformComponent->GetWorldMatrix();
+			//glm::mat4 model = transformComponent->GetWorldMatrix();
 
-		RenderUIAreas(uiComponent->GetRootArea(), &m_batchRenderer);
+			RenderUIAreas(uiComponent->GetRootArea(), &m_batchRenderer);
+		}
+		m_batchRenderer.ValidateBatch();
 	}
 
 	Engine::GetInstance()->GetResourcePool()->RetrieveShader(VERTEX_SHADER, FREGMENT_SHADER)->Bind();

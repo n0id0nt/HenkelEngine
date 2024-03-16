@@ -21,6 +21,9 @@ public:
 	void SetPosition(glm::vec2 position);
 	glm::vec2 GetPosition();
 
+	void SetAnchorPoint(glm::vec2 anchorPoint);
+	glm::vec2 GetAnchorPoint();
+
 	void SetDimensions(glm::vec2 dimensions);
 	glm::vec2 GetDimensions();
 
@@ -39,6 +42,7 @@ public:
 private:
 	float m_x, m_y;
 	float m_width, m_height;
+	glm::vec2 m_anchorPoint;
 
 	std::vector<std::unique_ptr<UIArea>> m_children;
 };

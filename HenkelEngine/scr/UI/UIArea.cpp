@@ -1,7 +1,7 @@
 #include "UIArea.h"
 #include "opengl\DebugRenderer.h"
 
-UIArea::UIArea() : m_children(), m_x(0.0f), m_y(0.0f), m_width(0.0f), m_height(0.0f)
+UIArea::UIArea() : m_children(), m_x(0.0f), m_y(0.0f), m_width(0.0f), m_height(0.0f), m_anchorPoint(glm::vec2(0.0f, 0.0f))
 {
 }
 
@@ -11,7 +11,6 @@ UIArea::~UIArea()
 
 void UIArea::Update()
 {
-	DebugRenderer::DrawScreenRectangle(glm::vec3(m_x, m_y, 0.0f), m_width, m_height);
 }
 
 void UIArea::Render(BatchRenderer* batchRenderer)
@@ -42,6 +41,16 @@ void UIArea::SetPosition(glm::vec2 position)
 glm::vec2 UIArea::GetPosition()
 {
 	return glm::vec2(m_x, m_y);
+}
+
+void UIArea::SetAnchorPoint(glm::vec2 anchorPoint)
+{
+	m_anchorPoint = anchorPoint;
+}
+
+glm::vec2 UIArea::GetAnchorPoint()
+{
+	return m_anchorPoint;
 }
 
 void UIArea::SetDimensions(glm::vec2 dimensions)

@@ -20,6 +20,8 @@
 #include <ECS\Component\TransformComponent.h>
 #include "DebugGUIPanels\GUIPanels.h"
 #include <ECS\Component\CameraComponent.h>
+#include "UI/UIArea.h"
+#include "UI/UIQuad.h"
 
 const float TIME_STEP = 1.0f / FPS;
 const int VELOCITY_ITERATIONS = 40;
@@ -211,7 +213,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	Entity* uiEntity = CreateEntity("UIArea");
 	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
 	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
-
+	std::unique_ptr<UIQuad> quad = std::make_unique<UIQuad>();
+	quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
+	uiComponent->GetRootArea()->AddChild(std::move(quad));
 }
 
 Entity* Scene::LoadTemplate(const std::string& fileDir, const std::string& levelFile)
@@ -537,12 +541,12 @@ void Scene::Render()
 	GUIPanel::EntityHierarchy::Panel(m_entities);
 
 	m_renderSystem.Update();
-	m_uiRenderSystem.Update();
 
 	glm::mat4 projection = m_camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 	glm::mat4 view = m_camera->GetViewMatrix();
 	DebugRenderer::Render(projection * view);
 
+	m_uiRenderSystem.Update();
 }
 
 sol::state& Scene::GetLuaState()

@@ -60,7 +60,7 @@ void Mesh::setQuadData(std::vector<Vertex>& vertices, std::vector<GLuint>& index
 
 void Mesh::setQuadData(std::vector<GLuint>& indexes, unsigned int quadsCount)
 {
-    std::vector<GLuint> _indexes =
+    static const std::vector<GLuint> _indexes =
     {
         2, 0, 1, 1, 3, 2,
     };
@@ -77,15 +77,16 @@ void Mesh::setQuadData(std::vector<GLuint>& indexes, unsigned int quadsCount)
     }
 }
 
-void Mesh::setQuadData(std::vector<Vertex>& vertices, const glm::vec2& pos, const glm::vec4& sourceRect, const bool& flipped)
+void Mesh::setQuadData(std::vector<Vertex>& vertices, const glm::vec2& pos, const glm::vec4& sourceRect, const bool& flipped, const glm::vec2& anchorPoint, const glm::vec4& color)
 {
+    int flippedMultiplier = flipped ? -1 : 1;
     std::vector<Vertex> _vertices =
     {
-        // Position                           Color               Texture
-        {{pos.x + 0.5f * (flipped ? 1 : -1), pos.y - 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.x, sourceRect.y}},
-        {{pos.x + 0.5f * (flipped ? -1 : 1), pos.y - 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.z, sourceRect.y}},
-        {{pos.x + 0.5f * (flipped ? 1 : -1), pos.y + 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.x, sourceRect.w}},
-        {{pos.x + 0.5f * (flipped ? -1 : 1), pos.y + 0.5f, 0.f},   {1.f,1.f,1.f,1.f},  {sourceRect.z, sourceRect.w}},
+        // Position                                                                               Color   Texture
+        {{pos.x + ( anchorPoint.x - 1) * flippedMultiplier, pos.y + ( anchorPoint.y - 1), 0.f},   color,  {sourceRect.x, sourceRect.y}},
+        {{pos.x + (-anchorPoint.x + 1) * flippedMultiplier, pos.y + ( anchorPoint.y - 1), 0.f},   color,  {sourceRect.z, sourceRect.y}},
+        {{pos.x + ( anchorPoint.x - 1) * flippedMultiplier, pos.y + (-anchorPoint.y + 1), 0.f},   color,  {sourceRect.x, sourceRect.w}},
+        {{pos.x + (-anchorPoint.x + 1) * flippedMultiplier, pos.y + (-anchorPoint.y + 1), 0.f},   color,  {sourceRect.z, sourceRect.w}},
     };
 
     vertices.clear();
