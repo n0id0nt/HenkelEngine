@@ -15,6 +15,7 @@
 #include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 #include "ECS\Component\ScriptComponent.h"
 #include "ECS\Component\SpriteAnimationComponent.h"
+#include "ECS\Component\UIComponent.h"
 #include <imgui.h>
 #include <ECS\Component\TransformComponent.h>
 #include "DebugGUIPanels\GUIPanels.h"
@@ -26,7 +27,7 @@ const int POSITION_ITERATIONS = 30;
 
 
 Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
-	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities()
+	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities(), m_uiSystem(&m_registry)
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_camera->SetOrthographic(true);
@@ -206,6 +207,10 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			}
 		}
 	}
+
+	Entity* uiEntity = CreateEntity("UIArea");
+	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
+	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
 }
 
 Entity* Scene::LoadTemplate(const std::string& fileDir, const std::string& levelFile)

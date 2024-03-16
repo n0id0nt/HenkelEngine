@@ -4,14 +4,15 @@
 #include <sol\sol.hpp>
 #include <memory>
 
-struct UIComponent
+class UIComponent
 {
-	std::unique_ptr<UIArea> rootArea;
+public:
+	UIComponent();
 
-	static void LUABind(sol::state& lua)
-	{
-		lua.new_usertype<UIComponent>("sprite",
-			"rootArea", &UIComponent::rootArea
-		);
-	}
+	UIArea* GetRootArea();
+
+	static void LUABind(sol::state& lua);
+
+private:
+	std::unique_ptr<UIArea> m_rootArea;
 };

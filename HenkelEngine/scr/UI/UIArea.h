@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "glm\glm.hpp"
+#include <memory>
 
 class UIArea
 {
@@ -11,9 +12,9 @@ public:
 	void Update();
 	void Render();
 
-	void AddChild(UIArea area);
+	void AddChild(std::unique_ptr<UIArea> area);
 
-	std::vector<UIArea> GetChildren();
+	std::vector<UIArea*> GetChildren();
 
 	void SetPosition(glm::vec2 position);
 	glm::vec2 GetPosition();
@@ -37,7 +38,7 @@ private:
 	float m_x, m_y;
 	float m_width, m_height;
 
-	std::vector<UIArea> m_children;
+	std::vector<std::unique_ptr<UIArea>> m_children;
 
 
 };

@@ -138,7 +138,10 @@
     <ClCompile Include="scr\ECS\System\UISystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UIComponent.cpp">
+    <ClCompile Include="scr\ECS\Component\UIComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\UI\UIArea.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -288,7 +291,10 @@
     <ClInclude Include="scr\ECS\System\UISystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UIComponent.h">
+    <ClInclude Include="scr\ECS\Component\UIComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\UI\UIArea.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
