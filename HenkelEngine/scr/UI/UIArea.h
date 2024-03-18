@@ -20,6 +20,7 @@ public:
 
 	void SetPosition(glm::vec2 position);
 	glm::vec2 GetPosition();
+	glm::vec2 GetLayoutPosition();
 
 	void SetAnchorPoint(glm::vec2 anchorPoint);
 	glm::vec2 GetAnchorPoint();
@@ -39,11 +40,17 @@ public:
 	void SetHeight(float height);
 	float GetHeight();
 
+	UIArea* GetParent();
+
+	glm::mat4 GetMatrix();
+	glm::mat4 GetLayoutMatrix();
+
 private:
 	float m_x, m_y;
 	float m_width, m_height;
 	glm::vec2 m_anchorPoint;
 
-	std::vector<std::unique_ptr<UIArea>> m_children;
+	std::vector<std::unique_ptr<UIArea>> m_children;//TODO change the ownership of children from the area to the component layout
+	UIArea* m_parent = nullptr;
 };
 

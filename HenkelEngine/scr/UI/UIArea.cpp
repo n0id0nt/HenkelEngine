@@ -1,5 +1,7 @@
 #include "UIArea.h"
 #include "opengl\DebugRenderer.h"
+#include <glm\gtx\transform.hpp>
+#include <glm\gtx\matrix_decompose.hpp>
 
 UIArea::UIArea() : m_children(), m_x(0.0f), m_y(0.0f), m_width(0.0f), m_height(0.0f), m_anchorPoint(glm::vec2(0.0f, 0.0f))
 {
@@ -19,6 +21,8 @@ void UIArea::Render(BatchRenderer* batchRenderer)
 
 void UIArea::AddChild(std::unique_ptr<UIArea> area)
 {
+	//TODO remove the area from the parents children
+	area->m_parent = this;
 	m_children.push_back(std::move(area));
 }
 
@@ -41,6 +45,17 @@ void UIArea::SetPosition(glm::vec2 position)
 glm::vec2 UIArea::GetPosition()
 {
 	return glm::vec2(m_x, m_y);
+}
+
+glm::vec2 UIArea::GetLayoutPosition()
+{
+	glm::vec3 scale;
+	glm::quat rotation{};
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(GetLayoutMatrix(), scale, rotation, translation, skew, perspective);
+	return translation;
 }
 
 void UIArea::SetAnchorPoint(glm::vec2 anchorPoint)
@@ -102,4 +117,24 @@ void UIArea::SetHeight(float height)
 float UIArea::GetHeight()
 {
 	return m_height;
+}
+
+UIArea* UIArea::GetParent()
+{
+	return m_parent;
+}
+
+glm::mat4 UIArea::GetMatrix()
+{
+	glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3{ GetPosition(), 0.0f });
+
+	return translation;
+}
+
+glm::mat4 UIArea::GetLayoutMatrix()
+{
+	if (GetParent())
+		return GetParent()->GetLayoutMatrix() * GetMatrix();
+	else
+		return GetMatrix();
 }
