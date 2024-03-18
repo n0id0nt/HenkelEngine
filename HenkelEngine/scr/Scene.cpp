@@ -29,7 +29,7 @@ const int POSITION_ITERATIONS = 30;
 
 
 Scene::Scene(const std::string& fileDir, const std::string& levelFile) 
-	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities(), m_uiSystem(&m_registry), m_uiRenderSystem(&m_registry)
+	: m_name("Scene"), m_registry(), m_animationSystem(&m_registry), m_physicsSystem(&m_registry), m_renderSystem(&m_registry), m_scriptSystem(&m_registry), m_cameraSystem(&m_registry), m_entities(), m_uiSystem(&m_registry)
 {
 	m_camera = std::make_unique<Camera>(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_camera->SetOrthographic(true);
@@ -211,6 +211,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	}
 
 	Entity* uiEntity = CreateEntity("UIArea");
+	uiEntity->CreateComponent<TransformComponent>(uiEntity, glm::vec3(), glm::vec3(), glm::vec3{ 1.0f, 1.0f, 1.0f });
+	uiEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
+	uiEntity->CreateComponent<RenderComponent>(6000u);
 	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
 	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
 	std::unique_ptr<UIQuad> quad = std::make_unique<UIQuad>();
@@ -550,12 +553,6 @@ void Scene::Render()
 	GUIPanel::EntityHierarchy::Panel(m_entities);
 
 	m_renderSystem.Update();
-
-	glm::mat4 projection = m_camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
-	glm::mat4 view = m_camera->GetViewMatrix();
-	DebugRenderer::Render(projection * view);
-
-	m_uiRenderSystem.Update();
 }
 
 sol::state& Scene::GetLuaState()

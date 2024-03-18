@@ -45,3 +45,8 @@ void RenderComponent::ClearBatch()
 {
     m_batchRenderer.ClearBatch();
 }
+
+BatchRenderer* RenderComponent::GetBatchRenderer()
+{
+    return &m_batchRenderer;
+}

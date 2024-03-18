@@ -25,6 +25,8 @@ public:
 	void ValidateBatch();
 	void ClearBatch();
 
+	BatchRenderer* GetBatchRenderer();
+
 private:
 	BatchRenderer m_batchRenderer;
 

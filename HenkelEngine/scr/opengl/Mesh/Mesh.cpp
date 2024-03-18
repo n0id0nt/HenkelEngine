@@ -82,11 +82,11 @@ void Mesh::setQuadData(std::vector<Vertex>& vertices, const glm::vec2& pos, cons
     int flippedMultiplier = flipped ? -1 : 1;
     std::vector<Vertex> _vertices =
     {
-        // Position                                                                               Color   Texture
-        {{pos.x + ( anchorPoint.x - size.x) * flippedMultiplier, pos.y + ( anchorPoint.y - size.y), 0.f},   color,  {sourceRect.x, sourceRect.y}},
-        {{pos.x + (-anchorPoint.x + size.x) * flippedMultiplier, pos.y + ( anchorPoint.y - size.y), 0.f},   color,  {sourceRect.z, sourceRect.y}},
-        {{pos.x + ( anchorPoint.x - size.x) * flippedMultiplier, pos.y + (-anchorPoint.y + size.y), 0.f},   color,  {sourceRect.x, sourceRect.w}},
-        {{pos.x + (-anchorPoint.x + size.x) * flippedMultiplier, pos.y + (-anchorPoint.y + size.y), 0.f},   color,  {sourceRect.z, sourceRect.w}},
+        // Position                                                                                                         Color   Texture
+        {{pos.x + (-size.x * anchorPoint.x)         * flippedMultiplier, pos.y + (-size.y * anchorPoint.y),         0.f},   color,  {sourceRect.x, sourceRect.y}},
+        {{pos.x + ((1.0f - anchorPoint.x) * size.x) * flippedMultiplier, pos.y + (-size.y * anchorPoint.y),         0.f},   color,  {sourceRect.z, sourceRect.y}},
+        {{pos.x + (-size.x * anchorPoint.x)         * flippedMultiplier, pos.y + ((1.0f - anchorPoint.y) * size.y), 0.f},   color,  {sourceRect.x, sourceRect.w}},
+        {{pos.x + ((1.0f - anchorPoint.x) * size.x) * flippedMultiplier, pos.y + ((1.0f - anchorPoint.y) * size.y), 0.f},   color,  {sourceRect.z, sourceRect.w}},
     };
 
     vertices.clear();
