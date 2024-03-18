@@ -146,6 +146,7 @@
     <ClCompile Include="scr\ECS\Component\SpriteAnimationComponent.cpp" />
     <ClCompile Include="scr\ECS\System\UISystem.cpp" />
     <ClCompile Include="scr\UI\UIQuad.cpp" />
+    <ClCompile Include="scr\UI\UITexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\UI.frag" />
@@ -209,6 +210,7 @@
     <ClInclude Include="scr\ECS\Component\SpriteAnimationComponent.h" />
     <ClInclude Include="scr\ECS\System\UISystem.h" />
     <ClInclude Include="scr\UI\UIQuad.h" />
+    <ClInclude Include="scr\UI\UITexture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

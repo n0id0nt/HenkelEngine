@@ -3,32 +3,48 @@
 #include "Engine.h"
 
 MaterialComponent::MaterialComponent(std::string texture, std::string vertexShader, std::string fragmentShader)
-    :  m_texture(texture), m_vertexShader(vertexShader), m_fragmentShader(fragmentShader)
+    :  m_textures(), m_vertexShader(vertexShader), m_fragmentShader(fragmentShader)
 {
+    m_textures.push_back(texture);
     Engine::GetInstance()->GetResourcePool()->CreateShader(m_vertexShader, m_fragmentShader);
-    Engine::GetInstance()->GetResourcePool()->CreateTexture(m_texture);
+    Engine::GetInstance()->GetResourcePool()->CreateTexture(texture);
+}
+
+MaterialComponent::MaterialComponent(std::string vertexShader, std::string fragmentShader)
+{
+    m_textures.push_back("blank");
+    Engine::GetInstance()->GetResourcePool()->CreateShader(m_vertexShader, m_fragmentShader);
 }
 
 MaterialComponent::~MaterialComponent()
 {
     Engine::GetInstance()->GetResourcePool()->ReleaseShader(m_vertexShader, m_fragmentShader);
-    Engine::GetInstance()->GetResourcePool()->ReleaseTexture(m_texture);
+    for (int i = 0; i < m_textures.size(); i++)
+    {
+        Engine::GetInstance()->GetResourcePool()->ReleaseTexture(m_textures[i]);
+    }
 }
 
 void MaterialComponent::Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection)
 {
     Engine::GetInstance()->GetResourcePool()->RetrieveShader(m_vertexShader, m_fragmentShader)->Bind();
-    Engine::GetInstance()->GetResourcePool()->RetrieveTexture(m_texture)->Bind();
+    for (int i = 0; i < m_textures.size(); i++)
+    {
+        Engine::GetInstance()->GetResourcePool()->RetrieveTexture(m_textures[i])->Bind();
+    }
 
     SetWorldMatrices(model, view, projection);
 
-    SetColor({ 1.f,1.f,1.f,1.f });
+    //SetColor({ 1.f,1.f,1.f,1.f });
 }
 
 void MaterialComponent::Unbind()
 {
     Engine::GetInstance()->GetResourcePool()->RetrieveShader(m_vertexShader, m_fragmentShader)->Unbind();
-    Engine::GetInstance()->GetResourcePool()->RetrieveTexture(m_texture)->Unbind();
+    for (int i = 0; i < m_textures.size(); i++)
+    {
+        Engine::GetInstance()->GetResourcePool()->RetrieveTexture(m_textures[i])->Unbind();
+    }
 }
 
 void MaterialComponent::SetColor(glm::vec4 color)

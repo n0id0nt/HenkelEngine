@@ -2,11 +2,13 @@
 #include <memory>
 #include "opengl/Shader.h"
 #include "opengl/Texture.h"
+#include <vector>
 
 class MaterialComponent
 {
 public:
 	MaterialComponent(std::string texture, std::string vertexShader, std::string fragmentShader);
+	MaterialComponent(std::string vertexShader, std::string fragmentShader);
 	~MaterialComponent();
 
 	void Bind(glm::mat4 model, glm::mat4 view, glm::mat4 projection);
@@ -17,6 +19,6 @@ public:
 private:
 	std::string m_vertexShader;
 	std::string m_fragmentShader;
-	std::string m_texture;
+	std::vector<std::string> m_textures;
 };
 
