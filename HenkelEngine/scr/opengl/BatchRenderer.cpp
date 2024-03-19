@@ -106,7 +106,7 @@ void BatchRenderer::InitRenderData()
     
     // TexIndex attribute
     GLCall(glEnableVertexAttribArray(3));
-    GLCall(glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(unsigned char), (GLvoid*)(offsetof(Vertex, Vertex::texIndex))));
+    GLCall(glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), (GLvoid*)(offsetof(Vertex, Vertex::texIndex))));
 
     GLCall(glBindVertexArray(0)); // Unbind VAO
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0)); // Unbind VBO

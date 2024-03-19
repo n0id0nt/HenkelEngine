@@ -11,9 +11,11 @@ MaterialComponent::MaterialComponent(std::string texture, std::string vertexShad
 }
 
 MaterialComponent::MaterialComponent(std::string vertexShader, std::string fragmentShader)
+    : m_textures(), m_vertexShader(vertexShader), m_fragmentShader(fragmentShader)
 {
     m_textures.push_back("blank");
     Engine::GetInstance()->GetResourcePool()->CreateShader(m_vertexShader, m_fragmentShader);
+    Engine::GetInstance()->GetResourcePool()->CreateTexture("blank");
 }
 
 MaterialComponent::~MaterialComponent()

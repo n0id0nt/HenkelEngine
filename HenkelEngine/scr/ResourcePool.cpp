@@ -48,7 +48,10 @@ void ResourcePool::CreateTexture(const std::string& path)
 	std::string key = path;
 	auto it = m_textures.find(key);
 	if (it == m_textures.end())
-		m_textures[key] = RefCounter<Texture>{ 1u, std::make_unique<Texture>(path) };
+		if (path.compare("blank") == 0) // TODO Think of a better way to handle black textures
+			m_textures[key] = RefCounter<Texture>{ 1u, std::make_unique<Texture>() };
+		else
+			m_textures[key] = RefCounter<Texture>{ 1u, std::make_unique<Texture>(path) };
 	else
 		it->second.count++;
 }
