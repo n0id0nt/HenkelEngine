@@ -212,7 +212,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 	Entity* uiEntity = CreateEntity("UIArea");
 	uiEntity->CreateComponent<TransformComponent>(uiEntity, glm::vec3(), glm::vec3(), glm::vec3{ 1.0f, 1.0f, 1.0f });
-	uiEntity->CreateComponent<MaterialComponent>("res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
+	uiEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
 	uiEntity->CreateComponent<RenderComponent>(6000u);
 	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
 	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));

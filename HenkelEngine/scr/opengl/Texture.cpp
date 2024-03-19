@@ -23,7 +23,7 @@ void Texture::CreateTexture(unsigned char* textureBuffer)
 }
 
 Texture::Texture(const std::string& path)
-	: m_RendererID(0), m_FilePath(path), m_Width(0), m_Height(0)
+	: m_RendererID(0), m_Width(0), m_Height(0)
 {   
     unsigned char* localBuffer = SOIL_load_image(path.c_str(), &m_Width, &m_Height, 0, SOIL_LOAD_RGBA);
     CreateTexture(localBuffer);
@@ -31,7 +31,7 @@ Texture::Texture(const std::string& path)
 }
 
 Texture::Texture()
-    : m_RendererID(0), m_FilePath("blank"), m_Width(1), m_Height(1)
+    : m_RendererID(0), m_Width(1), m_Height(1)
 {
     unsigned char localBuffer[] = {255, 255, 255, 255}; // Single White Pixel
     CreateTexture(localBuffer);
