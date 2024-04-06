@@ -101,6 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\Font.cpp" />
     <ClCompile Include="scr\opengl\BatchRenderer.cpp" />
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.cpp" />
     <ClCompile Include="scr\ECS\Component\UIComponent.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="scr\ECS\Component\TransformComponent.cpp" />
     <ClCompile Include="scr\TimeHelper.cpp" />
     <ClCompile Include="scr\UI\UIArea.cpp" />
+    <ClCompile Include="scr\UI\UIText.cpp" />
     <ClCompile Include="scr\Window.cpp" />
     <ClCompile Include="scr\ECS\Component\RenderComponents\TileMapComponent.cpp" />
     <ClCompile Include="scr\Resourse\TileSheet.cpp" />
@@ -161,6 +163,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\Font.h" />
     <ClInclude Include="scr\opengl\BatchRenderer.h" />
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.h" />
     <ClInclude Include="scr\ECS\Component\UIComponent.h" />
@@ -201,6 +204,7 @@
     <ClInclude Include="scr\Scene.h" />
     <ClInclude Include="scr\ECS\Component\TransformComponent.h" />
     <ClInclude Include="scr\UI\UIArea.h" />
+    <ClInclude Include="scr\UI\UIText.h" />
     <ClInclude Include="scr\Window.h" />
     <ClInclude Include="scr\ECS\Component\RenderComponents\TileMapComponent.h" />
     <ClInclude Include="scr\Resourse\TileSheet.h" />

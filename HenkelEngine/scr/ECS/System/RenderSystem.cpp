@@ -97,7 +97,6 @@ void RenderSystem::Update()
 
 		materialComponent->Bind(model, view, projection);
 		Shader* shader = materialComponent->GetShader();
-		//shader->SetUniform1i("")
 		renderComponent->BindTextures();
 		renderComponent->Render();
 		renderComponent->UnbindTextures();

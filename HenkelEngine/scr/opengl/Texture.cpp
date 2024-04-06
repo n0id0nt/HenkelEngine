@@ -30,11 +30,22 @@ Texture::Texture(const std::string& path)
     SOIL_free_image_data(localBuffer);
 }
 
+Texture::Texture(unsigned int renderID, int width, int height)
+    : m_RendererID(renderID), m_Width(width), m_Height(height)
+{
+}
+
 Texture::Texture()
     : m_RendererID(0), m_Width(1), m_Height(1)
 {
     unsigned char localBuffer[] = {255, 255, 255, 255}; // Single White Pixel
     CreateTexture(localBuffer);
+}
+
+Texture::Texture(unsigned char* textureBuffer, int width, int height)
+    : m_RendererID(0), m_Width(width), m_Height(height)
+{
+    CreateTexture(textureBuffer);
 }
 
 Texture::~Texture()

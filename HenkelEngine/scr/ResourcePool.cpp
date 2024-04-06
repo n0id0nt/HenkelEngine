@@ -1,5 +1,6 @@
 #include "ResourcePool.h"
 #include <opengl\openglHelper.h>
+#include <format>
 
 ResourcePool::ResourcePool() : m_shaders(), m_textures()
 {
@@ -76,4 +77,48 @@ void ResourcePool::ReleaseTexture(const std::string& path)
 	it->second.count--;
 	if (it->second.count <= 0)
 		m_textures.erase(it);
+}
+
+void ResourcePool::CreateFont(const std::string& path, int size)
+{
+	std::string key = std::format("{} {}", path, size);
+	auto it = m_fonts.find(key);
+	if (it == m_fonts.end())
+	{
+		unsigned int rendererID;
+		int width, height;
+		m_fonts[key] = RefCounter<Font>{ 1u, std::make_unique<Font>(path, size, rendererID, width, height) };
+		CreateFontTexture(key, rendererID, width, height);
+	}
+	else
+		it->second.count++;
+}
+
+Font* ResourcePool::RetrieveFont(const std::string& path, int size)
+{
+	std::string key = std::format("{} {}", path, size);
+	auto it = m_fonts.find(key);
+	if (it == m_fonts.end())
+	{
+		ASSERT(true);
+		return nullptr;
+	}
+	return it->second.reference.get();
+}
+
+void ResourcePool::ReleaseFont(const std::string& path, int size)
+{
+	std::string key = std::format("{} {}", path, size);
+	auto it = m_fonts.find(key);
+	if (it == m_fonts.end()) return;
+	it->second.count--;
+	if (it->second.count <= 0)
+		m_fonts.erase(it);
+}
+
+void ResourcePool::CreateFontTexture(const std::string& key, unsigned int rendererID, int width, int height)
+{
+	auto it = m_textures.find(key);
+	ASSERT(it == m_textures.end());
+	m_textures[key] = RefCounter<Texture>{ 1u, std::make_unique<Texture>(rendererID, width, height) };
 }

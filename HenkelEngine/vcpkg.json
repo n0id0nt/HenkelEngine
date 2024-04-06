@@ -11,6 +11,7 @@
     "zlib",
     "sol2",
     "entt",
+    "freetype",
     "nlohmann-json",
     "pugixml",
     "lua",

@@ -23,6 +23,7 @@
 #include "UI/UIArea.h"
 #include "UI/UIQuad.h"
 #include "UI/UITexture.h"
+#include "UI/UIText.h"
 
 const float TIME_STEP = 1.0f / FPS;
 const int VELOCITY_ITERATIONS = 40;
@@ -219,11 +220,11 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
 	std::unique_ptr<UITexture> quad = std::make_unique<UITexture>();
 	quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
-	quad->SetTexture("res/images/Zombie.png");
+	quad->SetTexture("res/images/CubeFace.png");
 	quad->SetPosition(glm::vec2(100.0f, 220.3f));
 	quad->SetDimensions(glm::vec2(220.6f, 110.3f));
 	
-	std::unique_ptr<UITexture> quad2 = std::make_unique<UITexture>();
+	std::unique_ptr<UIQuad> quad2 = std::make_unique<UIQuad>();
 	quad2->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
 	quad2->SetPosition(glm::vec2(20.6f, 20.3f));
 	quad2->SetDimensions(glm::vec2(20.6f, 20.3f));
@@ -233,14 +234,22 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	//quad3->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 	quad3->SetPosition(glm::vec2(60.6f, 20.3f));
 	quad3->SetDimensions(glm::vec2(20.6f, 20.3f));
-	quad3->SetTexture("res/images/CubeFace.png");
+	quad3->SetTexture("res/images/Zombie.png");
 	quad->AddChild(std::move(quad3));
 	
-	std::unique_ptr<UITexture> quad4 = std::make_unique<UITexture>();
+	std::unique_ptr<UIQuad> quad4 = std::make_unique<UIQuad>();
 	quad4->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
 	quad4->SetPosition(glm::vec2(100.6f, 20.3f));
 	quad4->SetDimensions(glm::vec2(20.6f, 20.3f));
 	quad->AddChild(std::move(quad4));
+	
+	std::unique_ptr<UIText> quad5 = std::make_unique<UIText>();
+	quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	quad5->SetPosition(glm::vec2(20.6f, 50.3f));
+	quad5->SetDimensions(glm::vec2(20.6f, 20.3f));
+	quad5->SetText("The Quick Brown Fox Jumps Over The Lazy Dog!");
+	quad5->SetFont("../Example/fonts/arial.ttf", 30);
+	quad->AddChild(std::move(quad5));
 	
 	uiComponent->GetRootArea()->AddChild(std::move(quad));
 }
