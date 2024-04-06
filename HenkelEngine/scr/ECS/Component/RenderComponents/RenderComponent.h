@@ -7,6 +7,7 @@
 #include <memory>
 #include "opengl/Mesh/Mesh.h"
 #include "opengl/BatchRenderer.h"
+#include "opengl/Shader.h"
 
 class RenderComponent
 {
@@ -16,6 +17,13 @@ public:
 
 	void Render();
 
+	void LoadTexture(const std::string& texture);
+	void UnloadTexture(const std::string& texture);
+
+	void BindTextures();
+	void UnbindTextures();
+
+	void AddTextureToBatch(const std::string& texture, const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize);
 	void AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize);
 
 	void SetQuadUVs(const glm::vec4& rect, const bool& flipped);

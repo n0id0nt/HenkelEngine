@@ -21,6 +21,8 @@ public:
 
 	unsigned int GetTile(unsigned int row, unsigned int col) const;
 
+	std::string GetTileMapTexturePath() const;
+
 private:
 	unsigned int m_width, m_height;
 	std::vector<unsigned int> m_levelArray;

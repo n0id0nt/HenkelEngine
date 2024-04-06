@@ -40,6 +40,12 @@ void RenderSystem::Update()
 		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();
 		glm::mat4 model = transformComponent->GetWorldMatrix();
 
+		// Better handle textures in a way that that better allows texture changing 
+		if (tilemapComponent)
+			renderComponent->LoadTexture(tilemapComponent->GetTileMapTexturePath());
+		if (spriteComponent)
+			renderComponent->LoadTexture(spriteComponent->tileSheet.GetTileSetImagePath());
+
 		if (tilemapComponent && !renderComponent->BatchValid())
 		{
 			renderComponent->ClearBatch();
@@ -58,7 +64,9 @@ void RenderSystem::Update()
 		}
 
 		materialComponent->Bind(model, view, projection);
+		renderComponent->BindTextures();
 		renderComponent->Render();
+		renderComponent->UnbindTextures();
 		materialComponent->Unbind();
 	}
 
@@ -88,7 +96,11 @@ void RenderSystem::Update()
 		}
 
 		materialComponent->Bind(model, view, projection);
+		Shader* shader = materialComponent->GetShader();
+		//shader->SetUniform1i("")
+		renderComponent->BindTextures();
 		renderComponent->Render();
+		renderComponent->UnbindTextures();
 		materialComponent->Unbind();
 	}
 }

@@ -6,7 +6,7 @@
 
 void Texture::CreateTexture(unsigned char* textureBuffer)
 {
-    // --== TEXTURE == --
+    // --== TEXTURE ==--
     GLCall(glGenTextures(1, &m_RendererID));
     GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID)); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
     // Set our texture parameters
@@ -46,6 +46,7 @@ void Texture::Bind(unsigned int slot) const
 {
     GLCall(glActiveTexture(GL_TEXTURE0 + slot));
     GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
+    //GLCall(glBindTextureUnit(slot, m_RendererID));
 }
 
 void Texture::Unbind() const

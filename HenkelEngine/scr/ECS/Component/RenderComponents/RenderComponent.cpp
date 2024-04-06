@@ -16,6 +16,31 @@ void RenderComponent::Render()
     m_batchRenderer.Render();
 }
 
+void RenderComponent::LoadTexture(const std::string& texture)
+{
+    m_batchRenderer.LoadTexture(texture);
+}
+
+void RenderComponent::UnloadTexture(const std::string& texture)
+{
+    m_batchRenderer.UnloadTexture(texture);
+}
+
+void RenderComponent::BindTextures()
+{
+    m_batchRenderer.BindTextures();
+}
+
+void RenderComponent::UnbindTextures()
+{
+    m_batchRenderer.UnbindTextures();
+}
+
+void RenderComponent::AddTextureToBatch(const std::string& texture, const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize)
+{
+    m_batchRenderer.AddTextureToBatch(texture, pos, uvPos, uvSize);
+}
+
 void RenderComponent::AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos, const glm::vec2& uvSize)
 {
     m_batchRenderer.AddQuadToBatch(pos, uvPos, uvSize);

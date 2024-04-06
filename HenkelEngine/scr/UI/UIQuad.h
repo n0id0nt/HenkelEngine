@@ -9,7 +9,7 @@ public:
 	virtual void Update() override;
 	virtual void Render(BatchRenderer* batchRenderer) override;
 
-	void SetColor(glm::vec4 color);
+	void SetColor(const glm::vec4& color);
 
 private:
 

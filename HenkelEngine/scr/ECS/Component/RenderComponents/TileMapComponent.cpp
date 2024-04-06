@@ -73,3 +73,8 @@ unsigned int TileMapComponent::GetTile(unsigned int row, unsigned int col) const
 {
 	return m_levelArray[row * m_width + col];
 }
+
+std::string TileMapComponent::GetTileMapTexturePath() const
+{
+	return m_tileSheet.GetTileSetImagePath();
+}

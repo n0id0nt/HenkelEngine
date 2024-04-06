@@ -22,6 +22,7 @@
 #include <ECS\Component\CameraComponent.h>
 #include "UI/UIArea.h"
 #include "UI/UIQuad.h"
+#include "UI/UITexture.h"
 
 const float TIME_STEP = 1.0f / FPS;
 const int VELOCITY_ITERATIONS = 40;
@@ -99,7 +100,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 			uncompress((Bytef*)levelArray.data(), &numGids, (const Bytef*)data.c_str(), data.size());
 			levelArray.erase(levelArray.begin() + width * height, levelArray.end());
 
-			tilemapEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
+			tilemapEntity->CreateComponent<MaterialComponent>("res/shaders/sprite.vert", "res/shaders/sprite.frag");
 			tilemapEntity->CreateComponent<RenderComponent>(width * height);
 			auto* tilemap = tilemapEntity->CreateComponent<TileMapComponent>(width, height, levelArray, tileSheet);
 			auto* transform = tilemapEntity->CreateComponent<TransformComponent>(tilemapEntity, glm::vec3(), glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });
@@ -212,20 +213,34 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 
 	Entity* uiEntity = CreateEntity("UIArea");
 	uiEntity->CreateComponent<TransformComponent>(uiEntity, glm::vec3(), glm::vec3(), glm::vec3{ 1.0f, 1.0f, 1.0f });
-	uiEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
+	uiEntity->CreateComponent<MaterialComponent>("res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
 	uiEntity->CreateComponent<RenderComponent>(6000u);
 	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
 	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
-	std::unique_ptr<UIQuad> quad = std::make_unique<UIQuad>();
+	std::unique_ptr<UITexture> quad = std::make_unique<UITexture>();
 	quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
+	quad->SetTexture("res/images/Zombie.png");
 	quad->SetPosition(glm::vec2(100.0f, 220.3f));
 	quad->SetDimensions(glm::vec2(220.6f, 110.3f));
 	
-	std::unique_ptr<UIQuad> quad2 = std::make_unique<UIQuad>();
+	std::unique_ptr<UITexture> quad2 = std::make_unique<UITexture>();
 	quad2->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
 	quad2->SetPosition(glm::vec2(20.6f, 20.3f));
 	quad2->SetDimensions(glm::vec2(20.6f, 20.3f));
 	quad->AddChild(std::move(quad2));
+	
+	std::unique_ptr<UITexture> quad3 = std::make_unique<UITexture>();
+	//quad3->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+	quad3->SetPosition(glm::vec2(60.6f, 20.3f));
+	quad3->SetDimensions(glm::vec2(20.6f, 20.3f));
+	quad3->SetTexture("res/images/CubeFace.png");
+	quad->AddChild(std::move(quad3));
+	
+	std::unique_ptr<UITexture> quad4 = std::make_unique<UITexture>();
+	quad4->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
+	quad4->SetPosition(glm::vec2(100.6f, 20.3f));
+	quad4->SetDimensions(glm::vec2(20.6f, 20.3f));
+	quad->AddChild(std::move(quad4));
 	
 	uiComponent->GetRootArea()->AddChild(std::move(quad));
 }
@@ -274,7 +289,7 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 		std::string objectName = object.attribute("name").as_string();
 		gameObjectEntity = CreateEntity(objectName);
 
-		gameObjectEntity->CreateComponent<MaterialComponent>(tileSheet.GetTileSetImagePath(), "res/shaders/sprite.vert", "res/shaders/sprite.frag");
+		gameObjectEntity->CreateComponent<MaterialComponent>("res/shaders/sprite.vert", "res/shaders/sprite.frag");
 		gameObjectEntity->CreateComponent<RenderComponent>(1u);
 		gameObjectEntity->CreateComponent<SpriteComponent>(tileSheet, object.attribute("gid").as_uint() - 1);
 		gameObjectEntity->CreateComponent<TransformComponent>(gameObjectEntity, objectPosition, glm::vec3(), glm::vec3{ tileSheet.GetTileWidth(), tileSheet.GetTileHeight(), 1.f });

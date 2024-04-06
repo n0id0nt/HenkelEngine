@@ -5,10 +5,10 @@ in vec2 v_TexCoord;
 in float v_TexIndex;
 in vec4 v_Color;
 
-uniform sampler2D U_Textures;
+layout(binding=0) uniform sampler2D U_Textures[30];
 
 void main()
 {
     int index = int(v_TexIndex);
-    o_Color = v_Color * texture(U_Textures, v_TexCoord);
+    o_Color = v_Color * texture(U_Textures[index], v_TexCoord);
 }

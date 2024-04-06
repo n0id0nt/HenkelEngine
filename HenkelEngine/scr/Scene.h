@@ -58,7 +58,7 @@ private:
 	CameraSystem m_cameraSystem;
 	UISystem m_uiSystem;
 
-	//TODO should probably remove this
+	//TODO should probably remove this, so I can mave multile camera ie, one for ui
 	int m_activeCameraId = 0;
 };
 

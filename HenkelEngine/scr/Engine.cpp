@@ -42,7 +42,7 @@ void Engine::InitEngine()
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 	m_window = std::make_unique<Window>("Henkel Engine", 150, 150, 640, 420, true, false);
