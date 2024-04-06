@@ -66,24 +66,41 @@ void Font::CreateFont(const std::string& font, int size, unsigned int& renderID,
     // generate texture
     GLCall(glGenTextures(1, &renderID));
     GLCall(glBindTexture(GL_TEXTURE_2D, renderID));
-    GLCall(glPixelStorei(GL_UNPACK_ALIGNMENT, 1)); // disable byte-alignment restriction
+    // Set our texture parameters
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT));
+    // Set texture filtering
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+    GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+    //GLCall(glPixelStorei(GL_UNPACK_ALIGNMENT, 1)); // disable byte-alignment restriction
     GLCall(glTexImage2D(
         GL_TEXTURE_2D,
         0,
-        GL_RED,
+        GL_RGBA,
         w,
         h,
         0,
-        GL_RED,
+        GL_RGBA,
         GL_UNSIGNED_BYTE,
         0
     ));
 
     int x = 0;
     for (int c = 32; c < 128; c++) {
-        ASSERT(!FT_Load_Char(face, c, FT_LOAD_RENDER))
+        ASSERT(!FT_Load_Char(face, c, FT_LOAD_RENDER));
 
-        GLCall(glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, glyph->bitmap.width, glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, glyph->bitmap.buffer));
+        GLubyte* expanded_data = new GLubyte[4 * glyph->bitmap.width * glyph->bitmap.rows];
+
+        for (int j = 0; j < glyph->bitmap.rows; j++) {
+            for (int i = 0; i < glyph->bitmap.width; i++) {
+                expanded_data[4 * (i + j * glyph->bitmap.width)] =
+                    expanded_data[4 * (i + j * glyph->bitmap.width) + 1] =
+                    expanded_data[4 * (i + j * glyph->bitmap.width) + 2] = 255;
+                expanded_data[4 * (i + j * glyph->bitmap.width) + 3] = glyph->bitmap.buffer[i + glyph->bitmap.width * j];
+            }
+        }
+
+        GLCall(glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, glyph->bitmap.width, glyph->bitmap.rows, GL_RGBA, GL_UNSIGNED_BYTE, expanded_data));
 
         x += glyph->bitmap.width;
 
@@ -95,11 +112,14 @@ void Font::CreateFont(const std::string& font, int size, unsigned int& renderID,
         };
         
     }
+    GLCall(glGenerateMipmap(GL_TEXTURE_2D));
+
+    GLCall(glBindTexture(GL_TEXTURE_2D, 0)); // Unbind texture when done, so we won't accidentily mess up our texture.
 
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 
-    width = w;
     m_atlasWidth = w;
+    width = w;
     height = h;
 }

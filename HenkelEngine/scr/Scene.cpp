@@ -244,7 +244,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	quad->AddChild(std::move(quad4));
 	
 	std::unique_ptr<UIText> quad5 = std::make_unique<UIText>();
-	quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	quad5->SetPosition(glm::vec2(20.6f, 50.3f));
 	quad5->SetDimensions(glm::vec2(20.6f, 20.3f));
 	quad5->SetText("The Quick Brown Fox Jumps Over The Lazy Dog!");
