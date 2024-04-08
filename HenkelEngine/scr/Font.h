@@ -16,7 +16,6 @@ private:
 	void CreateFont(const std::string& font, int size, unsigned int& renderID, int& width, int& height);
 
 	struct Character {
-		//unsigned int textureID;  // ID handle of the glyph texture
 		glm::ivec2 size;       // Size of glyph
 		glm::ivec2 bearing;    // Offset from baseline to left/top of glyph
 		glm::ivec2 advance;    // Offset to advance to next glyph
@@ -27,6 +26,6 @@ private:
 
 	std::string m_font;
 	int m_size;
-	float m_atlasWidth;
+	glm::vec2 m_atlasSize;
 };
 

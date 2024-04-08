@@ -4,7 +4,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-Font::Font(const std::string& font, int size, unsigned int& renderID, int& width, int& height) : m_font(font), m_size(size)
+Font::Font(const std::string& font, int size, unsigned int& renderID, int& width, int& height) : m_font(font), m_size(size), m_atlasSize()
 {
 	CreateFont(font, size, renderID, width, height);
 }
@@ -19,26 +19,39 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
     batchRenderer->LoadTexture(fontTexture);
     std::string::const_iterator c;
 
+    float curX = x;
+    float curY = y;
+
     for (c = text.begin(); c != text.end(); c++)
     {
+        if (*c == '\n')
+        {
+            curX = x;
+            curY += m_atlasSize.y; // need better new line height 
+            continue;
+        }
+
+        ASSERT(*c >= 32 && *c < 128);
         Character ch = m_characters[*c];
 
-        float xPos = x + ch.bearing.x;
-        float yPos = y - (ch.size.y - ch.bearing.y);
+        float xPos = curX + ch.bearing.x;
+        float yPos = curY + (ch.size.y - ch.bearing.y);
 
         float xUV = ch.textureX;
 
         float w = ch.size.x;
         float h = ch.size.y;
 
-        float wUV = w / m_atlasWidth + xUV;
+        float wUV = w / m_atlasSize.x;
+        float hUV = h / m_atlasSize.y;
+
+        curX += ch.advance.x;
 
         /* Skip glyphs that have no pixels */
         if (!w || !h)
             continue;
 
-        batchRenderer->AddTextureToBatch(fontTexture, glm::vec2(xPos, yPos), glm::vec2(xUV, 0.0f), glm::vec2(wUV, 1.0f), glm::vec2(0, 1), color, glm::vec2(w, h));
-        x += ch.advance.x;
+        batchRenderer->AddTextureToBatch(fontTexture, glm::vec2(xPos, yPos), glm::vec2(xUV - wUV, 0.0f), glm::vec2(xUV, hUV), glm::vec2(0, 1), color, glm::vec2(w, h));
     }
 }
 
@@ -119,7 +132,7 @@ void Font::CreateFont(const std::string& font, int size, unsigned int& renderID,
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
 
-    m_atlasWidth = w;
     width = w;
     height = h;
+    m_atlasSize = glm::vec2(w, h);
 }
