@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 #ignore vcpkg installed directory
 vcpkg_installed/
+HenkelEngine/imgui.ini
