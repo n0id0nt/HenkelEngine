@@ -3,6 +3,7 @@
 #include <format>
 #include <sstream>
 #include <iostream>
+#include <vector>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -24,62 +25,114 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
     // get line width
     float curX = x;
     float curY = y + m_size;
-    std::istringstream textStream(text);
+    std::stringstream textStream(text);
     float spaceAdvance = m_characters[' '].advance.x;
     for (std::string curLine; std::getline(textStream, curLine, '\n');)
     {
-        std::istringstream curLineStream(curLine);
+        std::stringstream curLineStream(curLine);
+        // calculate the how many words to put in the line 
+        std::vector<std::string> wrappedLines{ std::string() };
+        std::vector<float> wrappedLinesWidths{ 0.0f };
+        float prevLastCharWidth = 0.0f;
+        float prevLastCharAdvance = 0.0f;
         for (std::string curWord; std::getline(curLineStream, curWord, ' ');)
         {
-            float currentWordWidth = GetStringDimentions(curWord).x;
-            if (wrapping == TextWrapping::Wrap && curX + currentWordWidth > width + x)
+            float curWordWidth = GetStringDimentions(curWord, false).x;
+            char lastChar = curWord[curWord.size() - 1];
+            float lastCharWidth = m_characters[lastChar].size.x;
+            float lastCharAdvance = m_characters[lastChar].advance.x;
+            float curlineWidth = wrappedLinesWidths[wrappedLinesWidths.size() - 1] + curWordWidth - lastCharAdvance + lastCharWidth;
+            if (wrapping == TextWrapping::Wrap && curlineWidth > width)
             {
-                curX = x;
-                curY += m_size + m_wrappedLineSpacing;
+                wrappedLinesWidths[wrappedLinesWidths.size() - 1] += prevLastCharWidth - prevLastCharAdvance - spaceAdvance;
+                wrappedLines[wrappedLines.size() - 1].resize(wrappedLines[wrappedLines.size() - 1].size() - 1); // take out extra space
+                wrappedLinesWidths.push_back(0.0f);
+                wrappedLines.push_back(std::string());
             }
-
-            for (std::string::const_iterator c = curWord.begin(); c != curWord.end(); c++)
-            {
-                ASSERT(*c >= 32 && *c < 128);
-                Character ch = m_characters[*c];
-
-                float xPos = curX + ch.bearing.x;
-                float yPos = curY + (ch.size.y - ch.bearing.y);
-
-                float xUV = ch.textureX;
-
-                float w = ch.size.x;
-                float h = ch.size.y;
-
-                float wUV = w / m_atlasSize.x;
-                float hUV = h / m_atlasSize.y;
-
-                curX += ch.advance.x;
-
-                /* Skip glyphs that have no pixels */
-                if (!w || !h)
-                    continue;
-
-                batchRenderer->AddTextureToBatch(fontTexture, glm::vec2(xPos, yPos), glm::vec2(xUV - wUV, 0.0f), glm::vec2(xUV, hUV), glm::vec2(0, 1), color, glm::vec2(w, h));
-            }
-            curX += spaceAdvance;
+            wrappedLinesWidths[wrappedLinesWidths.size() - 1] += curWordWidth + spaceAdvance;
+            wrappedLines[wrappedLines.size() - 1].append(curWord);
+            wrappedLines[wrappedLines.size() - 1].append(" ");
+            prevLastCharWidth = lastCharWidth;
+            prevLastCharAdvance = lastCharAdvance;
         }
+        wrappedLinesWidths[wrappedLinesWidths.size() - 1] += prevLastCharWidth - prevLastCharAdvance - spaceAdvance;
+        wrappedLines[wrappedLines.size() - 1].resize(wrappedLines[wrappedLines.size() - 1].size() - 1); // take out extra space
+
+        // print the wrapped lines
+        for (int i = 0; i < wrappedLines.size(); i++)
+        {
+            curX = x;
+            //float tempLineWidth = GetStringDimentions(wrappedLines[i]).x;
+            //ASSERT(wrappedLinesWidths[i] == tempLineWidth)
+            switch (horizontalAlignment)
+            {
+            case TextHorizontalAlignment::Left:
+                break;
+            case TextHorizontalAlignment::Center:
+                curX += (width - wrappedLinesWidths[i]) / 2.0f;
+                break;
+            case TextHorizontalAlignment::Right:
+                curX += (width - wrappedLinesWidths[i]);
+                break;
+            default:
+                ASSERT(false)
+            }
+            std::stringstream curWrappedLineStream(wrappedLines[i]);
+            for (std::string curWord; std::getline(curWrappedLineStream, curWord, ' ');)
+            {
+                for (std::string::const_iterator c = curWord.begin(); c != curWord.end(); c++)
+                {
+                    ASSERT(*c >= 32 && *c < 128);
+                    Character ch = m_characters[*c];
+
+                    float xPos = curX + ch.bearing.x;
+                    float yPos = curY + (ch.size.y - ch.bearing.y);
+
+                    float xUV = ch.textureX;
+
+                    float w = ch.size.x;
+                    float h = ch.size.y;
+
+                    float wUV = w / m_atlasSize.x;
+                    float hUV = h / m_atlasSize.y;
+
+                    curX += ch.advance.x;
+
+                    /* Skip glyphs that have no pixels */
+                    if (!w || !h)
+                        continue;
+
+                    batchRenderer->AddTextureToBatch(fontTexture, glm::vec2(xPos, yPos), glm::vec2(xUV - wUV, 0.0f), glm::vec2(xUV, hUV), glm::vec2(0, 1), color, glm::vec2(w, h));
+                }
+                curX += spaceAdvance;
+            }
+            curY += m_size + m_wrappedLineSpacing;
+        }
+        curY += m_size + m_lineSpacing;
     }
 }
 
-glm::vec2 Font::GetStringDimentions(const std::string& text)
+// TODO update this function to account for text wrapping
+glm::vec2 Font::GetStringDimentions(const std::string& text, bool includeFinalCharacterWidth)
 {
     std::string::const_iterator c;
     float maxWidth = 0.0f, totalHeight = 0.0f;
     float curX = 0.0f, curY = 0.0f;
     float w = 0.0f, h = 0.0f;
+    float advance = 0.0f;
     for (c = text.begin(); c != text.end(); c++)
     {
         if (*c == '\n')
         {
-            if (curX + w > maxWidth)
+            float curLineWidth = curX;
+            if (includeFinalCharacterWidth)
             {
-                maxWidth = curX + w;
+                curLineWidth += w - advance;
+            }
+
+            if (curLineWidth > maxWidth)
+            {
+                maxWidth = curLineWidth;
             }
             curX = 0.0f;
             curY += m_size + m_lineSpacing; // need better new line height 
@@ -89,26 +142,26 @@ glm::vec2 Font::GetStringDimentions(const std::string& text)
         ASSERT(*c >= 32 && *c < 128);
         Character ch = m_characters[*c];
 
-        float xPos = curX + ch.bearing.x;
-        float yPos = curY + (ch.size.y - ch.bearing.y);
-
-        float xUV = ch.textureX;
-
         w = ch.size.x;
         h = ch.size.y;
-
-        float wUV = w / m_atlasSize.x;
-        float hUV = h / m_atlasSize.y;
-
-        curX += ch.advance.x;
+        advance = ch.advance.x;
+        curX += advance;
     }
 
-    if (curX + w > maxWidth)
+    totalHeight = curY;
+
+    float curLineWidth = curX;
+    if (includeFinalCharacterWidth)
     {
-        maxWidth = curX + w;
+        curLineWidth += w - advance;
+        totalHeight += h;
     }
 
-    totalHeight = curY + h;
+    if (curLineWidth > maxWidth)
+    {
+        maxWidth = curLineWidth;
+    }
+
 
     return glm::vec2(maxWidth, totalHeight);
 }

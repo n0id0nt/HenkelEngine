@@ -299,7 +299,7 @@ Input::Input()
 
     if (SDL_NumJoysticks() < 1 || !SDL_IsGameController(0)) {
         std::cerr << "No game controller connected." << std::endl;
-        ASSERT(false);
+        //ASSERT(false);
         return;
     }
 
