@@ -243,29 +243,19 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	quad4->SetDimensions(glm::vec2(20.6f, 20.3f));
 	quad->AddChild(std::move(quad4));
 	
-	std::unique_ptr<UIText> quad5 = std::make_unique<UIText>();
-	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	std::unique_ptr<UIQuad> quad5 = std::make_unique<UIQuad>();
+	quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	quad5->SetPosition(glm::vec2(20.6f, 50.3f));
-	quad5->SetDimensions(glm::vec2(20.6f, 20.3f));
-	quad5->SetText("The Quick Brown Fox Jumps Over The Lazy Dog!");
-	quad5->SetFont("../Example/fonts/arial.ttf", 30);
+	quad5->SetDimensions(glm::vec2(200.6f, 20.3f));
 	quad->AddChild(std::move(quad5));
 	
 	std::unique_ptr<UIText> quad6 = std::make_unique<UIText>();
 	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	quad6->SetPosition(glm::vec2(20.6f, 80.3f));
-	quad6->SetDimensions(glm::vec2(20.6f, 20.3f));
+	quad6->SetPosition(glm::vec2(20.6f, 50.3f));
+	quad6->SetDimensions(glm::vec2(203.6f, 20.3f));
 	quad6->SetText("The Quick Brown Fox Jumps Over The Lazy Dog!");
-	quad6->SetFont("../Example/fonts/comic.ttf", 30);
+	quad6->SetFont("../Example/fonts/arial.ttf", 20);
 	quad->AddChild(std::move(quad6));
-	
-	std::unique_ptr<UIText> quad7 = std::make_unique<UIText>();
-	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	quad7->SetPosition(glm::vec2(20.6f, 110.3f));
-	quad7->SetDimensions(glm::vec2(20.6f, 20.3f));
-	quad7->SetText("The Quick Brown Fox\nJumps Over The Lazy Dog!");
-	quad7->SetFont("../Example/fonts/calibriz.ttf", 30);
-	quad->AddChild(std::move(quad7));
 	
 	uiComponent->GetRootArea()->AddChild(std::move(quad));
 }

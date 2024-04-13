@@ -81,4 +81,5 @@ namespace HenkelEngine
 
         return glm::mix(u, grad(a, value), grad(b, value - 1));
     }
+
 }

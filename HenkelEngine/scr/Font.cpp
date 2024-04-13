@@ -1,10 +1,13 @@
 #include "Font.h"
 #include <map>
 #include <format>
+#include <sstream>
+#include <iostream>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-Font::Font(const std::string& font, int size, unsigned int& renderID, int& width, int& height) : m_font(font), m_size(size), m_atlasSize()
+Font::Font(const std::string& font, int size, unsigned int& renderID, int& width, int& height) 
+    : m_font(font), m_size(size), m_atlasSize(), m_lineSpacing(5.0f), m_wrappedLineSpacing(2.0f)
 {
 	CreateFont(font, size, renderID, width, height);
 }
@@ -13,21 +16,73 @@ Font::~Font()
 {
 }
 
-void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, float x, float y, const glm::vec4& color)
+void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, float x, float y, float width, float height, TextHorizontalAlignment horizontalAlignment, TextWrapping wrapping, const glm::vec4& color)
 {
     std::string fontTexture = std::format("{} {}", m_font, m_size);
     batchRenderer->LoadTexture(fontTexture);
-    std::string::const_iterator c;
 
+    // get line width
     float curX = x;
-    float curY = y;
+    float curY = y + m_size;
+    std::istringstream textStream(text);
+    float spaceAdvance = m_characters[' '].advance.x;
+    for (std::string curLine; std::getline(textStream, curLine, '\n');)
+    {
+        std::istringstream curLineStream(curLine);
+        for (std::string curWord; std::getline(curLineStream, curWord, ' ');)
+        {
+            float currentWordWidth = GetStringDimentions(curWord).x;
+            if (wrapping == TextWrapping::Wrap && curX + currentWordWidth > width + x)
+            {
+                curX = x;
+                curY += m_size + m_wrappedLineSpacing;
+            }
 
+            for (std::string::const_iterator c = curWord.begin(); c != curWord.end(); c++)
+            {
+                ASSERT(*c >= 32 && *c < 128);
+                Character ch = m_characters[*c];
+
+                float xPos = curX + ch.bearing.x;
+                float yPos = curY + (ch.size.y - ch.bearing.y);
+
+                float xUV = ch.textureX;
+
+                float w = ch.size.x;
+                float h = ch.size.y;
+
+                float wUV = w / m_atlasSize.x;
+                float hUV = h / m_atlasSize.y;
+
+                curX += ch.advance.x;
+
+                /* Skip glyphs that have no pixels */
+                if (!w || !h)
+                    continue;
+
+                batchRenderer->AddTextureToBatch(fontTexture, glm::vec2(xPos, yPos), glm::vec2(xUV - wUV, 0.0f), glm::vec2(xUV, hUV), glm::vec2(0, 1), color, glm::vec2(w, h));
+            }
+            curX += spaceAdvance;
+        }
+    }
+}
+
+glm::vec2 Font::GetStringDimentions(const std::string& text)
+{
+    std::string::const_iterator c;
+    float maxWidth = 0.0f, totalHeight = 0.0f;
+    float curX = 0.0f, curY = 0.0f;
+    float w = 0.0f, h = 0.0f;
     for (c = text.begin(); c != text.end(); c++)
     {
         if (*c == '\n')
         {
-            curX = x;
-            curY += m_atlasSize.y; // need better new line height 
+            if (curX + w > maxWidth)
+            {
+                maxWidth = curX + w;
+            }
+            curX = 0.0f;
+            curY += m_size + m_lineSpacing; // need better new line height 
             continue;
         }
 
@@ -39,20 +94,23 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
 
         float xUV = ch.textureX;
 
-        float w = ch.size.x;
-        float h = ch.size.y;
+        w = ch.size.x;
+        h = ch.size.y;
 
         float wUV = w / m_atlasSize.x;
         float hUV = h / m_atlasSize.y;
 
         curX += ch.advance.x;
-
-        /* Skip glyphs that have no pixels */
-        if (!w || !h)
-            continue;
-
-        batchRenderer->AddTextureToBatch(fontTexture, glm::vec2(xPos, yPos), glm::vec2(xUV - wUV, 0.0f), glm::vec2(xUV, hUV), glm::vec2(0, 1), color, glm::vec2(w, h));
     }
+
+    if (curX + w > maxWidth)
+    {
+        maxWidth = curX + w;
+    }
+
+    totalHeight = curY + h;
+
+    return glm::vec2(maxWidth, totalHeight);
 }
 
 void Font::CreateFont(const std::string& font, int size, unsigned int& renderID, int& width, int& height)

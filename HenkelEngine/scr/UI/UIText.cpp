@@ -17,7 +17,7 @@ void UIText::Update()
 void UIText::Render(BatchRenderer* batchRenderer)
 {
 	glm::vec2 pos = GetLayoutPosition();
-	Engine::GetInstance()->GetResourcePool()->RetrieveFont(m_font, m_size)->RenderFont(batchRenderer, m_text, pos.x, pos.y, m_color);
+	Engine::GetInstance()->GetResourcePool()->RetrieveFont(m_font, m_size)->RenderFont(batchRenderer, m_text, pos.x, pos.y, GetWidth(), GetHeight(), TextHorizontalAlignment::Left, TextWrapping::Wrap, m_color);
 }
 
 void UIText::SetText(const std::string& text)
