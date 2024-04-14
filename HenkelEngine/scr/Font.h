@@ -30,7 +30,7 @@ public:
 
 	void RenderFont(BatchRenderer* batchRenderer, const std::string& text, float x, float y, float width, float height, TextHorizontalAlignment horizontalAlignment = TextHorizontalAlignment::Left, TextWrapping wrapping = TextWrapping::Overflow, const glm::vec4& color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
-	glm::vec2 GetStringDimentions(const std::string& text, bool includeFinalCharacterWidth = true);
+	glm::vec2 GetStringDimentions(const std::string& text);
 
 private:
 

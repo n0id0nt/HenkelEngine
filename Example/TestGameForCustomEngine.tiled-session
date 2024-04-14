@@ -5,9 +5,9 @@
     },
     "activeFile": "AutoMappingTestLevel.tmx",
     "expandedProjectPaths": [
+        "Template",
         ".",
-        "AutomappingRules",
-        "Template"
+        "AutomappingRules"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -21,8 +21,8 @@
             "scale": 1,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 800,
-                "y": 399.5
+                "x": 595.5,
+                "y": 253
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {

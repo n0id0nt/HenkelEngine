@@ -33,18 +33,13 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
         // calculate the how many words to put in the line 
         std::vector<std::string> wrappedLines{ std::string() };
         std::vector<float> wrappedLinesWidths{ 0.0f };
-        float prevLastCharWidth = 0.0f;
-        float prevLastCharAdvance = 0.0f;
         for (std::string curWord; std::getline(curLineStream, curWord, ' ');)
         {
-            float curWordWidth = GetStringDimentions(curWord, false).x;
-            char lastChar = curWord[curWord.size() - 1];
-            float lastCharWidth = m_characters[lastChar].size.x;
-            float lastCharAdvance = m_characters[lastChar].advance.x;
-            float curlineWidth = wrappedLinesWidths[wrappedLinesWidths.size() - 1] + curWordWidth - lastCharAdvance + lastCharWidth;
+            float curWordWidth = GetStringDimentions(curWord).x;
+            float curlineWidth = wrappedLinesWidths[wrappedLinesWidths.size() - 1] + curWordWidth;
             if (wrapping == TextWrapping::Wrap && curlineWidth > width)
             {
-                wrappedLinesWidths[wrappedLinesWidths.size() - 1] += prevLastCharWidth - prevLastCharAdvance - spaceAdvance;
+                wrappedLinesWidths[wrappedLinesWidths.size() - 1] -= spaceAdvance;
                 wrappedLines[wrappedLines.size() - 1].resize(wrappedLines[wrappedLines.size() - 1].size() - 1); // take out extra space
                 wrappedLinesWidths.push_back(0.0f);
                 wrappedLines.push_back(std::string());
@@ -52,18 +47,14 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
             wrappedLinesWidths[wrappedLinesWidths.size() - 1] += curWordWidth + spaceAdvance;
             wrappedLines[wrappedLines.size() - 1].append(curWord);
             wrappedLines[wrappedLines.size() - 1].append(" ");
-            prevLastCharWidth = lastCharWidth;
-            prevLastCharAdvance = lastCharAdvance;
         }
-        wrappedLinesWidths[wrappedLinesWidths.size() - 1] += prevLastCharWidth - prevLastCharAdvance - spaceAdvance;
+        wrappedLinesWidths[wrappedLinesWidths.size() - 1] -= spaceAdvance;
         wrappedLines[wrappedLines.size() - 1].resize(wrappedLines[wrappedLines.size() - 1].size() - 1); // take out extra space
 
         // print the wrapped lines
         for (int i = 0; i < wrappedLines.size(); i++)
         {
             curX = x;
-            //float tempLineWidth = GetStringDimentions(wrappedLines[i]).x;
-            //ASSERT(wrappedLinesWidths[i] == tempLineWidth)
             switch (horizontalAlignment)
             {
             case TextHorizontalAlignment::Left:
@@ -113,7 +104,7 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
 }
 
 // TODO update this function to account for text wrapping
-glm::vec2 Font::GetStringDimentions(const std::string& text, bool includeFinalCharacterWidth)
+glm::vec2 Font::GetStringDimentions(const std::string& text)
 {
     std::string::const_iterator c;
     float maxWidth = 0.0f, totalHeight = 0.0f;
@@ -125,11 +116,6 @@ glm::vec2 Font::GetStringDimentions(const std::string& text, bool includeFinalCh
         if (*c == '\n')
         {
             float curLineWidth = curX;
-            if (includeFinalCharacterWidth)
-            {
-                curLineWidth += w - advance;
-            }
-
             if (curLineWidth > maxWidth)
             {
                 maxWidth = curLineWidth;
@@ -151,17 +137,10 @@ glm::vec2 Font::GetStringDimentions(const std::string& text, bool includeFinalCh
     totalHeight = curY;
 
     float curLineWidth = curX;
-    if (includeFinalCharacterWidth)
-    {
-        curLineWidth += w - advance;
-        totalHeight += h;
-    }
-
     if (curLineWidth > maxWidth)
     {
         maxWidth = curLineWidth;
     }
-
 
     return glm::vec2(maxWidth, totalHeight);
 }

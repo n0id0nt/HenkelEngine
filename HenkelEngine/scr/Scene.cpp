@@ -246,15 +246,17 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	std::unique_ptr<UIQuad> quad5 = std::make_unique<UIQuad>();
 	quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	quad5->SetPosition(glm::vec2(20.6f, 50.3f));
-	quad5->SetDimensions(glm::vec2(185.6f, 200.3f));
+	quad5->SetDimensions(glm::vec2(185.6f, 205.3f));
 	quad->AddChild(std::move(quad5));
 	
 	std::unique_ptr<UIText> quad6 = std::make_unique<UIText>();
 	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	quad6->SetPosition(glm::vec2(20.6f, 50.3f));
-	quad6->SetDimensions(glm::vec2(185.6f, 200.3f));
+	quad6->SetDimensions(glm::vec2(185.6f, 205.3f));
 	quad6->SetText("!The Quick Brown Fox Jumps Over The Lazy Dog!");
-	quad6->SetFont("../Example/fonts/arial.ttf", 20);
+	quad6->SetFont("../Example/fonts/arial.ttf", 25);
+	quad6->SetTextAlignment(TextHorizontalAlignment::Right);
+	quad6->SetTextWrapping(TextWrapping::Wrap);
 	quad->AddChild(std::move(quad6));
 	
 	uiComponent->GetRootArea()->AddChild(std::move(quad));
