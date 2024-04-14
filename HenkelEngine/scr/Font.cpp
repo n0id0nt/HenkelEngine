@@ -8,7 +8,7 @@
 #include FT_FREETYPE_H
 
 Font::Font(const std::string& font, int size, unsigned int& renderID, int& width, int& height) 
-    : m_font(font), m_size(size), m_atlasSize(), m_lineSpacing(5.0f), m_wrappedLineSpacing(2.0f)
+    : m_font(font), m_size(size), m_atlasSize(), m_lineSpacing(size / 2.0f), m_wrappedLineSpacing(size / 10.0f)
 {
 	CreateFont(font, size, renderID, width, height);
 }
@@ -99,7 +99,7 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
             }
             curY += m_size + m_wrappedLineSpacing;
         }
-        curY += m_size + m_lineSpacing;
+        curY += m_lineSpacing - m_wrappedLineSpacing; // subracting wrapped line spacing because the previous line added the wrapped line spacing
     }
 }
 

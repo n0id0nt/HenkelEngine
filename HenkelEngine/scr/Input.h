@@ -28,10 +28,12 @@ private:
 		std::set<SDL_GameControllerAxis> controllerAxis;
 	};
 
-	enum AxisComponent
+	enum class AxisComponent
 	{
-		positive,
-		negetive
+		Positive,
+		Negetive,
+
+		Count
 	};
 
 	struct Axis2Binding
@@ -40,25 +42,31 @@ private:
 		AxisBinding yAxis;
 	};
 
-	enum Axis2Component
+	enum class Axis2Component
 	{
-		up,
-		down,
-		left,
-		right
+		Up,
+		Down,
+		Left,
+		Right,
+
+		Count
 	};
 
-	enum Axis2Direction
+	enum class Axis2Direction
 	{
-		x,
-		y
+		X,
+		Y,
+
+		Count
 	};
 
-	enum MouseButtons
+	enum class MouseButtons
 	{
 		Left,
 		Middle,
-		Right
+		Right,
+
+		Count
 	};
 
 public:

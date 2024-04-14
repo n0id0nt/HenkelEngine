@@ -3,23 +3,23 @@
 #include <opengl\BatchRenderer.h>
 #include <map>
 
-enum TextHorizontalAlignment
+enum class TextHorizontalAlignment
 {
 	Left,
 	Center,
 	Right,
 
-	//Count
+	Count
 };
 
-enum TextWrapping
+enum class TextWrapping
 {
 	Overflow,
 	Wrap,
 	CutOff,
 	Ellipsis,
 
-	//Count
+	Count
 };
 
 class Font

@@ -221,7 +221,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	std::unique_ptr<UITexture> quad = std::make_unique<UITexture>();
 	quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
 	quad->SetTexture("res/images/CubeFace.png");
-	quad->SetPosition(glm::vec2(100.0f, 220.3f));
+	quad->SetPosition(glm::vec2(10.0f, 10.0f));
 	quad->SetDimensions(glm::vec2(220.6f, 110.3f));
 	
 	std::unique_ptr<UIQuad> quad2 = std::make_unique<UIQuad>();
@@ -245,17 +245,17 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 	
 	std::unique_ptr<UIQuad> quad5 = std::make_unique<UIQuad>();
 	quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	quad5->SetPosition(glm::vec2(20.6f, 50.3f));
+	quad5->SetPosition(glm::vec2(20.0f, 50.0f));
 	quad5->SetDimensions(glm::vec2(185.6f, 205.3f));
 	quad->AddChild(std::move(quad5));
 	
 	std::unique_ptr<UIText> quad6 = std::make_unique<UIText>();
-	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	quad6->SetPosition(glm::vec2(20.6f, 50.3f));
+	//quad6->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 1.0f));
+	quad6->SetPosition(glm::vec2(20.0f, 50.0f));
 	quad6->SetDimensions(glm::vec2(185.6f, 205.3f));
-	quad6->SetText("!The Quick Brown Fox Jumps Over The Lazy Dog!");
-	quad6->SetFont("../Example/fonts/arial.ttf", 25);
-	quad6->SetTextAlignment(TextHorizontalAlignment::Right);
+	quad6->SetText("!The Quick Brown Fox Jumps Over The Lazy Dog!\n!The Quick\nBrown Fox Jumps Over The Lazy Dog!");
+	quad6->SetFont("../Example/fonts/arial.ttf", 16);
+	quad6->SetTextAlignment(TextHorizontalAlignment::Center);
 	quad6->SetTextWrapping(TextWrapping::Wrap);
 	quad->AddChild(std::move(quad6));
 	

@@ -19,11 +19,12 @@ public:
 
 private:
 
-    enum Dir {
+    enum class Dir {
         Right,
         Down,
         Left,
         Up,
+
         Count
     };
 
