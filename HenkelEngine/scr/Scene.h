@@ -28,6 +28,9 @@ public :
 	Entity* CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet);
 	Entity* CreateTemplatedObject(const std::string& levelFile);
 
+	Entity* LoadUILayout(const std::string& fileDir, const std::string& levelFile);
+	std::unique_ptr<UIArea> CreateUIElement(const pugi::xml_node& object, const std::string& fileDir);
+
 	Entity* CreateEntity(const std::string& name);
 
 	void Update();

@@ -212,54 +212,7 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 		}
 	}
 
-	Entity* uiEntity = CreateEntity("UIArea");
-	uiEntity->CreateComponent<TransformComponent>(uiEntity, glm::vec3(), glm::vec3(), glm::vec3{ 1.0f, 1.0f, 1.0f });
-	uiEntity->CreateComponent<MaterialComponent>("res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
-	uiEntity->CreateComponent<RenderComponent>(6000u);
-	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
-	uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
-	std::unique_ptr<UITexture> quad = std::make_unique<UITexture>();
-	quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
-	quad->SetTexture("res/images/CubeFace.png");
-	quad->SetPosition(glm::vec2(10.0f, 10.0f));
-	quad->SetDimensions(glm::vec2(220.6f, 110.3f));
-	
-	std::unique_ptr<UIQuad> quad2 = std::make_unique<UIQuad>();
-	quad2->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
-	quad2->SetPosition(glm::vec2(20.6f, 20.3f));
-	quad2->SetDimensions(glm::vec2(20.6f, 20.3f));
-	quad->AddChild(std::move(quad2));
-	
-	std::unique_ptr<UITexture> quad3 = std::make_unique<UITexture>();
-	//quad3->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-	quad3->SetPosition(glm::vec2(60.6f, 20.3f));
-	quad3->SetDimensions(glm::vec2(20.6f, 20.3f));
-	quad3->SetTexture("res/images/Zombie.png");
-	quad->AddChild(std::move(quad3));
-	
-	std::unique_ptr<UIQuad> quad4 = std::make_unique<UIQuad>();
-	quad4->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
-	quad4->SetPosition(glm::vec2(100.6f, 20.3f));
-	quad4->SetDimensions(glm::vec2(20.6f, 20.3f));
-	quad->AddChild(std::move(quad4));
-	
-	std::unique_ptr<UIQuad> quad5 = std::make_unique<UIQuad>();
-	quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	quad5->SetPosition(glm::vec2(20.0f, 50.0f));
-	quad5->SetDimensions(glm::vec2(185.6f, 205.3f));
-	quad->AddChild(std::move(quad5));
-	
-	std::unique_ptr<UIText> quad6 = std::make_unique<UIText>();
-	//quad6->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 1.0f));
-	quad6->SetPosition(glm::vec2(20.0f, 50.0f));
-	quad6->SetDimensions(glm::vec2(185.6f, 205.3f));
-	quad6->SetText("!The Quick Brown Fox Jumps Over The Lazy Dog!\n!The Quick\nBrown Fox Jumps Over The Lazy Dog!");
-	quad6->SetFont("../Example/fonts/arial.ttf", 16);
-	quad6->SetTextAlignment(TextHorizontalAlignment::Center);
-	quad6->SetTextWrapping(TextWrapping::Wrap);
-	quad->AddChild(std::move(quad6));
-	
-	uiComponent->GetRootArea()->AddChild(std::move(quad));
+	LoadUILayout(fileDir, "UI/Layouts/TestLayout.xml");
 }
 
 Entity* Scene::LoadTemplate(const std::string& fileDir, const std::string& levelFile)
@@ -563,6 +516,264 @@ Entity* Scene::CreateObject(const pugi::xml_node& object, const std::string& fil
 Entity* Scene::CreateTemplatedObject(const std::string& levelFile)
 {
 	return LoadTemplate(Engine::GetInstance()->GetProjectDirectory(), levelFile);
+}
+
+Entity* Scene::LoadUILayout(const std::string& fileDir, const std::string& levelFile)
+{
+	// Get Working Dir of new file
+	std::string file = fileDir + levelFile;
+	std::string workingDir = HenkelEngine::GetFileDir(file);
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(file.c_str());
+	ASSERT(result);
+
+	Entity* uiEntity = CreateEntity("UILayout");
+	uiEntity->CreateComponent<TransformComponent>(uiEntity, glm::vec3(), glm::vec3(), glm::vec3{ 1.0f, 1.0f, 1.0f });
+	uiEntity->CreateComponent<MaterialComponent>("res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
+	uiEntity->CreateComponent<RenderComponent>(6000u);
+	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
+	//uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
+	//std::unique_ptr<UITexture> quad = std::make_unique<UITexture>();
+	//quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
+	//quad->SetTexture("res/images/CubeFace.png");
+	//quad->SetPosition(glm::vec2(10.0f, 10.0f));
+	//quad->SetDimensions(glm::vec2(220.6f, 110.3f));
+
+	//std::unique_ptr<UIQuad> quad2 = std::make_unique<UIQuad>();
+	//quad2->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
+	//quad2->SetPosition(glm::vec2(20.6f, 20.3f));
+	//quad2->SetDimensions(glm::vec2(20.6f, 20.3f));
+	//quad->AddChild(std::move(quad2));
+
+	//std::unique_ptr<UITexture> quad3 = std::make_unique<UITexture>();
+	////quad3->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+	//quad3->SetPosition(glm::vec2(60.6f, 20.3f));
+	//quad3->SetDimensions(glm::vec2(20.6f, 20.3f));
+	//quad3->SetTexture("res/images/Zombie.png");
+	//quad->AddChild(std::move(quad3));
+
+	//std::unique_ptr<UIQuad> quad4 = std::make_unique<UIQuad>();
+	//quad4->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
+	//quad4->SetPosition(glm::vec2(100.6f, 20.3f));
+	//quad4->SetDimensions(glm::vec2(20.6f, 20.3f));
+	//quad->AddChild(std::move(quad4));
+
+	//std::unique_ptr<UIQuad> quad5 = std::make_unique<UIQuad>();
+	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	//quad5->SetPosition(glm::vec2(20.0f, 50.0f));
+	//quad5->SetDimensions(glm::vec2(185.6f, 205.3f));
+	//quad->AddChild(std::move(quad5));
+
+	//std::unique_ptr<UIText> quad6 = std::make_unique<UIText>();
+	////quad6->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 1.0f));
+	//quad6->SetPosition(glm::vec2(20.0f, 50.0f));
+	//quad6->SetDimensions(glm::vec2(185.6f, 205.3f));
+	//quad6->SetText("!The Quick Brown Fox Jumps Over The Lazy Dog!\n!The Quick\nBrown Fox Jumps Over The Lazy Dog!");
+	//quad6->SetFont("../Example/fonts/arial.ttf", 16);
+	//quad6->SetTextAlignment(TextHorizontalAlignment::Center);
+	//quad6->SetTextWrapping(TextWrapping::Wrap);
+	//quad->AddChild(std::move(quad6));
+
+	uiComponent->GetRootArea()->AddChild(CreateUIElement(doc.child("area"), workingDir));
+
+	return uiEntity;
+}
+
+std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, const std::string& fileDir)
+{
+	std::unique_ptr<UIArea> uiElement;
+	std::string uiElementType = object.name();
+
+	if (uiElementType == "area")
+	{
+		std::unique_ptr<UIArea> area = std::make_unique<UIArea>();
+		for (auto& attribute : object.attributes())
+		{
+			std::string attributeName = attribute.name();
+			if (attributeName == "x")
+			{
+				area->SetX(attribute.as_float());
+			}
+			else if (attributeName == "y")
+			{
+				area->SetY(attribute.as_float());
+			}
+			else if (attributeName == "width")
+			{
+				area->SetWidth(attribute.as_float());
+			}
+			else if (attributeName == "height")
+			{
+				area->SetHeight(attribute.as_float());
+			}
+		}
+
+		//area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
+
+		for (auto& child : object.children())
+		{
+			area->AddChild(CreateUIElement(child, fileDir));
+		}
+
+		uiElement = std::move(area);
+	}
+	else if (uiElementType == "quad")
+	{
+		std::unique_ptr<UIQuad> area = std::make_unique<UIQuad>();
+		for (auto& attribute : object.attributes())
+		{
+			std::string attributeName = attribute.name();
+			if (attributeName == "x")
+			{
+				area->SetX(attribute.as_float());
+			}
+			else if (attributeName == "y")
+			{
+				area->SetY(attribute.as_float());
+			}
+			else if (attributeName == "width")
+			{
+				area->SetWidth(attribute.as_float());
+			}
+			else if (attributeName == "height")
+			{
+				area->SetHeight(attribute.as_float());
+			}
+		}
+
+		area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
+
+		for (auto& child : object.children())
+		{
+			area->AddChild(CreateUIElement(child, fileDir));
+		}
+
+		uiElement = std::move(area);
+	}
+	else if (uiElementType == "texture")
+	{
+		std::unique_ptr<UITexture> area = std::make_unique<UITexture>();
+		for (auto& attribute : object.attributes())
+		{
+			std::string attributeName = attribute.name();
+			if (attributeName == "x")
+			{
+				area->SetX(attribute.as_float());
+			}
+			else if (attributeName == "y")
+			{
+				area->SetY(attribute.as_float());
+			}
+			else if (attributeName == "width")
+			{
+				area->SetWidth(attribute.as_float());
+			}
+			else if (attributeName == "height")
+			{
+				area->SetHeight(attribute.as_float());
+			}
+			else if (attributeName == "source")
+			{
+				area->SetTexture(attribute.as_string());
+			}
+		}
+
+		//area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
+
+		for (auto& child : object.children())
+		{
+			area->AddChild(CreateUIElement(child, fileDir));
+		}
+
+		uiElement = std::move(area);
+	}
+	else if (uiElementType == "text")
+	{
+		std::unique_ptr<UIText> area = std::make_unique<UIText>();
+		for (auto& attribute : object.attributes())
+		{
+			std::string attributeName = attribute.name();
+			if (attributeName == "x")
+			{
+				area->SetX(attribute.as_float());
+			}
+			else if (attributeName == "y")
+			{
+				area->SetY(attribute.as_float());
+			}
+			else if (attributeName == "width")
+			{
+				area->SetWidth(attribute.as_float());
+			}
+			else if (attributeName == "height")
+			{
+				area->SetHeight(attribute.as_float());
+			}
+			else if (attributeName == "font")
+			{
+				area->SetFont(attribute.as_string(), 16);
+			}
+			else if (attributeName == "text")
+			{
+				area->SetText(attribute.as_string());
+			}
+			else if (attributeName == "alignment")
+			{
+				std::string attributeStringValue = attribute.as_string();
+				if (attributeStringValue == "center")
+				{
+					area->SetTextAlignment(TextHorizontalAlignment::Center);
+				}
+				else if (attributeStringValue == "left")
+				{
+					area->SetTextAlignment(TextHorizontalAlignment::Left);
+				}
+				else if (attributeStringValue == "right")
+				{
+					area->SetTextAlignment(TextHorizontalAlignment::Right);
+				}
+				else
+				{
+					ASSERT(false);
+				}
+			}
+			else if (attributeName == "wrapping")
+			{
+				std::string attributeStringValue = attribute.as_string();
+				if (attributeStringValue == "overflow")
+				{
+					area->SetTextWrapping(TextWrapping::Overflow);
+				}
+				else if (attributeStringValue == "wrap")
+				{
+					area->SetTextWrapping(TextWrapping::Wrap);
+				}
+				else if (attributeStringValue == "cutoff")
+				{
+					area->SetTextWrapping(TextWrapping::CutOff);
+				}
+				else if (attributeStringValue == "ellipsis")
+				{
+					area->SetTextWrapping(TextWrapping::Ellipsis);
+				}
+				else
+				{
+					ASSERT(false);
+				}
+			}
+		}
+
+		//area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
+
+		for (auto& child : object.children())
+		{
+			area->AddChild(CreateUIElement(child, fileDir));
+		}
+
+		uiElement = std::move(area);
+	}
+
+	return std::move(uiElement);
 }
 
 Entity* Scene::CreateEntity(const std::string& name)
