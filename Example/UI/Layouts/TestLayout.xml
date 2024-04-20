@@ -27,8 +27,8 @@
             color="#FF000000"
             >
             <text 
+                size="20"
                 font="../Example/fonts/arial.ttf"
-                size="16"
                 width="185" height="205"
                 alignment="center"
                 wrapping="wrap"

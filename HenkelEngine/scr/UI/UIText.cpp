@@ -1,7 +1,10 @@
 #include "UIText.h"
 #include "Engine.h"
 
-UIText::UIText() : UIArea(), m_color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)), m_font(), m_text(), m_size(0), m_textAlignment(TextHorizontalAlignment::Left), m_textWrapping(TextWrapping::Overflow)
+UIText::UIText() 
+	: UIArea(), m_color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)), m_font(), 
+	m_text(), m_size(0), m_textAlignment(TextHorizontalAlignment::Left), 
+	m_textWrapping(TextWrapping::Overflow), m_fontGenerated(false)
 {
     SetAnchorPoint(glm::vec2(0.f, 1.f));
 }
@@ -25,14 +28,29 @@ void UIText::SetText(const std::string& text)
 	m_text = text;
 }
 
-void UIText::SetFont(const std::string& font, int size)
+void UIText::GenerateFont(const std::string& font, int size)
 {
+	if (font.empty()) 
+		return;
+
 	if (m_font == font && m_size == size)
 		return;
 	Engine::GetInstance()->GetResourcePool()->ReleaseFont(m_font, m_size);
 	m_size = size;
 	m_font = font;
 	Engine::GetInstance()->GetResourcePool()->CreateFont(m_font, m_size);
+}
+
+void UIText::SetFont(const std::string& font)
+{
+	GenerateFont(font, m_size);
+	m_font = font;
+}
+
+void UIText::SetSize(int size)
+{
+	GenerateFont(m_font, size);
+	m_size = size;
 }
 
 void UIText::SetColor(const glm::vec4& color)

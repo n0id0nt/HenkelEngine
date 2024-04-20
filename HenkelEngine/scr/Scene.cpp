@@ -641,7 +641,7 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			}
 		}
 
-		area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
+		area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.6f));
 
 		for (auto& child : object.children())
 		{
@@ -711,7 +711,11 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			}
 			else if (attributeName == "font")
 			{
-				area->SetFont(attribute.as_string(), 16);
+				area->SetFont(attribute.as_string());
+			}
+			else if (attributeName == "size")
+			{
+				area->SetSize(attribute.as_int());
 			}
 			else if (attributeName == "text")
 			{
