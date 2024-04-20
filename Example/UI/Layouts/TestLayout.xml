@@ -24,7 +24,7 @@
         <quad 
             x="20" y="50"
             width="185" height="205"
-            color="#FF000000"
+            color="#AFDDDDFF"
             >
             <text 
                 size="20"
@@ -32,7 +32,8 @@
                 width="185" height="205"
                 alignment="center"
                 wrapping="wrap"
-                text="!The Quick Brown Fox Jumps Over The Lazy Dog!\n!The Quick\nBrown Fox Jumps Over The Lazy Dog!"
+                text="!The Quick Brown Fox Jumps Over The Lazy Dog!&#10;!The Quick&#10;Brown Fox Jumps Over The Lazy Dog!"
+                color="#222222FF"
                 />
         </quad>
     </texture>

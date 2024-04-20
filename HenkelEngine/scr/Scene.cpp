@@ -532,47 +532,6 @@ Entity* Scene::LoadUILayout(const std::string& fileDir, const std::string& level
 	uiEntity->CreateComponent<MaterialComponent>("res/shaders/UI.vert", "res/shaders/UI.frag"); //TODO define these values here as constants
 	uiEntity->CreateComponent<RenderComponent>(6000u);
 	UIComponent* uiComponent = uiEntity->CreateComponent<UIComponent>();
-	//uiComponent->GetRootArea()->SetDimensions(glm::vec2(1.f, 1.f));
-	//std::unique_ptr<UITexture> quad = std::make_unique<UITexture>();
-	//quad->SetColor(glm::vec4(0.6f, 0.3f, 0.5f, 0.6f));
-	//quad->SetTexture("res/images/CubeFace.png");
-	//quad->SetPosition(glm::vec2(10.0f, 10.0f));
-	//quad->SetDimensions(glm::vec2(220.6f, 110.3f));
-
-	//std::unique_ptr<UIQuad> quad2 = std::make_unique<UIQuad>();
-	//quad2->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
-	//quad2->SetPosition(glm::vec2(20.6f, 20.3f));
-	//quad2->SetDimensions(glm::vec2(20.6f, 20.3f));
-	//quad->AddChild(std::move(quad2));
-
-	//std::unique_ptr<UITexture> quad3 = std::make_unique<UITexture>();
-	////quad3->SetColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-	//quad3->SetPosition(glm::vec2(60.6f, 20.3f));
-	//quad3->SetDimensions(glm::vec2(20.6f, 20.3f));
-	//quad3->SetTexture("res/images/Zombie.png");
-	//quad->AddChild(std::move(quad3));
-
-	//std::unique_ptr<UIQuad> quad4 = std::make_unique<UIQuad>();
-	//quad4->SetColor(glm::vec4(0.2f, 0.5f, 0.7f, 0.6f));
-	//quad4->SetPosition(glm::vec2(100.6f, 20.3f));
-	//quad4->SetDimensions(glm::vec2(20.6f, 20.3f));
-	//quad->AddChild(std::move(quad4));
-
-	//std::unique_ptr<UIQuad> quad5 = std::make_unique<UIQuad>();
-	//quad5->SetColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-	//quad5->SetPosition(glm::vec2(20.0f, 50.0f));
-	//quad5->SetDimensions(glm::vec2(185.6f, 205.3f));
-	//quad->AddChild(std::move(quad5));
-
-	//std::unique_ptr<UIText> quad6 = std::make_unique<UIText>();
-	////quad6->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 1.0f));
-	//quad6->SetPosition(glm::vec2(20.0f, 50.0f));
-	//quad6->SetDimensions(glm::vec2(185.6f, 205.3f));
-	//quad6->SetText("!The Quick Brown Fox Jumps Over The Lazy Dog!\n!The Quick\nBrown Fox Jumps Over The Lazy Dog!");
-	//quad6->SetFont("../Example/fonts/arial.ttf", 16);
-	//quad6->SetTextAlignment(TextHorizontalAlignment::Center);
-	//quad6->SetTextWrapping(TextWrapping::Wrap);
-	//quad->AddChild(std::move(quad6));
 
 	uiComponent->GetRootArea()->AddChild(CreateUIElement(doc.child("area"), workingDir));
 
@@ -608,8 +567,6 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			}
 		}
 
-		//area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
-
 		for (auto& child : object.children())
 		{
 			area->AddChild(CreateUIElement(child, fileDir));
@@ -639,9 +596,13 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			{
 				area->SetHeight(attribute.as_float());
 			}
+			else if (attributeName == "color")
+			{
+				std::string colorCode = attribute.as_string();
+				glm::vec4 color = HenkelEngine::HexColorToVec4(colorCode);
+				area->SetColor(color);
+			}
 		}
-
-		area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.6f));
 
 		for (auto& child : object.children())
 		{
@@ -676,9 +637,13 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			{
 				area->SetTexture(attribute.as_string());
 			}
+			else if (attributeName == "color")
+			{
+				std::string colorCode = attribute.as_string();
+				glm::vec4 color = HenkelEngine::HexColorToVec4(colorCode);
+				area->SetColor(color);
+			}
 		}
-
-		//area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
 
 		for (auto& child : object.children())
 		{
@@ -765,9 +730,13 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 					ASSERT(false);
 				}
 			}
+			else if (attributeName == "color")
+			{
+				std::string colorCode = attribute.as_string();
+				glm::vec4 color = HenkelEngine::HexColorToVec4(colorCode);
+				area->SetColor(color);
+			}
 		}
-
-		//area->SetColor(glm::vec4(0.4f, 0.9f, 0.8f, 0.2f));
 
 		for (auto& child : object.children())
 		{

@@ -82,4 +82,18 @@ namespace HenkelEngine
         return glm::mix(u, grad(a, value), grad(b, value - 1));
     }
 
+    static glm::vec4 HexColorToVec4(std::string colorString)
+    {
+        std::regex pattern("#?([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})");
+
+        std::smatch match;
+        ASSERT(std::regex_match(colorString, match, pattern));
+
+        auto r = std::stoul(match[1].str(), nullptr, 16);
+        auto g = std::stoul(match[2].str(), nullptr, 16);
+        auto b = std::stoul(match[3].str(), nullptr, 16);
+        auto a = std::stoul(match[4].str(), nullptr, 16);
+
+        return glm::vec4(r / 255.0f, b / 255.0f, g / 255.0f, a / 255.0f);
+    }
 }
