@@ -27,10 +27,10 @@
             color="#AFDDDDFF"
             >
             <text 
-                size="20"
+                size="16"
                 font="../Example/fonts/arial.ttf"
                 width="185" height="205"
-                alignment="center"
+                alignment="left"
                 wrapping="wrap"
                 text="!The Quick Brown Fox Jumps Over The Lazy Dog!&#10;!The Quick&#10;Brown Fox Jumps Over The Lazy Dog!"
                 color="#222222FF"

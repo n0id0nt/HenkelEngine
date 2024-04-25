@@ -109,7 +109,6 @@
     <ClCompile Include="scr\Physics\ContactListener.cpp" />
     <ClCompile Include="scr\ECS\System\CameraSystem.cpp" />
     <ClCompile Include="scr\ECS\Component\CameraComponent.cpp" />
-    <ClCompile Include="scr\ECS\EntityManager.cpp" />
     <ClCompile Include="scr\ECS\Registry.cpp" />
     <ClCompile Include="scr\ECS\Entity\Entity.cpp" />
     <ClCompile Include="scr\ECS\Component\ScriptComponent.cpp" />
@@ -173,7 +172,6 @@
     <ClInclude Include="scr\ECS\System\CameraSystem.h" />
     <ClInclude Include="scr\ECS\Component\CameraComponent.h" />
     <ClInclude Include="scr\DebugGUIPanels\GUIPanels.h" />
-    <ClInclude Include="scr\ECS\EntityManager.h" />
     <ClInclude Include="scr\ECS\Registry.h" />
     <ClInclude Include="scr\ECS\Entity\Entity.h" />
     <ClInclude Include="scr\ECS\Component\ScriptComponent.h" />

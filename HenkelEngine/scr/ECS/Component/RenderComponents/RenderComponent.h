@@ -8,6 +8,7 @@
 #include "opengl/Mesh/Mesh.h"
 #include "opengl/BatchRenderer.h"
 #include "opengl/Shader.h"
+#include <sol\sol.hpp>
 
 class RenderComponent
 {
@@ -34,6 +35,8 @@ public:
 	void ClearBatch();
 
 	BatchRenderer* GetBatchRenderer();
+
+	static void LUABind(sol::state& lua);
 
 private:
 	BatchRenderer m_batchRenderer;

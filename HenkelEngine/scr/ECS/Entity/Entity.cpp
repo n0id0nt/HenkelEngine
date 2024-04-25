@@ -4,8 +4,10 @@
 #include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
 #include "ECS/Component/RenderComponents/SpriteComponent.h"
+#include "ECS/Component/RenderComponents/RenderComponent.h"
 #include <ECS\Component\SpriteAnimationComponent.h>
 #include <ECS\Component\CameraComponent.h>
+#include <ECS\Component\UIComponent.h>
 
 Entity::Entity(const std::string& name, Registry* registry)
 	: m_name(name), m_registry(registry), m_parent(nullptr), m_children(), m_tags()
@@ -99,7 +101,9 @@ void Entity::LUABind(sol::state& lua)
 		"getPhysicsBody", &Entity::GetComponent<PhysicsBodyComponent>,
 		"getStaticBody", &Entity::GetComponent<StaticBodyComponent>,
 		"getTileMapCollisionBodyComponent", &Entity::GetComponent<TileMapCollisionBodyComponent>,
+		"getUILayout", &Entity::GetComponent<UIComponent>,
 		"getCamera", &Entity::GetComponent<CameraComponent>,
+		"getRenderer", &Entity::GetComponent<RenderComponent>,
 		"addTag", &Entity::AddTag,
 		"removeTag", &Entity::RemoveTag,
 		"hasTag", &Entity::HasTag

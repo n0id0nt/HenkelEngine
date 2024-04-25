@@ -75,3 +75,10 @@ BatchRenderer* RenderComponent::GetBatchRenderer()
 {
     return &m_batchRenderer;
 }
+
+void RenderComponent::LUABind(sol::state& lua)
+{
+    lua.new_usertype<RenderComponent>("uiArea",
+        "invalidateBatch", &RenderComponent::InvalidateBatch
+    );
+}

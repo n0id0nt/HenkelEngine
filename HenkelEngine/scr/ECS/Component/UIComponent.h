@@ -10,6 +10,7 @@ public:
 	UIComponent();
 
 	UIArea* GetRootArea();
+	UIArea* FindArea(const std::string& name);
 
 	static void LUABind(sol::state& lua);
 

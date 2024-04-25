@@ -4,6 +4,7 @@
 #include "glm\glm.hpp"
 #include <memory>
 #include "opengl\BatchRenderer.h"
+#include <sol\sol.hpp>
 
 class UIArea
 {
@@ -44,6 +45,8 @@ public:
 
 	glm::mat4 GetMatrix();
 	glm::mat4 GetLayoutMatrix();
+
+	static void LUABind(sol::state& lua);
 
 private:
 	float m_x, m_y;

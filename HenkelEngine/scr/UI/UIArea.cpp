@@ -138,3 +138,11 @@ glm::mat4 UIArea::GetLayoutMatrix()
 	else
 		return GetMatrix();
 }
+
+void UIArea::LUABind(sol::state& lua)
+{
+	lua.new_usertype<UIArea>("uiArea",
+		"setX", &UIArea::SetX,
+		"getX", &UIArea::GetX
+	);
+}

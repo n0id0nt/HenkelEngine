@@ -212,7 +212,9 @@ void Scene::LoadScene(const std::string& fileDir, const std::string& levelFile)
 		}
 	}
 
-	LoadUILayout(fileDir, "UI/Layouts/TestLayout.xml");
+	Entity* layoutEntity = LoadUILayout(fileDir, "UI/Layouts/TestLayout.xml");
+	layoutEntity->CreateComponent<ScriptComponent>(fileDir + "Scripts/UI/UIScript.lua", m_scriptSystem.GetSolState(), layoutEntity);
+
 }
 
 Entity* Scene::LoadTemplate(const std::string& fileDir, const std::string& levelFile)
