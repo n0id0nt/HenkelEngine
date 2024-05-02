@@ -101,6 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\Messenger.cpp" />
     <ClCompile Include="scr\Font.cpp" />
     <ClCompile Include="scr\opengl\BatchRenderer.cpp" />
     <ClCompile Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.cpp" />
@@ -162,6 +163,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\Messenger.h" />
     <ClInclude Include="scr\Font.h" />
     <ClInclude Include="scr\opengl\BatchRenderer.h" />
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.h" />

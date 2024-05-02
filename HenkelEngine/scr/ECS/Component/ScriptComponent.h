@@ -26,6 +26,8 @@ public:
 	void OnCollisionEnter(const ContactListener::Contact& other); // TODO change from other entity to a contact object that is most likely a wrapper for a box2d contact object to give more specific collision info
 	void OnCollisionExit(const ContactListener::Contact& other);
 
+	void OnMessage(const std::string& messageId, const sol::object& message, const Entity& sender);
+
 	void Bind(sol::state& lua);
 	void Unbind(sol::state& lua);
 
@@ -44,6 +46,9 @@ public:
 private:
 	sol::protected_function m_update;
 	std::function<void()> m_updateFunction;
+
+	sol::protected_function m_onMessage;
+	std::function<void(const std::string&, const sol::object&, const Entity&)> m_onMessageFunction;
 
 	sol::protected_function m_onCollisionEnter;
 	std::function<void(ContactListener::Contact&)> m_onCollisionEnterFunction;

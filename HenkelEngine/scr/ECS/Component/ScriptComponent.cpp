@@ -31,6 +31,12 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 		lua.script("function onCollisionExit(contact) Script.onCollisionExit(contact) end");
 		m_onCollisionExit = lua["onCollisionExit"];
 	}
+
+	if (m_onMessageFunction)
+	{
+		lua.script("function onMessage(messageId, message, sender) Script.onMessage(messageId, message, sender) end");
+		m_onMessage = lua["onMessage"];
+	}
 	lua.set("Script", sol::nil);
 }
 
@@ -79,6 +85,25 @@ void ScriptComponent::OnCollisionExit(const ContactListener::Contact& other)
 		sol::protected_function onCollisionExitScript = m_onCollisionExit;
 
 		sol::protected_function_result result = onCollisionExitScript(other);
+
+		// Check if the execution was successful
+		if (!result.valid()) {
+			// An error occurred; retrieve and handle the error message
+			sol::error err = result;
+			std::cerr << "Lua script execution error: " << err.what() << std::endl;
+
+			ASSERT(false);
+		}
+	}
+}
+
+void ScriptComponent::OnMessage(const std::string& messageId, const sol::object& message, const Entity& sender)
+{
+	if (m_onMessage.valid())
+	{
+		sol::protected_function onMessageScript = m_onMessage;
+
+		sol::protected_function_result result = onMessageScript(messageId, message, &sender);
 
 		// Check if the execution was successful
 		if (!result.valid()) {
@@ -217,7 +242,8 @@ void ScriptComponent::LUABind(sol::state& lua)
 		"property", &ScriptComponent::AddScriptProperty,
 		"update", &ScriptComponent::m_updateFunction,
 		"onCollisionEnter", &ScriptComponent::m_onCollisionEnterFunction,
-		"onCollisionExit", &ScriptComponent::m_onCollisionExitFunction
+		"onCollisionExit", &ScriptComponent::m_onCollisionExitFunction,
+		"onMessage", &ScriptComponent::m_onMessage
 	);
 }
 

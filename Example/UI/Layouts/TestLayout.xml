@@ -12,6 +12,7 @@
             color="#FFADADAD"
             />
         <texture 
+            name="zombie"
             source="res/images/Zombie.png"
             x="60" y="20"
             width="20.6" height="20.3"

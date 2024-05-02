@@ -104,6 +104,7 @@ Script.update = function()
     updateCamera()
 
     if Input:isInputJustPressed("Shoot") then 
+        Messenger:send('damage', 'Test', GO)
         print("Shoot")
         local potion = Scene:createTemplatedObject("Template/Potion.tx")
         local transform = potion:getTransform()

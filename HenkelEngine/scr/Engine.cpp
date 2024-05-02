@@ -33,6 +33,7 @@ void Engine::InitEngine()
 
 	m_input = std::make_unique<Input>();
 	m_time = std::make_unique<Time>();
+	m_messenger = std::make_unique<Messenger>();
 
 	m_input->LoadInputBindings(m_projectDirectory, "Settings/InputBindings/InputBindings.xml");
 
@@ -179,6 +180,11 @@ Time* Engine::GetTime() const
 ResourcePool* Engine::GetResourcePool() const
 {
 	return m_resourcePool.get();
+}
+
+Messenger* Engine::GetMessenger() const
+{
+	return m_messenger.get();
 }
 
 std::string Engine::GetProjectDirectory() const

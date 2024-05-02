@@ -31,19 +31,19 @@ public:
 	Entity* GetParent() const;
 
 	template <typename ComponentType, typename... Args>
-	ComponentType* CreateComponent(Args&&... args)
+	ComponentType* CreateComponent(Args&&... args) const
 	{
 		return m_registry->AddComponent<ComponentType>(m_entity, std::forward<Args>(args) ...);
 	}	
 	
 	template <typename ComponentType>
-	ComponentType* GetComponent()
+	ComponentType* GetComponent() const
 	{
 		return m_registry->GetComponent<ComponentType>(m_entity);
 	}
 
 	template <typename ComponentType>
-	bool HasComponent() 
+	bool HasComponent() const
 	{
 		return m_registry->HasComponent<ComponentType>(m_entity);
 	}

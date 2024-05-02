@@ -8,6 +8,7 @@
 #include "glm\glm.hpp"
 #include "Input.h"
 #include "ResourcePool.h"
+#include "Messenger.h"
 #include <Physics\CollisionLayers.h>
 
 const unsigned int FPS = 60;
@@ -33,6 +34,7 @@ public:
 	Input* GetInput() const;
 	Time* GetTime() const;
 	ResourcePool* GetResourcePool() const;
+	Messenger* GetMessenger() const;
 
 	std::string GetProjectDirectory() const;
 
@@ -53,6 +55,7 @@ private:
 
 	std::unique_ptr<Input> m_input;
 	std::unique_ptr<ResourcePool> m_resourcePool;
+	std::unique_ptr<Messenger> m_messenger;
 
 	std::string m_projectDirectory;
 

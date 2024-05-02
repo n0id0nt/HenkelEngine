@@ -28,6 +28,43 @@ public :
 	Entity* CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet);
 	Entity* CreateTemplatedObject(const std::string& levelFile);
 
+	template <typename ComponentType>
+	std::vector<Entity*> GetEntitiesWithComponent()
+	{
+		std::vector<EntityId> entityIds = m_registry.GetEntitiesWithComponent<ComponentType>();
+		std::vector<Entity*> entities;
+		// TODO there has to be a better way that this 2d loop, like the order of this somewhat corresponst to each other so there has to be some correlation I can use
+		for (EntityId entityId : entityIds)
+		{
+			for (auto& entity : m_entities)
+			{
+				if (entity->GetEntityId() == entityId)
+				{
+					entities.push_back(entity.get());
+				}
+			}
+		}
+		return entities;
+	}
+	template <typename... ComponentTypes>
+	std::vector<Entity*> GetEntitiesWithComponents()
+	{
+		std::vector<EntityId> entityIds = m_registry.GetEntitiesWithComponents<ComponentTypes...>();
+		std::vector<Entity*> entities;
+		// TODO there has to be a better way that this 2d loop, like the order of this somewhat corresponst to each other so there has to be some correlation I can use
+		for (EntityId entityId : entityIds)
+		{
+			for (auto& entity : m_entities)
+			{
+				if (entity->GetEntityId() == entityId)
+				{
+					entities.push_back(entity.get());
+				}
+			}
+		}
+		return entities;
+	}
+
 	Entity* LoadUILayout(const std::string& fileDir, const std::string& levelFile);
 	std::unique_ptr<UIArea> CreateUIElement(const pugi::xml_node& object, const std::string& fileDir);
 
