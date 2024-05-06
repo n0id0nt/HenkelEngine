@@ -41,6 +41,9 @@ public:
 	void SetHeight(float height);
 	float GetHeight();
 
+	void SetName(const std::string& name);
+	std::string GetName();
+
 	UIArea* GetParent();
 
 	glm::mat4 GetMatrix();
@@ -52,6 +55,7 @@ private:
 	float m_x, m_y;
 	float m_width, m_height;
 	glm::vec2 m_anchorPoint;
+	std::string m_name;
 
 	std::vector<std::unique_ptr<UIArea>> m_children;//TODO change the ownership of children from the area to the component layout
 	UIArea* m_parent = nullptr;

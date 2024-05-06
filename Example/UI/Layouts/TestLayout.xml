@@ -28,6 +28,7 @@
             color="#AFDDDDFF"
             >
             <text 
+                name="text"
                 size="16"
                 font="../Example/fonts/arial.ttf"
                 width="185" height="205"

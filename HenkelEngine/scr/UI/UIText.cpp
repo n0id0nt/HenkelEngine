@@ -67,3 +67,11 @@ void UIText::SetTextWrapping(TextWrapping textWrapping)
 {
 	m_textWrapping = textWrapping;
 }
+
+void UIText::LUABind(sol::state& lua)
+{
+	lua.new_usertype<UIText>("uiText",
+		sol::base_classes, sol::bases<UIArea>(),
+		"setText", &UIText::SetText
+	);
+}

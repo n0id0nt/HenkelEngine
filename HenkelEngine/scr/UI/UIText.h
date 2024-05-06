@@ -19,6 +19,8 @@ public:
 	void SetTextAlignment(TextHorizontalAlignment textAlignemt);
 	void SetTextWrapping(TextWrapping textWrapping);
 
+	static void LUABind(sol::state& lua);
+
 private:
 
 	bool m_fontGenerated; // TODO - use this as a check for if the font is valid or not to reduce the amount of times the font is regenerated

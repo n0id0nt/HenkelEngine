@@ -28,6 +28,20 @@ public :
 	Entity* CreateObject(const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet);
 	Entity* CreateTemplatedObject(const std::string& levelFile);
 
+	Entity* LoadUILayout(const std::string& fileDir, const std::string& levelFile);
+	std::unique_ptr<UIArea> CreateUIElement(const pugi::xml_node& object, const std::string& fileDir);
+
+	Entity* CreateEntity(const std::string& name);
+
+	void Update();
+	void Render();
+
+	Camera* GetCamera() const { return m_camera.get(); }
+
+	PhysicsWorld* GetPhysicsWorld() const { return m_world.get(); }
+
+	sol::state& GetLuaState();
+
 	template <typename ComponentType>
 	std::vector<Entity*> GetEntitiesWithComponent()
 	{
@@ -64,20 +78,11 @@ public :
 		}
 		return entities;
 	}
-
-	Entity* LoadUILayout(const std::string& fileDir, const std::string& levelFile);
-	std::unique_ptr<UIArea> CreateUIElement(const pugi::xml_node& object, const std::string& fileDir);
-
-	Entity* CreateEntity(const std::string& name);
-
-	void Update();
-	void Render();
-
-	Camera* GetCamera() const { return m_camera.get(); }
-
-	PhysicsWorld* GetPhysicsWorld() const { return m_world.get(); }
-
-	sol::state& GetLuaState();
+	template <typename ComponentType>
+	std::vector<ComponentType*> GetAllComponents()
+	{
+		return m_registry.GetAllComponents<ComponentType>();
+	}
 
 	void LUABind(sol::state& lua);
 

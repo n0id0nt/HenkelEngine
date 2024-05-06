@@ -11,10 +11,9 @@ void Messenger::Send(const std::string& messageId, const sol::object& message, c
 	senderScript->Unbind(lua);
 
 	// send message to every script component
-	std::vector<Entity*> scriptEntities = Engine::GetInstance()->GetCurrentScene()->GetEntitiesWithComponent<ScriptComponent>();
-	for (Entity* entity : scriptEntities)
+	std::vector<ScriptComponent*> scriptComponents = Engine::GetInstance()->GetCurrentScene()->GetAllComponents<ScriptComponent>();
+	for (auto& scriptComponent : scriptComponents)
 	{
-		ScriptComponent* scriptComponent = entity->GetComponent<ScriptComponent>();
 		scriptComponent->Bind(lua);
 		scriptComponent->OnMessage(messageId, message, sender);
 		scriptComponent->Unbind(lua);

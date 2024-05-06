@@ -15,5 +15,8 @@ public:
 	static void LUABind(sol::state& lua);
 
 private:
+
+	UIArea* RecursiveFindArea(UIArea* area, const std::string& name);
+
 	std::unique_ptr<UIArea> m_rootArea;
 };

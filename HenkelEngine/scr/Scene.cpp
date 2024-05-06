@@ -568,6 +568,10 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			{
 				area->SetHeight(attribute.as_float());
 			}
+			else if (attributeName == "name")
+			{
+				area->SetName(attribute.as_string());
+			}
 		}
 
 		for (auto& child : object.children())
@@ -598,6 +602,10 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			else if (attributeName == "height")
 			{
 				area->SetHeight(attribute.as_float());
+			}
+			else if (attributeName == "name")
+			{
+				area->SetName(attribute.as_string());
 			}
 			else if (attributeName == "color")
 			{
@@ -635,6 +643,10 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			else if (attributeName == "height")
 			{
 				area->SetHeight(attribute.as_float());
+			}
+			else if (attributeName == "name")
+			{
+				area->SetName(attribute.as_string());
 			}
 			else if (attributeName == "source")
 			{
@@ -676,6 +688,10 @@ std::unique_ptr<UIArea> Scene::CreateUIElement(const pugi::xml_node& object, con
 			else if (attributeName == "height")
 			{
 				area->SetHeight(attribute.as_float());
+			}
+			else if (attributeName == "name")
+			{
+				area->SetName(attribute.as_string());
 			}
 			else if (attributeName == "font")
 			{

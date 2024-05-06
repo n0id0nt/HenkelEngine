@@ -3,7 +3,7 @@
 #include <glm\gtx\transform.hpp>
 #include <glm\gtx\matrix_decompose.hpp>
 
-UIArea::UIArea() : m_children(), m_x(0.0f), m_y(0.0f), m_width(0.0f), m_height(0.0f), m_anchorPoint(glm::vec2(0.0f, 0.0f))
+UIArea::UIArea() : m_children(), m_x(0.0f), m_y(0.0f), m_width(0.0f), m_height(0.0f), m_anchorPoint(glm::vec2(0.0f, 0.0f)), m_name()
 {
 }
 
@@ -117,6 +117,16 @@ void UIArea::SetHeight(float height)
 float UIArea::GetHeight()
 {
 	return m_height;
+}
+
+void UIArea::SetName(const std::string& name)
+{
+	m_name = name;
+}
+
+std::string UIArea::GetName()
+{
+	return m_name;
 }
 
 UIArea* UIArea::GetParent()

@@ -13,7 +13,7 @@ UIArea* UIComponent::GetRootArea()
 
 UIArea* UIComponent::FindArea(const std::string& name)
 {
-	return m_rootArea.get();
+	return RecursiveFindArea(m_rootArea.get(), name);
 }
 
 void UIComponent::LUABind(sol::state& lua)
@@ -22,4 +22,21 @@ void UIComponent::LUABind(sol::state& lua)
 		"rootArea", &UIComponent::GetRootArea,
 		"findArea", &UIComponent::FindArea
 	);
+}
+
+UIArea* UIComponent::RecursiveFindArea(UIArea* area, const std::string& name)
+{
+	for (UIArea* child : area->GetChildren())
+	{
+		if (child->GetName() == name)
+		{
+			return child;
+		}
+		UIArea* returnValue = RecursiveFindArea(child, name);
+		if (returnValue)
+		{
+			return returnValue;
+		}
+	}
+	return nullptr;
 }

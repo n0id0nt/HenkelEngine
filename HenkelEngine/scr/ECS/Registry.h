@@ -120,6 +120,27 @@ public:
 
         return matchingEntities;
     }
+    
+    // Retrieve all entities with multiple matching component types
+    template <typename ComponentType>
+    std::vector<ComponentType*> GetAllComponents()
+    {
+        std::vector<ComponentType*> components;
+
+        auto typeIndex = std::type_index(typeid(ComponentType));
+        auto entityComponents = m_components.find(typeIndex);
+
+        if (entityComponents != m_components.end())
+        {
+            components.reserve(entityComponents->second.size());
+            for (auto& entityComponent : entityComponents->second)
+            {
+                ComponentType* component = static_cast<ComponentType*>(entityComponent.second);
+                components.push_back(component);
+            }
+        }
+        return components;
+    }
 
 
 private:

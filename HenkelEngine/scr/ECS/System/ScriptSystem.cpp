@@ -52,10 +52,9 @@ void ScriptSystem::BindToLua(LUABindable& luaBindable)
 void ScriptSystem::Update()
 {
 	{
-		auto view = m_registry->GetEntitiesWithComponent<ScriptComponent>();
-		for (auto& entity : view)
+		auto scriptComponents = m_registry->GetAllComponents<ScriptComponent>();
+		for (auto& script : scriptComponents)
 		{
-			auto* script = m_registry->GetComponent<ScriptComponent>(entity);
 			script->Bind(m_lua);
 			script->Update();
 			script->Unbind(m_lua);

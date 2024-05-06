@@ -3,10 +3,9 @@
 
 void UISystem::Update()
 {
-	auto view = m_registry->GetEntitiesWithComponent<UIComponent>();
-	for (auto& entity : view)
+	auto uiComponents = m_registry->GetAllComponents<UIComponent>();
+	for (auto& uiComponent : uiComponents)
 	{
-		auto* uiComponent = m_registry->GetComponent<UIComponent>(entity);
 		UpdateUIAreas(uiComponent->GetRootArea());
 	}
 }
