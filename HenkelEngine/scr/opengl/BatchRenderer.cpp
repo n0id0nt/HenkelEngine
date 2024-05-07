@@ -121,6 +121,14 @@ void BatchRenderer::InvalidateBatch()
 void BatchRenderer::ValidateBatch()
 {
     m_batchValid = m_vertices.size();
+    // Hack to do allow for dynamic buffer sizes without it leaving half of the quads on screen when buffer shrinks
+    if (m_batchValid)
+    {
+        for (int i = m_vertices.size(); i < m_vertices.capacity(); i++)
+        {
+            m_vertices.push_back({{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f,0.0f},{0.0f,0.0f},0.0f});
+        }
+    }
 }
 
 void BatchRenderer::ClearBatch()
