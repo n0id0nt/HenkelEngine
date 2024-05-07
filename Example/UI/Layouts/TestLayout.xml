@@ -37,6 +37,11 @@
                 text="!The Quick Brown Fox Jumps Over The Lazy Dog!&#10;!The Quick&#10;Brown Fox Jumps Over The Lazy Dog!"
                 color="#222222FF"
                 />
+            <!--<quad 
+                x="10" y="10"
+                width="185" height="205"
+                color="#FFFFFF88"
+                />-->
         </quad>
     </texture>
 </area>

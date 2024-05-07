@@ -10,9 +10,15 @@ public:
 	UIComponent();
 
 	UIArea* GetRootArea();
-	UIArea* FindArea(const std::string& name);
+	
+	template <typename UIType>
+	UIType* FindArea(const std::string& name)
+	{
+		UIArea* area = RecursiveFindArea(m_rootArea.get(), name);
+		return dynamic_cast<UIType*>(area);
+	}
 
-	static void LUABind(sol::state& lua);
+	static void LUABind(sol::state& area);
 
 private:
 

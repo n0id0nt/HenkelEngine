@@ -17,6 +17,7 @@
 #include <format>
 #include <Engine.h>
 #include "UI\UIArea.h"
+#include "UI\UIText.h"
 
 ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 {
@@ -42,6 +43,7 @@ ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 	RenderComponent::LUABind(m_lua);
 
 	UIArea::LUABind(m_lua);
+	UIText::LUABind(m_lua);
 }
 
 void ScriptSystem::BindToLua(LUABindable& luaBindable)

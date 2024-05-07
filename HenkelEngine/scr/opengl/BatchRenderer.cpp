@@ -126,11 +126,13 @@ void BatchRenderer::ValidateBatch()
 void BatchRenderer::ClearBatch()
 {
     m_vertices.clear();
+    
 }
 
 void BatchRenderer::InitRenderData()
 {
     Mesh::setQuadData(m_indexes, m_quads);
+    m_vertices.reserve(QUAD_SIZE * m_quads);
 
     // init the VAO and VBO
     GLCall(glGenVertexArrays(1, &m_VAO));

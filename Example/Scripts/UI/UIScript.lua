@@ -4,11 +4,11 @@ local eventResponses =
         print("Message Received ---DAMAGE---")
         print(message)
         local layout = GO:getUILayout()
-        zombie = layout:findArea("text")
+        local zombie = layout:findArea("zombie")
         local newX = zombie:getX() + 100
-        zombie:setText("this is some new text!!!")
-        --print(newX)
         zombie:setX(newX)
+        local text = layout:findText("text")
+        text:setText("This is some test Text\nthis is some more text for testing")
         -- this forces the ui to update the render buffer need to think of a better way to do this as this should not need to be manually done
         GO:getRenderer():invalidateBatch()
     end,
