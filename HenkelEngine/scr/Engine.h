@@ -60,6 +60,8 @@ private:
 	std::string m_projectDirectory;
 
 	CollisionLayers m_collisionLayers;
+	std::array<float, FPS> m_fpsHistory;
+	int m_currentFPSIndex = 0;
 
 	Uint32 m_frameStart;
 	unsigned int m_frameTime;

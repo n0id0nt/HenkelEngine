@@ -2,6 +2,7 @@
 #include "opengl/openglHelper.h"
 #include <imgui.h>
 #include <imgui_impl_sdl2.h>
+#include <format>
 #include "opengl/DebugRenderer.h"
 #include "imgui_impl_opengl3.h"
 
@@ -153,7 +154,19 @@ void Engine::Loop()
 
 		float delayedFrameTime = SDL_GetTicks() - m_frameStart;
 		float fps = (delayedFrameTime > 0) ? 1000.0f / delayedFrameTime : 0.0f;
-		m_window->SetWindowName("Henkel Engine - fps: " + std::to_string(fps));
+
+		m_fpsHistory[m_currentFPSIndex++] = fps;
+		m_currentFPSIndex %= FPS;
+
+		float minFPS = fps;
+		float sumFPS = 0.0f;
+		for (float curFPS : m_fpsHistory)
+		{
+			minFPS = glm::min(minFPS, curFPS);
+			sumFPS += curFPS;
+		}
+
+		m_window->SetWindowName(std::format("Henkel Engine - fps: {} - min fps: {} - avg fps: {}", (int)fps, (int)minFPS, (int)sumFPS/(int)FPS));
 	}
 }
 

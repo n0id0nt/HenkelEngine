@@ -106,9 +106,9 @@ Script.update = function()
     if Input:isInputJustPressed("Shoot") then 
         Messenger:send('damage', 'Test', GO)
         print("Shoot")
-        local potion = Scene:createTemplatedObject("Template/Potion.tx")
-        local transform = potion:getTransform()
-        transform:setWorldPosition(GO:getTransform():getWorldPosition())
+        --local potion = Scene:createTemplatedObject("Template/Potion.tx")
+        --local transform = potion:getTransform()
+        --transform:setWorldPosition(GO:getTransform():getWorldPosition())
     end
 end
 

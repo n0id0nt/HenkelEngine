@@ -34,7 +34,7 @@ void BatchRenderer::Render()
     {
 
         GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_VBO));
-        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * glm::min(static_cast<int>(offset), static_cast<int>(m_vertices.size() - indexOffset)), &m_vertices.at(indexOffset)));
+        GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * offset, &m_vertices.at(indexOffset)));
 
         GLCall(glDrawElements(GL_TRIANGLES, m_indexes.size(), GL_UNSIGNED_INT, 0));
 
@@ -99,7 +99,11 @@ void BatchRenderer::AddQuadToBatch(const glm::vec2& pos, const glm::vec2& uvPos,
     ASSERT(IsBatching());
     std::vector<Vertex> vertices;
     Mesh::setQuadData(vertices, pos, { uvPos, uvSize }, false, anchorPoint, color, size, (float)textureIndex);
-    m_vertices.insert(m_vertices.end(), vertices.begin(), vertices.end());
+    for (int i = 0; i < vertices.size(); i++)
+    {
+        m_vertices.push_back(vertices[i]);
+    }
+   // m_vertices.insert(m_vertices.end(), vertices.begin(), vertices.end());
 }
 
 void BatchRenderer::SetQuadUVs(const glm::vec4& rect, const bool& flipped)
