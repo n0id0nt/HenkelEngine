@@ -341,8 +341,10 @@ void Input::Update()
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
+#ifdef _DEBUG
         // ImGui events
         ImGui_ImplSDL2_ProcessEvent(&event); // Forward your event to backend
+#endif // _DEBUG
 
         switch (event.type) 
         {

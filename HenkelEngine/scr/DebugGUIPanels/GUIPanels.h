@@ -10,6 +10,7 @@
 #include "ECS/Component/PhysicsBodyComponents/TileMapCollisionBodyComponent.h"
 #include "ECS/Component/CameraComponent.h"
 
+#ifdef _DEBUG
 namespace GUIPanel
 {
 	const float s_indentAmount = 20.f;
@@ -86,3 +87,4 @@ namespace GUIPanel
 		}
 	};
 }
+#endif //_DEBUG

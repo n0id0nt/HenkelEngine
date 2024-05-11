@@ -64,6 +64,7 @@ void Engine::InitEngine()
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
+#ifdef _DEBUG
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -79,7 +80,7 @@ void Engine::InitEngine()
 	ImGui_ImplOpenGL3_Init();
 
 	DebugRenderer::InitDebugRenderer();
-
+#endif //_DEBUG
 	m_scene = std::make_unique<Scene>(m_projectDirectory, s_testMap2);
 }
 
@@ -92,10 +93,11 @@ void Engine::ExitEngine()
 	m_window.reset();
 	m_time.reset();
 
-	// Exit
+#ifdef _DEBUG
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+#endif // _DEBUG
 
 	SDL_Quit();
 
@@ -121,10 +123,12 @@ void Engine::Loop()
 			m_window->OnClose();
 		}
 
+#ifdef _DEBUG
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
+#endif // _DEBUG
 
 		// Update
 		m_scene->Update();
@@ -139,9 +143,11 @@ void Engine::Loop()
 		// Render
 		m_scene->Render();
 
+#ifdef _DEBUG
 		// Render ImGui
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#endif // _DEBUG
 
 		m_window->SwapBuffers();
 
@@ -152,6 +158,7 @@ void Engine::Loop()
 		}
 		m_time->SetDeltaTime((SDL_GetTicks() - m_frameStart) / 1000.f);
 
+#ifdef _DEBUG
 		float delayedFrameTime = SDL_GetTicks() - m_frameStart;
 		float fps = (delayedFrameTime > 0) ? 1000.0f / delayedFrameTime : 0.0f;
 
@@ -167,6 +174,7 @@ void Engine::Loop()
 		}
 
 		m_window->SetWindowName(std::format("Henkel Engine - fps: {} - min fps: {} - avg fps: {}", (int)fps, (int)minFPS, (int)sumFPS/(int)FPS));
+#endif //_DEBUG
 	}
 }
 

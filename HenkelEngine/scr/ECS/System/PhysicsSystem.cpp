@@ -16,6 +16,7 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 	world->Step();
 	world->ClearForces();
 
+#ifdef _DEBUG
 	//Draw debug shapes
 	{
 		auto view = m_registry->GetEntitiesWithComponents<StaticBodyComponent, TransformComponent>();
@@ -55,6 +56,7 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 			}
 		}
 	}
+#endif //_DEBUG
 	{
 		auto view = m_registry->GetEntitiesWithComponents<PhysicsBodyComponent, TransformComponent>();
 		for (auto& entity : view)
@@ -64,8 +66,10 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 			auto* physicsBody = m_registry->GetComponent<PhysicsBodyComponent>(entity);
 			
 			transform->SetWorldPosition(physicsBody->GetPosition());
+#ifdef _DEBUG
 			glm::vec2 collisionShape = physicsBody->GetCollisionShape();
 			DebugRenderer::DrawRectangle(glm::vec3{physicsBody->GetPosition(), 0.f}, collisionShape.x, collisionShape.y);
+#endif // _DEBUG
 		}
 	}
 }

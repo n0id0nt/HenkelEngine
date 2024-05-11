@@ -58,8 +58,10 @@ bool CollisionBodyComponent::CheckCollisionAtAngle(float angle, float groundAngl
 			float angle = glm::degrees(glm::angle(glm::vec2{ glm::cos(angleRadians), glm::sin(angleRadians) }, (isFixtureA ? 1.f : -1.f)* glm::vec2{ normal.x, normal.y }));
 			if (angle < groundAngleBuffer)
 			{
+#ifdef _DEBUG
 				glm::vec3 pos = glm::vec3{ m_body->GetPosition().x, m_body->GetPosition().y, 0 } *m_world->GetPixelsPerMeter();
 				DebugRenderer::DrawLine(pos, glm::vec3{ normal.x * 16.f, normal.y * 16.f, 0.f } + pos, { 0.9f,0.1f,0.2f });
+#endif // _DEBUG
 				return true;
 			}
 		}

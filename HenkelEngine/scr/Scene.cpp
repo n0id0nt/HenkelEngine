@@ -785,7 +785,9 @@ void Scene::Update()
 
 void Scene::Render()
 {
+#ifdef _DEBUG
 	GUIPanel::EntityHierarchy::Panel(m_entities);
+#endif // _DEBUG
 
 	m_renderSystem.Update();
 }

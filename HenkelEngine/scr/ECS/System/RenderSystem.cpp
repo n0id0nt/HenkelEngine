@@ -70,10 +70,11 @@ void RenderSystem::Update()
 		materialComponent->Unbind();
 	}
 
-
+#ifdef _DEBUG
 	glm::mat4 projection = camera->CalculateProjection((float)Engine::GetInstance()->GetWindow()->GetWidth(), (float)Engine::GetInstance()->GetWindow()->GetHeight());
 	glm::mat4 viewMat = camera->GetViewMatrix();
 	DebugRenderer::Render(projection * viewMat);
+#endif // _DEBUG
 
 	auto uiView = m_registry->GetEntitiesWithComponents<RenderComponent, TransformComponent, MaterialComponent, UIComponent>();
 	// TODO add sorting to layers so there are different depths
