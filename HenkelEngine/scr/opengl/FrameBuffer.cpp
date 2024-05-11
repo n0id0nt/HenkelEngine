@@ -41,8 +41,8 @@ void FrameBuffer::CreateBuffer(int width, int height)
     GLCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_depthId));
 
     auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "Framebuffer Error: " << fboStatus << std::endl;
+    ASSERT(fboStatus == GL_FRAMEBUFFER_COMPLETE)
+        //std::cout << "Framebuffer Error: " << fboStatus << std::endl;
 
     Unbind();
 }

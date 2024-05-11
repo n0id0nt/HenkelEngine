@@ -4,6 +4,7 @@
 #include "pugixml.hpp"
 #include <opengl\openglHelper.h>
 #include <iostream>
+#include <format>
 
 std::unordered_map<std::string, SDL_Keycode> Input::s_keycodeMap = {
     {"return",              SDLK_RETURN},
@@ -286,19 +287,19 @@ Input::Input()
     m_buttonBindings(), m_variableBindings(), m_axisBindings(), m_axis2Bindings(), m_deadzone()
 {
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
-        std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
+        DEBUG_ERROR(std::format("SDL initialization failed: {}", SDL_GetError()));
         ASSERT(false);
         return;
     }
 
     if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0) {
-        std::cerr << "SDL initialization failed: " << SDL_GetError() << std::endl;
+        DEBUG_ERROR(std::format("SDL initialization failed: {}", SDL_GetError()));
         ASSERT(false);
         return;
     }
 
     if (SDL_NumJoysticks() < 1 || !SDL_IsGameController(0)) {
-        std::cerr << "No game controller connected." << std::endl;
+        DEBUG_ERROR("No game controller connected.");
         //ASSERT(false);
         return;
     }
@@ -306,7 +307,7 @@ Input::Input()
     // Open the first joystick
     m_joystick = SDL_JoystickOpen(0);
     if (!m_joystick) {
-        std::cerr << "Unable to open joystick: " << SDL_GetError() << std::endl;
+        DEBUG_ERROR(std::format("Unable to open joystick: {}", SDL_GetError()));
         ASSERT(false);
         return;
     }
@@ -314,14 +315,14 @@ Input::Input()
     // Open the game controller
     m_gameController = SDL_GameControllerOpen(0);
     if (!m_gameController) {
-        std::cerr << "Unable to open game controller: " << SDL_GetError() << std::endl;
+        DEBUG_ERROR(std::format("Unable to open game controller: {}", SDL_GetError()));
         ASSERT(false);
         return;
     }
 
     // Print joystick information
-    std::cout << "Joystick Name: " << SDL_JoystickName(m_joystick) << std::endl;
-    std::cout << "Number of Axes: " << SDL_JoystickNumAxes(m_joystick) << std::endl;
+    DEBUG_PRINT(std::format("Joystick Name: {}", SDL_JoystickName(m_joystick)));
+    DEBUG_PRINT(std::format("Number of Axes: {}", SDL_JoystickNumAxes(m_joystick)));
 }
 
 Input::~Input()

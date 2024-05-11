@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <format>
 
 Shader::Shader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath)
 	: m_VertexShaderFilePath(vertexShaderFilePath), m_FragmentShaderFilePath(fragmentShaderFilePath), m_RendererID(0)
@@ -89,7 +90,7 @@ ShaderProgramSource Shader::ParseShader(const std::string& vertexShaderFilePath,
     }
     catch (std::ifstream::failure e)
     {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << std::endl;
+        DEBUG_ERROR("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
     }
 
     return { vertexCode, fragmentCode };
@@ -111,8 +112,7 @@ unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
         GLCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
         char* message = (char*)alloca(length * sizeof(char));
         GLCall(glGetShaderInfoLog(id, length, &length, message));
-        std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << std::endl;
-        std::cout << message << std::endl;
+        DEBUG_ERROR(std::format("Failed to compile {} shader!\n{}", (type == GL_VERTEX_SHADER ? "vertex" : "fragment"), message));
         GLCall(glDeleteShader(id));
         return 0;
     }
@@ -143,8 +143,8 @@ int Shader::GetUniformLocation(const std::string& name) const
         return m_UniformLocationCache[name];
 
     GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
-    if (location == -1)
-        std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+    ASSERT(location != -1)
+        //std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
 
     m_UniformLocationCache[name] = location;
     return location;

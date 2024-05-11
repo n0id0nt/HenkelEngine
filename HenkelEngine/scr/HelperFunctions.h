@@ -4,6 +4,7 @@
 #include "sol\sol.hpp"
 #include "glm\glm.hpp"
 #include "Physics/ContactListener.h"
+#include "opengl/openglHelper.h"
 
 namespace HenkelEngine
 {
@@ -46,6 +47,7 @@ namespace HenkelEngine
             "impulses", &ContactListener::Contact::impulses,
             "normal", &ContactListener::Contact::normal,
             "velocity", &ContactListener::Contact::velocity);
+        lua.set("print", [](const std::string& original) { DEBUG_PRINT(original); });
     }
 
     static std::string GetFileDir(const std::string& filePath)

@@ -55,7 +55,7 @@ void Engine::InitEngine()
 	// Initialize GLEW to setup the OpenGL Function pointers
 	ASSERT(GLEW_OK == glewInit());
 
-	std::cout << glGetString(GL_VERSION) << std::endl;
+	DEBUG_PRINT(reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
 	// Setup some OpenGL options
 	//GLCall(glEnable(GL_DEPTH_TEST));

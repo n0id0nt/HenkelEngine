@@ -23,7 +23,7 @@ ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
 {
 	m_lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
 	// Change the working directory
-	std::cout << Engine::GetInstance()->GetProjectDirectory() << std::endl;
+	DEBUG_PRINT(Engine::GetInstance()->GetProjectDirectory())
 	m_lua.script(std::format("package.path = '{}Scripts/?.lua'", Engine::GetInstance()->GetProjectDirectory()));
 
 	HenkelEngine::LUABindLibraries(m_lua);
