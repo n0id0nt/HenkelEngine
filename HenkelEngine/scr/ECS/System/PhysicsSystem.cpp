@@ -7,7 +7,7 @@
 #include <iostream>
 
 PhysicsSystem::PhysicsSystem(Registry* registry) 
-	: m_registry(registry), m_contactListenter()
+	: m_registry(registry)
 {
 }
 
@@ -76,5 +76,5 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 
 ContactListener* PhysicsSystem::GetContactListener()
 {
-	return m_contactListenter.get();
+	return &m_contactListenter;
 }

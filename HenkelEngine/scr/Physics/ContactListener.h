@@ -20,6 +20,8 @@ public:
     void BeginContact(b2Contact* contact) override;
     void EndContact(b2Contact* contact) override;
 
+    void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override;
+
 private:
     void GetContactEntities(b2Contact* contact, Entity*& entityA, Entity*& entityB);
 

@@ -54,6 +54,35 @@ void ContactListener::EndContact(b2Contact* contact)
 	}
 }
 
+void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
+{
+	Entity* entityA = nullptr, *entityB = nullptr;
+	GetContactEntities(contact, entityA, entityB);
+
+	float player_y_position;
+	float platform_y_position;
+	TransformComponent* transformA = entityA->GetComponent<TransformComponent>();
+	TransformComponent* transformB = entityB->GetComponent<TransformComponent>();
+	if (entityA->GetName() == "Player" && entityB->GetName() == "OneWayPlatforms")
+	{
+		DEBUG_PRINT("Player is A");
+		player_y_position = transformA->GetPosition().y;
+		platform_y_position = transformB->GetPosition().y;
+		//contact->SetEnabled(false);
+	}
+	else if (entityB->GetName() == "Player" && entityA->GetName() == "OneWayPlatforms")
+	{
+		DEBUG_PRINT("Player is B");
+		player_y_position = transformB->GetPosition().y;
+		platform_y_position = transformA->GetPosition().y;
+		//contact->SetEnabled(false);
+	}
+	else return;
+	float distance = player_y_position - platform_y_position;
+	if (distance > - 14.5)
+		contact->SetEnabled(false);
+}
+
 void ContactListener::GetContactEntities(b2Contact* contact, Entity*& entityA, Entity*& entityB)
 {
 	// Identify fixtures involved in the collision

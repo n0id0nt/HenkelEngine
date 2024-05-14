@@ -17,5 +17,5 @@ private:
 
 	Registry* m_registry = nullptr;
 
-	std::unique_ptr<ContactListener> m_contactListenter;
+	ContactListener m_contactListenter;
 };
