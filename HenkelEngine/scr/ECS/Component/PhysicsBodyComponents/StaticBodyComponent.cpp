@@ -16,6 +16,7 @@ StaticBodyComponent::StaticBodyComponent(PhysicsWorld* world, glm::vec2 collisio
 
 	b2FixtureDef fixtureDef;
 	b2PolygonShape shape;
+	m_collisionShape = collisionShape;
 	shape.SetAsBox(collisionShape.x / (2.f * m_world->GetPixelsPerMeter()), collisionShape.y / (2.f * m_world->GetPixelsPerMeter()));
 	fixtureDef.shape = &shape;
 	fixtureDef.friction = 0.f;

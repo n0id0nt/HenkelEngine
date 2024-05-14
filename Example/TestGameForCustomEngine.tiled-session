@@ -21,8 +21,8 @@
             "scale": 1,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 595.5,
-                "y": 253
+                "x": 800,
+                "y": 399.5
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {
@@ -30,7 +30,7 @@
             "selectedLayer": 8,
             "viewCenter": {
                 "x": 800,
-                "y": 159.75
+                "y": 160.25
             }
         },
         "Player.tmx": {
@@ -67,7 +67,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 236,
-                "y": 309.75
+                "y": 335.25
             }
         },
         "TestTiles.tsj": {
