@@ -1,6 +1,7 @@
 #include "ContactListener.h"
 #include <ECS\Component\ScriptComponent.h>
-#include <Engine.h>
+#include "Engine.h"
+#include <limits>
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
@@ -59,28 +60,97 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
 	Entity* entityA = nullptr, *entityB = nullptr;
 	GetContactEntities(contact, entityA, entityB);
 
-	float player_y_position;
-	float platform_y_position;
 	TransformComponent* transformA = entityA->GetComponent<TransformComponent>();
 	TransformComponent* transformB = entityB->GetComponent<TransformComponent>();
 	if (entityA->GetName() == "Player" && entityB->GetName() == "OneWayPlatforms")
 	{
 		DEBUG_PRINT("Player is A");
-		player_y_position = transformA->GetPosition().y;
-		platform_y_position = transformB->GetPosition().y;
-		//contact->SetEnabled(false);
+
+		b2Shape* shapeA = contact->GetFixtureA()->GetShape();
+		// get lowest point of A
+		float highestY = -std::numeric_limits<float>::infinity();
+		ASSERT(shapeA->GetType() == b2Shape::e_polygon);
+		b2PolygonShape* polygonShapeA = dynamic_cast<b2PolygonShape*>(shapeA);
+		if (polygonShapeA)
+		{
+			auto fixtureABody = contact->GetFixtureA()->GetBody();
+			for (int i = 0; i < polygonShapeA->m_count; ++i)
+			{
+				b2Vec2 vertex = fixtureABody->GetWorldPoint(polygonShapeA->m_vertices[i]);
+				if (highestY < vertex.y)
+				{
+					highestY = vertex.y;
+				}
+			}
+		}
+
+		b2Shape* shapeB = contact->GetFixtureB()->GetShape();
+		// get Highest point of B
+		float lowestY = std::numeric_limits<float>::infinity();
+		ASSERT(shapeB->GetType() == b2Shape::e_chain);
+		b2ChainShape* chainShapeB = dynamic_cast<b2ChainShape*>(shapeB);
+		if (chainShapeB)
+		{
+			auto fixtureBBody = contact->GetFixtureB()->GetBody();
+			for (int i = 0; i < chainShapeB->m_count; ++i)
+			{
+				b2Vec2 vertex = fixtureBBody->GetWorldPoint(chainShapeB->m_vertices[i]);
+				if (lowestY > vertex.y)
+				{
+					lowestY = vertex.y;
+				}
+			}
+		}
+		
+		if (highestY > lowestY)
+		{
+			contact->SetEnabled(false);
+		}
 	}
 	else if (entityB->GetName() == "Player" && entityA->GetName() == "OneWayPlatforms")
 	{
 		DEBUG_PRINT("Player is B");
-		player_y_position = transformB->GetPosition().y;
-		platform_y_position = transformA->GetPosition().y;
-		//contact->SetEnabled(false);
+		b2Shape* shapeB = contact->GetFixtureB()->GetShape();
+		// get lowest point of A
+		float highestY = -std::numeric_limits<float>::infinity();
+		ASSERT(shapeB->GetType() == b2Shape::e_polygon);
+		b2PolygonShape* polygonShapeB = dynamic_cast<b2PolygonShape*>(shapeB);
+		if (polygonShapeB)
+		{
+			auto fixtureBBody = contact->GetFixtureB()->GetBody();
+			for (int i = 0; i < polygonShapeB->m_count; ++i)
+			{
+				b2Vec2 vertex = fixtureBBody->GetWorldPoint(polygonShapeB->m_vertices[i]);
+				if (highestY < vertex.y)
+				{
+					highestY = vertex.y;
+				}
+			}
+		}
+
+		b2Shape* shapeA = contact->GetFixtureA()->GetShape();
+		// get Highest point of B
+		float lowestY = std::numeric_limits<float>::max();
+		ASSERT(shapeA->GetType() == b2Shape::e_chain);
+		b2ChainShape* chainShapeA = dynamic_cast<b2ChainShape*>(shapeA);
+		if (chainShapeA)
+		{
+			auto fixtureABody = contact->GetFixtureA()->GetBody();
+			for (int i = 0; i < chainShapeA->m_count; ++i)
+			{
+				b2Vec2 vertex = fixtureABody->GetWorldPoint(chainShapeA->m_vertices[i]);
+				if (lowestY > vertex.y)
+				{
+					lowestY = vertex.y;
+				}
+			}
+		}
+
+		if (highestY > lowestY)
+		{
+			contact->SetEnabled(false);
+		}
 	}
-	else return;
-	float distance = player_y_position - platform_y_position;
-	if (distance > - 14.5)
-		contact->SetEnabled(false);
 }
 
 void ContactListener::GetContactEntities(b2Contact* contact, Entity*& entityA, Entity*& entityB)
@@ -88,7 +158,7 @@ void ContactListener::GetContactEntities(b2Contact* contact, Entity*& entityA, E
 	// Identify fixtures involved in the collision
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
-
+	
 	// Use user data to get associated entities
 	entityA = reinterpret_cast<Entity*>(fixtureA->GetBody()->GetUserData().pointer);
 	entityB = reinterpret_cast<Entity*>(fixtureB->GetBody()->GetUserData().pointer);
