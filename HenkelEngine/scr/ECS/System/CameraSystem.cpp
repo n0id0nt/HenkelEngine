@@ -1,24 +1,20 @@
 #include "CameraSystem.h"
-#include <ECS\Component\CameraComponent.h>
-#include <ECS\Component\TransformComponent.h>
+#include "ECS\Component\CameraComponent.h"
+#include "ECS\Component\TransformComponent.h"
 #include "opengl\DebugRenderer.h"
-#include <Engine.h>
-#include <HelperFunctions.h>
+#include "Engine.h"
+#include "HelperFunctions.h"
 
-CameraSystem::CameraSystem(Registry* registry) : m_registry(registry), m_previousCameraPosition(), m_previousCameraAngle(0.f)
+void CameraSystem::Update(Registry* registry, Camera* camera)
 {
-}
-
-void CameraSystem::Update(Camera* camera)
-{
-	auto view = m_registry->GetEntitiesWithComponents<CameraComponent, TransformComponent>();
+	auto view = registry->GetEntitiesWithComponents<CameraComponent, TransformComponent>();
 	for (auto& entity : view)
 	{
-		auto* cameraComponent = m_registry->GetComponent<CameraComponent>(entity);
+		auto* cameraComponent = registry->GetComponent<CameraComponent>(entity);
 		if (cameraComponent->IsActiveCamera())
 		{
 			camera->SetPosition(m_previousCameraPosition);
-			auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
+			auto* transformComponent = registry->GetComponent<TransformComponent>(entity);
 			glm::vec cameraComponentPos = transformComponent->GetWorldPosition();
 
 			glm::vec3 newPos = cameraComponent->IsPositionForced() ? TargetPosition(cameraComponent, cameraComponentPos, camera) 

@@ -2,17 +2,8 @@
 
 #include "ECS/Registry.h"
 
-class RenderSystem
+namespace RenderSystem
 {
-public:
-	RenderSystem(Registry* registry) : m_registry(registry)
-	{
-	}
-
-	void Update();
-
-private:
-
-	Registry* m_registry = nullptr;
+	void Update(Registry* registry);
 };
 

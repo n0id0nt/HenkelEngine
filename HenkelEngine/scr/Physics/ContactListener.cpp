@@ -8,149 +8,91 @@ void ContactListener::BeginContact(b2Contact* contact)
 	if (!contact->IsTouching()) return;
 
 	Entity *entityA = nullptr, *entityB = nullptr;
+	b2Fixture *fixtureA = contact->GetFixtureA(), * fixtureB = contact->GetFixtureB();
 	GetContactEntities(contact, entityA, entityB);
 	// call the collision events
+	bool collisionEnabled = true;
 	auto scriptComponentA = entityA->GetComponent<ScriptComponent>();
 	if (scriptComponentA)
 	{
-		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
-		Contact contactStruct(entityA, contact, &lua);
+		sol::state& lua = Engine::GetInstance()->GetSolState();
+		Contact contactStruct(fixtureA, fixtureB, entityB, contact, &lua);
 		scriptComponentA->Bind(lua); // TODO Might be a little slow to be rebinbinging and unbinding scripts on each collision event think up more efficent way
 		scriptComponentA->OnCollisionEnter(contactStruct);
 		scriptComponentA->Unbind(lua);
+		collisionEnabled &= contactStruct.enabled;
 	}
 	auto scriptComponentB = entityB->GetComponent<ScriptComponent>();
 	if (scriptComponentB)
 	{
-		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
-		Contact contactStruct(entityA, contact, &lua);
+		sol::state& lua = Engine::GetInstance()->GetSolState();
+		Contact contactStruct(fixtureB, fixtureA, entityA, contact, &lua);
 		scriptComponentB->Bind(lua);
 		scriptComponentB->OnCollisionEnter(contactStruct);
 		scriptComponentB->Unbind(lua);
+		collisionEnabled &= contactStruct.enabled;
 	}
+	contact->SetEnabled(collisionEnabled);
 }
 
 void ContactListener::EndContact(b2Contact* contact)
 {
 	Entity *entityA = nullptr, *entityB = nullptr;
+	b2Fixture* fixtureA = contact->GetFixtureA(), * fixtureB = contact->GetFixtureB();
 	GetContactEntities(contact, entityA, entityB);
 	// call the collision events
+	bool collisionEnabled = true;
 	auto scriptComponentA = entityA->GetComponent<ScriptComponent>();
 	if (scriptComponentA)
 	{
-		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
-		Contact contactStruct(entityA, contact, &lua);
+		sol::state& lua = Engine::GetInstance()->GetSolState();
+		Contact contactStruct(fixtureA, fixtureB, entityB, contact, &lua);
 		scriptComponentA->Bind(lua); // TODO Might be a little slow to be rebinbinging and unbinding scripts on each collision event think up more efficent way
 		scriptComponentA->OnCollisionExit(contactStruct);
 		scriptComponentA->Unbind(lua);
+		collisionEnabled &= contactStruct.enabled;
 	}
 	auto scriptComponentB = entityB->GetComponent<ScriptComponent>();
 	if (scriptComponentB)
 	{
-		sol::state& lua = Engine::GetInstance()->GetCurrentScene()->GetLuaState();
-		Contact contactStruct(entityA, contact, &lua);
+		sol::state& lua = Engine::GetInstance()->GetSolState();
+		Contact contactStruct(fixtureB, fixtureA, entityA, contact, &lua);
 		scriptComponentB->Bind(lua);
 		scriptComponentB->OnCollisionExit(contactStruct);
 		scriptComponentB->Unbind(lua);
+		collisionEnabled &= contactStruct.enabled;
 	}
+	contact->SetEnabled(collisionEnabled);
 }
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
 {
-	Entity* entityA = nullptr, *entityB = nullptr;
+	Entity* entityA = nullptr, * entityB = nullptr;
+	b2Fixture* fixtureA = contact->GetFixtureA(), * fixtureB = contact->GetFixtureB();
 	GetContactEntities(contact, entityA, entityB);
-
-	TransformComponent* transformA = entityA->GetComponent<TransformComponent>();
-	TransformComponent* transformB = entityB->GetComponent<TransformComponent>();
-	if (entityA->GetName() == "Player" && entityB->GetName() == "OneWayPlatforms")
+	// call the collision events
+	bool collisionEnabled = true;
+	auto scriptComponentA = entityA->GetComponent<ScriptComponent>();
+	if (scriptComponentA)
 	{
-		DEBUG_PRINT("Player is A");
-
-		b2Shape* shapeA = contact->GetFixtureA()->GetShape();
-		// get lowest point of A
-		float highestY = -std::numeric_limits<float>::infinity();
-		ASSERT(shapeA->GetType() == b2Shape::e_polygon);
-		b2PolygonShape* polygonShapeA = dynamic_cast<b2PolygonShape*>(shapeA);
-		if (polygonShapeA)
-		{
-			auto fixtureABody = contact->GetFixtureA()->GetBody();
-			for (int i = 0; i < polygonShapeA->m_count; ++i)
-			{
-				b2Vec2 vertex = fixtureABody->GetWorldPoint(polygonShapeA->m_vertices[i]);
-				if (highestY < vertex.y)
-				{
-					highestY = vertex.y;
-				}
-			}
-		}
-
-		b2Shape* shapeB = contact->GetFixtureB()->GetShape();
-		// get Highest point of B
-		float lowestY = std::numeric_limits<float>::infinity();
-		ASSERT(shapeB->GetType() == b2Shape::e_chain);
-		b2ChainShape* chainShapeB = dynamic_cast<b2ChainShape*>(shapeB);
-		if (chainShapeB)
-		{
-			auto fixtureBBody = contact->GetFixtureB()->GetBody();
-			for (int i = 0; i < chainShapeB->m_count; ++i)
-			{
-				b2Vec2 vertex = fixtureBBody->GetWorldPoint(chainShapeB->m_vertices[i]);
-				if (lowestY > vertex.y)
-				{
-					lowestY = vertex.y;
-				}
-			}
-		}
-		
-		if (highestY > lowestY)
-		{
-			contact->SetEnabled(false);
-		}
+		sol::state& lua = Engine::GetInstance()->GetSolState();
+		Contact contactStruct(fixtureA, fixtureB, entityB, contact, &lua);
+		scriptComponentA->Bind(lua); // TODO Might be a little slow to be rebinbinging and unbinding scripts on each collision event think up more efficent way
+		scriptComponentA->OnCollisionPreSolve(contactStruct);
+		scriptComponentA->Unbind(lua);
+		collisionEnabled &= contactStruct.enabled;
 	}
-	else if (entityB->GetName() == "Player" && entityA->GetName() == "OneWayPlatforms")
+	auto scriptComponentB = entityB->GetComponent<ScriptComponent>();
+	if (scriptComponentB)
 	{
-		DEBUG_PRINT("Player is B");
-		b2Shape* shapeB = contact->GetFixtureB()->GetShape();
-		// get lowest point of A
-		float highestY = -std::numeric_limits<float>::infinity();
-		ASSERT(shapeB->GetType() == b2Shape::e_polygon);
-		b2PolygonShape* polygonShapeB = dynamic_cast<b2PolygonShape*>(shapeB);
-		if (polygonShapeB)
-		{
-			auto fixtureBBody = contact->GetFixtureB()->GetBody();
-			for (int i = 0; i < polygonShapeB->m_count; ++i)
-			{
-				b2Vec2 vertex = fixtureBBody->GetWorldPoint(polygonShapeB->m_vertices[i]);
-				if (highestY < vertex.y)
-				{
-					highestY = vertex.y;
-				}
-			}
-		}
-
-		b2Shape* shapeA = contact->GetFixtureA()->GetShape();
-		// get Highest point of B
-		float lowestY = std::numeric_limits<float>::max();
-		ASSERT(shapeA->GetType() == b2Shape::e_chain);
-		b2ChainShape* chainShapeA = dynamic_cast<b2ChainShape*>(shapeA);
-		if (chainShapeA)
-		{
-			auto fixtureABody = contact->GetFixtureA()->GetBody();
-			for (int i = 0; i < chainShapeA->m_count; ++i)
-			{
-				b2Vec2 vertex = fixtureABody->GetWorldPoint(chainShapeA->m_vertices[i]);
-				if (lowestY > vertex.y)
-				{
-					lowestY = vertex.y;
-				}
-			}
-		}
-
-		if (highestY > lowestY)
-		{
-			contact->SetEnabled(false);
-		}
+		sol::state& lua = Engine::GetInstance()->GetSolState();
+		Contact contactStruct(fixtureB, fixtureA, entityA, contact, &lua);
+		scriptComponentB->Bind(lua);
+		scriptComponentB->OnCollisionPreSolve(contactStruct);
+		scriptComponentB->Unbind(lua);
+		collisionEnabled &= contactStruct.enabled;
 	}
+	contact->SetEnabled(collisionEnabled);
 }
 
 void ContactListener::GetContactEntities(b2Contact* contact, Entity*& entityA, Entity*& entityB)
@@ -165,7 +107,7 @@ void ContactListener::GetContactEntities(b2Contact* contact, Entity*& entityA, E
 
 }
 
-ContactListener::Contact::Contact(Entity* other, b2Contact* contact, sol::state* lua)
+ContactListener::Contact::Contact(b2Fixture* fixture, b2Fixture* otherFixture, Entity* other, b2Contact* contact, sol::state* lua)
 {
 	sol::table contactPoints = lua->create_table();
 	sol::table implulses = lua->create_table();
@@ -191,4 +133,7 @@ ContactListener::Contact::Contact(Entity* other, b2Contact* contact, sol::state*
 	this->impulses = implulses;
 	this->velocity = glm::vec2{relativeVelocity.x, relativeVelocity.y};
 	this->normal = glm::vec2{ normal.x, normal.y};
+	this->fixture = fixture;
+	this->otherFixture = otherFixture;
+	this->enabled = true;
 }

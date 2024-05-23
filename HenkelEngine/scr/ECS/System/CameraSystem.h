@@ -1,22 +1,16 @@
 #pragma once
 #include <ECS\Registry.h>
-#include <Camera.h>
+#include "Camera.h"
 
-class CameraSystem
+namespace CameraSystem
 {
-public:
-	CameraSystem(Registry* registry);
-
-	void Update(Camera* camera);
+	void Update(Registry* registry, Camera* camera);
 
 	glm::vec3 CalculateSmoothedPosition(CameraComponent* cameraComponent, const glm::vec3& cameraComponentPos, Camera* camera);
 	glm::vec3 TargetPosition(CameraComponent* cameraComponent, const glm::vec3& cameraComponentPos, Camera* camera);
 	void CalculateCameraShake(CameraComponent* cameraComponent, Camera* camera);
 
-private:
-
-	Registry* m_registry = nullptr;
-	glm::vec3 m_previousCameraPosition;
-	float m_previousCameraAngle;
+	static glm::vec3 m_previousCameraPosition;
+	static float m_previousCameraAngle;
 };
 

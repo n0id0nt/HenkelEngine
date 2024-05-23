@@ -8,13 +8,16 @@
 class ContactListener : public b2ContactListener {
 public:
     struct Contact {
-        Contact(Entity* other, b2Contact* contact, sol::state* lua);
+        Contact(b2Fixture* fixture, b2Fixture* otherFixture, Entity* other, b2Contact* contact, sol::state* lua);
 
+        b2Fixture* fixture;
+        b2Fixture* otherFixture;
         Entity* other;
         sol::table contactPoints;
         sol::table impulses;
         glm::vec2 velocity;
         glm::vec2 normal;
+        bool enabled;
     };
 
     void BeginContact(b2Contact* contact) override;

@@ -5,14 +5,60 @@
 #include <format>
 #include "opengl/DebugRenderer.h"
 #include "imgui_impl_opengl3.h"
+#include "HelperFunctions.h"
+#include "FileParser.h"
+#include "ECS\Component\TransformComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\CollisionBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
+#include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
+#include "ECS/Component/ScriptComponent.h"
+#include "ECS/Component/RenderComponents/SpriteComponent.h"
+#include "ECS/Component/RenderComponents/RenderComponent.h"
+#include <ECS\Component\SpriteAnimationComponent.h>
+#include <ECS\Component\CameraComponent.h>
+#include <ECS\Component\UIComponent.h>
+#include "UI\UIArea.h"
+#include "UI\UIText.h"
 
 Engine*Engine::s_engine = nullptr;
 
-const std::string s_testMap1 = "TestLevel.tmx";
-const std::string s_testMap2 = "AutoMappingTestLevel.tmx";
+const std::string s_world = "FirstTestWorld.world";
 
-Engine::Engine() 
+Engine::Engine()
 {
+}
+
+void Engine::InitialiseLua()
+{
+	m_lua = sol::state();
+	m_lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
+	// Change the working directory
+	DEBUG_PRINT(Engine::GetInstance()->GetProjectDirectory());
+	m_lua.script(std::format("package.path = '{}Scripts/?.lua'", Engine::GetInstance()->GetProjectDirectory()));
+
+	m_input->LUABind(m_lua);
+	m_time->LUABind(m_lua);
+	m_messenger->LUABind(m_lua);
+
+	HenkelEngine::LUABindLibraries(m_lua);
+
+	Entity::LUABind(m_lua);
+
+	TransformComponent::LUABind(m_lua);
+	CollisionBodyComponent::LUABind(m_lua);
+	PhysicsBodyComponent::LUABind(m_lua);
+	TileMapCollisionBodyComponent::LUABind(m_lua);
+	StaticBodyComponent::LUABind(m_lua);
+	ScriptComponent::LUABind(m_lua);
+	SpriteComponent::LUABind(m_lua);
+	SpriteAnimationComponent::LUABind(m_lua);
+	CameraComponent::LUABind(m_lua);
+	UIComponent::LUABind(m_lua);
+	RenderComponent::LUABind(m_lua);
+
+	UIArea::LUABind(m_lua);
+	UIText::LUABind(m_lua);
 }
 
 Engine* Engine::GetInstance()
@@ -75,13 +121,19 @@ void Engine::InitEngine()
 	io.ConfigDockingWithShift = false;
 
 	ImGui::StyleColorsDark();
-	SetDarkThemeColors();
+	HenkelEngine::SetDarkThemeColors();
 	m_window->SetUpImGuiForWindow();
 	ImGui_ImplOpenGL3_Init();
 
 	DebugRenderer::InitDebugRenderer();
 #endif //_DEBUG
-	m_scene = std::make_unique<Scene>(m_projectDirectory, s_testMap2);
+
+	m_world = std::make_unique<World>();
+
+	InitialiseLua();
+
+	m_world->LUABind(m_lua);
+	FileParser::LoadWorld(m_world.get(), m_projectDirectory, s_world);
 }
 
 void Engine::ExitEngine()
@@ -89,7 +141,7 @@ void Engine::ExitEngine()
 	DebugRenderer::ExitDebugRenderer();
 	m_resourcePool.reset();
 	m_input.reset();
-	m_scene.reset();
+	m_world.reset();
 	m_window.reset();
 	m_time.reset();
 
@@ -131,7 +183,7 @@ void Engine::Loop()
 #endif // _DEBUG
 
 		// Update
-		m_scene->Update();
+		m_world->Update();
 
 		// Define the viewport dimensions
 		glViewport(0, 0, m_window->GetWidth(), m_window->GetHeight());
@@ -141,7 +193,7 @@ void Engine::Loop()
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 		// Render
-		m_scene->Render();
+		m_world->Render();
 
 #ifdef _DEBUG
 		// Render ImGui
@@ -183,9 +235,9 @@ Window* Engine::GetWindow() const
 	return m_window.get();
 }
 
-Scene* Engine::GetCurrentScene() const
+World* Engine::GetWorld() const
 {
-	return m_scene.get();
+	return m_world.get();
 }
 
 Input* Engine::GetInput() const
@@ -213,53 +265,12 @@ std::string Engine::GetProjectDirectory() const
 	return m_projectDirectory;
 }
 
-void Engine::SetDarkThemeColors()
-{
-	auto primaryColor = ImVec4{ 0.1f, 0.505f, 0.11f, 1.0f };
-	auto primaryColorHighlight = ImVec4{ 0.15f, 0.605f, 0.18f, 1.0f };
-	auto secondaryColor = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
-	auto bgColor = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
-
-	auto& colors = ImGui::GetStyle().Colors;
-	colors[ImGuiCol_WindowBg] = bgColor;
-
-	// Headers
-	colors[ImGuiCol_Header] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-	colors[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
-	colors[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-
-	// Buttons
-	colors[ImGuiCol_Button] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-	colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
-	colors[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-
-	// Frame BG
-	colors[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-	colors[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
-	colors[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-
-	// Tabs
-	colors[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-	colors[ImGuiCol_TabHovered] = ImVec4{ 0.38f, 0.3805f, 0.381f, 1.0f };
-	colors[ImGuiCol_TabActive] = ImVec4{ 0.28f, 0.2805f, 0.281f, 1.0f };
-	colors[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-	colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
-
-	// Title
-	colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-	colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-	colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
-
-	// Slider
-	colors[ImGuiCol_SliderGrab] = primaryColor;
-	colors[ImGuiCol_SliderGrabActive] = primaryColorHighlight;
-
-	// Check Mark
-	colors[ImGuiCol_CheckMark] = primaryColorHighlight;
-
-}
-
 unsigned int Engine::GetCollisionLayer(std::string layerName)
 {
 	return m_collisionLayers.GetLayer(layerName);
+}
+
+sol::state& Engine::GetSolState()
+{
+	return m_lua;
 }

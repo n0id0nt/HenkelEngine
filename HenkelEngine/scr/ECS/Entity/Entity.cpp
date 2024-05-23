@@ -10,7 +10,7 @@
 #include <ECS\Component\UIComponent.h>
 
 Entity::Entity(const std::string& name, Registry* registry)
-	: m_name(name), m_registry(registry), m_parent(nullptr), m_children(), m_tags()
+	: m_name(name), m_registry(registry), m_parent(nullptr), m_children(), m_tags(), m_isIndependentFromLevel(false)
 {
 	m_entity = m_registry->CreateEntity();
 }
@@ -89,6 +89,11 @@ std::vector<Entity*> Entity::GetChildren() const
 Entity* Entity::GetParent() const
 {
 	return m_parent;
+}
+
+bool Entity::GetIsIndependentFromLevel() const
+{
+	return m_isIndependentFromLevel;
 }
 
 void Entity::LUABind(sol::state& lua)

@@ -27,7 +27,7 @@ bool CameraComponent::IsActiveCamera() const
 
 void CameraComponent::MakeCameraActive()
 {
-	MakeCameraActiveFromCamera(Engine::GetInstance()->GetCurrentScene()->GetCamera());
+	MakeCameraActiveFromCamera(Engine::GetInstance()->GetWorld()->GetCamera());
 }
 
 void CameraComponent::MakeCameraActiveFromCamera(Camera* camera)
@@ -40,7 +40,7 @@ void CameraComponent::MakeCameraActiveFromCamera(Camera* camera)
 
 void CameraComponent::MakeCameraInactive()
 {
-	MakeCameraInactiveFromCamera(Engine::GetInstance()->GetCurrentScene()->GetCamera());
+	MakeCameraInactiveFromCamera(Engine::GetInstance()->GetWorld()->GetCamera());
 }
 
 void CameraComponent::MakeCameraInactiveFromCamera(Camera* camera)

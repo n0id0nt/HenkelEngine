@@ -6,12 +6,7 @@
 #include "opengl\DebugRenderer.h"
 #include <iostream>
 
-PhysicsSystem::PhysicsSystem(Registry* registry) 
-	: m_registry(registry)
-{
-}
-
-void PhysicsSystem::Update(PhysicsWorld* world)
+void PhysicsSystem::Update(Registry* registry, PhysicsWorld* world)
 {
 	world->Step();
 	world->ClearForces();
@@ -19,10 +14,10 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 #ifdef _DEBUG
 	//Draw debug shapes
 	{
-		auto view = m_registry->GetEntitiesWithComponents<StaticBodyComponent, TransformComponent>();
+		auto view = registry->GetEntitiesWithComponents<StaticBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
-			auto* staticBody = m_registry->GetComponent<StaticBodyComponent>(entity);
+			auto* staticBody = registry->GetComponent<StaticBodyComponent>(entity);
 			//auto staticBody = view.get<StaticBodyComponent>(entity);
 			glm::vec2 collisionShape = staticBody->GetCollisionShape();
 
@@ -30,11 +25,11 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 		}
 	}
 	{
-		auto view = m_registry->GetEntitiesWithComponents<TileMapCollisionBodyComponent, TransformComponent>();
+		auto view = registry->GetEntitiesWithComponents<TileMapCollisionBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
-			auto* transform = m_registry->GetComponent<TransformComponent>(entity);
-			auto* tileMap = m_registry->GetComponent<TileMapCollisionBodyComponent>(entity);
+			auto* transform = registry->GetComponent<TransformComponent>(entity);
+			auto* tileMap = registry->GetComponent<TileMapCollisionBodyComponent>(entity);
 			for (b2Fixture* fixture = tileMap->GetBody()->GetFixtureList(); fixture; fixture = fixture->GetNext())
 			{
 				b2Shape* shape = fixture->GetShape();
@@ -58,12 +53,12 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 	}
 #endif //_DEBUG
 	{
-		auto view = m_registry->GetEntitiesWithComponents<PhysicsBodyComponent, TransformComponent>();
+		auto view = registry->GetEntitiesWithComponents<PhysicsBodyComponent, TransformComponent>();
 		for (auto& entity : view)
 		{
 			//std::cout << (int)entity << std::endl;
-			auto* transform = m_registry->GetComponent<TransformComponent>(entity);
-			auto* physicsBody = m_registry->GetComponent<PhysicsBodyComponent>(entity);
+			auto* transform = registry->GetComponent<TransformComponent>(entity);
+			auto* physicsBody = registry->GetComponent<PhysicsBodyComponent>(entity);
 			
 			transform->SetWorldPosition(physicsBody->GetPosition());
 #ifdef _DEBUG
@@ -72,9 +67,4 @@ void PhysicsSystem::Update(PhysicsWorld* world)
 #endif // _DEBUG
 		}
 	}
-}
-
-ContactListener* PhysicsSystem::GetContactListener()
-{
-	return &m_contactListenter;
 }

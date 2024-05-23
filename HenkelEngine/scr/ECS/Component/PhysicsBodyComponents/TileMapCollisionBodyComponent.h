@@ -1,5 +1,7 @@
 #pragma once
-#include "HenkelEngine.h"
+
+#include "glm\glm.hpp"
+#include "box2d\box2d.h"
 #include "Resourse/TileSheet.h"
 #include <vector>
 #include <unordered_set>

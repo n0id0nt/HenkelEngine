@@ -5,7 +5,6 @@
 #include "ECS/Component/UIComponent.h"
 #include "ECS/Component/TransformComponent.h"
 #include "Engine.h"
-#include "Scene.h"
 #include "glm\glm.hpp"
 #include <opengl\DebugRenderer.h>
 
@@ -18,26 +17,26 @@ void RenderUIAreas(UIArea* area, BatchRenderer* batchRenderer)
 	}
 }
 
-void RenderSystem::Update()
+void RenderSystem::Update(Registry* registry)
 {
 	float width = Engine::GetInstance()->GetWindow()->GetWidth();
 	float height = Engine::GetInstance()->GetWindow()->GetHeight();
-	Camera* camera = Engine::GetInstance()->GetCurrentScene()->GetCamera();
+	Camera* camera = Engine::GetInstance()->GetWorld()->GetCamera();
 
-	auto view = m_registry->GetEntitiesWithComponents<RenderComponent, TransformComponent, MaterialComponent>();
+	auto view = registry->GetEntitiesWithComponents<RenderComponent, TransformComponent, MaterialComponent>();
 	// TODO add sorting to layers so there are different depths
 	for (auto& entity : view)
 	{
-		auto* renderComponent = m_registry->GetComponent<RenderComponent>(entity);
-		auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
-		auto* materialComponent = m_registry->GetComponent<MaterialComponent>(entity);
-		auto* tilemapComponent = m_registry->GetComponent<TileMapComponent>(entity);
-		auto* spriteComponent = m_registry->GetComponent<SpriteComponent>(entity);
+		auto* renderComponent = registry->GetComponent<RenderComponent>(entity);
+		auto* transformComponent = registry->GetComponent<TransformComponent>(entity);
+		auto* materialComponent = registry->GetComponent<MaterialComponent>(entity);
+		auto* tilemapComponent = registry->GetComponent<TileMapComponent>(entity);
+		auto* spriteComponent = registry->GetComponent<SpriteComponent>(entity);
 
 		if (!(tilemapComponent || spriteComponent)) continue;
 
 		glm::mat4 projection = camera->CalculateProjection(width, height);
-		glm::mat4 view = Engine::GetInstance()->GetCurrentScene()->GetCamera()->GetViewMatrix();
+		glm::mat4 view = Engine::GetInstance()->GetWorld()->GetCamera()->GetViewMatrix();
 		glm::mat4 model = transformComponent->GetWorldMatrix();
 
 		// Better handle textures in a way that that better allows texture changing 
@@ -76,14 +75,14 @@ void RenderSystem::Update()
 	DebugRenderer::Render(projection * viewMat);
 #endif // _DEBUG
 
-	auto uiView = m_registry->GetEntitiesWithComponents<RenderComponent, TransformComponent, MaterialComponent, UIComponent>();
+	auto uiView = registry->GetEntitiesWithComponents<RenderComponent, TransformComponent, MaterialComponent, UIComponent>();
 	// TODO add sorting to layers so there are different depths
 	for (auto& entity : uiView)
 	{
-		auto* renderComponent = m_registry->GetComponent<RenderComponent>(entity);
-		auto* transformComponent = m_registry->GetComponent<TransformComponent>(entity);
-		auto* materialComponent = m_registry->GetComponent<MaterialComponent>(entity);
-		auto* uiComponent = m_registry->GetComponent<UIComponent>(entity);
+		auto* renderComponent = registry->GetComponent<RenderComponent>(entity);
+		auto* transformComponent = registry->GetComponent<TransformComponent>(entity);
+		auto* materialComponent = registry->GetComponent<MaterialComponent>(entity);
+		auto* uiComponent = registry->GetComponent<UIComponent>(entity);
 
 		glm::mat4 model = transformComponent->GetWorldMatrix();
 		glm::mat4 projection = glm::ortho(0.0f, width, height, 0.0f);

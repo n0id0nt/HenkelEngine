@@ -30,6 +30,8 @@ public:
 	std::vector<Entity*> GetChildren() const;
 	Entity* GetParent() const;
 
+	bool GetIsIndependentFromLevel() const;
+
 	template <typename ComponentType, typename... Args>
 	ComponentType* CreateComponent(Args&&... args) const
 	{
@@ -59,5 +61,7 @@ private:
 	std::set<std::string> m_tags;
 
 	std::string m_name;
+
+	bool m_isIndependentFromLevel;
 };
 

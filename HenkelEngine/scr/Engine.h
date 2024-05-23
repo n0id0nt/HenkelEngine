@@ -9,8 +9,8 @@
 #include "Input.h"
 #include "ResourcePool.h"
 #include "Messenger.h"
-#include <Physics\CollisionLayers.h>
-
+#include "Physics\CollisionLayers.h"
+#include "World.h"
 const unsigned int FPS = 60;
 const unsigned int FRAME_DELAY = 1000 / FPS;
 
@@ -30,7 +30,7 @@ public:
 	void Loop();
 
 	Window* GetWindow() const;
-	Scene* GetCurrentScene() const;
+	World* GetWorld() const;
 	Input* GetInput() const;
 	Time* GetTime() const;
 	ResourcePool* GetResourcePool() const;
@@ -38,17 +38,21 @@ public:
 
 	std::string GetProjectDirectory() const;
 
-	void SetDarkThemeColors();
-
 	unsigned int GetCollisionLayer(std::string layerName);
+
+	sol::state& GetSolState();
 
 private:
 	Engine();
 
+	void InitialiseLua();
+
 	static Engine* s_engine;
 
+	sol::state m_lua;
+
 	std::unique_ptr<Window> m_window;
-	std::unique_ptr<Scene> m_scene;
+	std::unique_ptr<World> m_world;
 	std::unique_ptr<Time> m_time;
 
 	glm::vec4 m_clearColor;

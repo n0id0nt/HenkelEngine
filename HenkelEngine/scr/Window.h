@@ -2,13 +2,13 @@
 
 #include <string>
 #include <memory>
-#include "Scene.h"
 
 #include <iostream>
 
 #include <GL\glew.h>
 #include <SDL2\SDL_opengl.h>
 #include <SDL2\SDL.h>
+#include "glm/glm.hpp"
 
 class Window
 {

@@ -4,6 +4,7 @@
   <property name="DeleteTiles" type="bool" value="true"/>
   <property name="MatchInOrder" type="bool" value="true"/>
   <property name="MatchOutsideMap" type="bool" value="true"/>
+  <property name="OverflowBorder" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" source="../cavesofgallet_tiles.tsx"/>
  <tileset firstgid="97" source=":/automap-tiles.tsx"/>

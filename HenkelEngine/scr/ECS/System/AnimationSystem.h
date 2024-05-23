@@ -2,15 +2,8 @@
 
 #include "ECS/Registry.h"
 
-class AnimationSystem
+namespace AnimationSystem
 {
-public:
-	AnimationSystem(Registry* registry);
-
-	void Update();
-
-private:
-
-	Registry* m_registry = nullptr;
+	void Update(Registry* registry);
 };
 

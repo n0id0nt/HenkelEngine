@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../HenkelEngine.h"
+#include "glm\glm.hpp"
+#include "box2d\box2d.h"
+#include "ContactListener.h"
 
 class PhysicsWorld
 {
@@ -14,11 +16,12 @@ public:
 	b2Body* CreateBody(const b2BodyDef* bodyDef);
 	void DestroyBody(b2Body* body);
 
-	void SetContactListener(b2ContactListener* contactListener);
-
 	float GetPixelsPerMeter() const;
+	void SetPixelsPerMeter(float pixelsPerMeter);
 
 private:
+
+	ContactListener m_contactListener;
 
 	float m_pixelsPerMeter;
 

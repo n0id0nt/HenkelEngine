@@ -11,11 +11,11 @@
 #include "ECS\System\PhysicsSystem.h"
 #include "ECS\System\RenderSystem.h"
 #include "ECS\System\ScriptSystem.h"
+#include <ECS\System\CameraSystem.h>
 #include "ECS\System\UISystem.h"
 #include "pugixml.hpp"
 #include "Resourse\TileSheet.h"
 #include "sol\sol.hpp"
-#include <ECS\System\CameraSystem.h>
 
 class Scene : public LUABindable
 {

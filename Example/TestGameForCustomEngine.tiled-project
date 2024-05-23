@@ -155,7 +155,8 @@
             "type": "enum",
             "values": [
                 "Static",
-                "Dynamic"
+                "Dynamic",
+                "OneWay"
             ],
             "valuesAsFlags": false
         },
@@ -231,20 +232,10 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 8,
+            "id": 11,
             "members": [
-                {
-                    "name": "X",
-                    "type": "float",
-                    "value": 0
-                },
-                {
-                    "name": "Y",
-                    "type": "float",
-                    "value": 0
-                }
             ],
-            "name": "Vec2",
+            "name": "Tag",
             "type": "class",
             "useAs": [
                 "property",
@@ -261,10 +252,20 @@
         {
             "color": "#ffa0a0a4",
             "drawFill": true,
-            "id": 11,
+            "id": 8,
             "members": [
+                {
+                    "name": "X",
+                    "type": "float",
+                    "value": 0
+                },
+                {
+                    "name": "Y",
+                    "type": "float",
+                    "value": 0
+                }
             ],
-            "name": "Tag",
+            "name": "Vec2",
             "type": "class",
             "useAs": [
                 "property",

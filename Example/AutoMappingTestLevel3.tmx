@@ -7,22 +7,14 @@
  <tileset firstgid="1" source="cavesofgallet_tiles.tsx"/>
  <layer id="1" name="ground_input" width="32" height="16">
   <data encoding="base64" compression="zlib">
-   eJzjZGBg4BzFKBgbIEYtOWYTYzc29cSoIVUtNQCx4YmunlqAFuFJrhuorZYWYLDYP1BuGEz2U8Md5KZ/UspCcswhtVylhX5sZtG6LhnsGACsjAhW
+   eJzjZGBg4BzFeDEDGhsXIMU8UvSQC8gxj1p24zOXGuoocQO1zaOFW0m1fyDcQM20Sk030NMtlOZdSt1LTllGK/fTwn5CbqGkTKdE/3DBAJgBCUA=
   </data>
  </layer>
  <layer id="6" name="background_detail" width="32" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF6CACjR2BSyEUhJNofjgePWEMDA2E3ISNT8gd+OwkBURQyRx6AVzhOZztplZcjzQAii9pCuNMGoqhbLLNkiZDPy710hB/UQRw6QeZHUaiORSGSwMMk2IvLreMdAAAfrMP7w==
+   eJztkmEKwCAIhb2H99KOs6OPwGgIomls/dgHUtRL7RXAjwereZPQa1GaGqNn2FXN3iLaAYN9BwK4FlKZuTN4tVH2sdjjk+HDas9Vn1ahN4sl2PkmFp4HkTfBGa62Qs8fqSG6o7D8yf7BHV5XPaIDff6CG1ZiEnM=
   </data>
  </layer>
- <objectgroup id="10" name="Cameras">
-  <object id="3" name="Camera" x="36" y="37.3333">
-   <properties>
-    <property name="Camera" type="class" propertytype="Camera"/>
-   </properties>
-   <point/>
-  </object>
- </objectgroup>
  <layer id="11" name="Ladders" width="32" height="16">
   <properties>
    <property name="Collider" type="class" propertytype="Collider">
@@ -59,24 +51,7 @@
    </property>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzNVUEKhDAMTA+uaE/rrb7Wp2vdBErIthNFamBA6HQmDSYJRBRehtUAwr2irc8T0UZGJMVfDa7maE9LWzhLxVt7tHhf1lt+31Vu693emA5Eh24AcvREYs0R8H7CX3JA6/mEvyfGzv75/cf/sk2dcpDe61UD6ZNcg5nO/rmVR+6/mYFolXNqKPLw5iK+kXVQLWtGfxjI/dL338yvabX2xWDcLxH5HNk9ltaV/Yj6tTQydqggFWw=
+   eJzNVUEOhCAMLAc0uie8ua/dp1uEZpuGYglEbTKBKJ0ZWxAHAO7l+Iq5hhY+S86GCAA/HGBPOOda7BfcM+OjqH3DZtC0+tH0ZYSsO3dql7xY9MnzSG3OPZJ3QaxpHMbZErFXE+KD+k94iPWkvfqUhyA8xH7c2RM6L+TBZ1jr0euX9kDp/8XroWlM8N9DfK3VU03f5XdUk9LZl2s5LP0MoGtr9eBcVzm+Up81PW+6yyRXSy558Wzec6/G/APBcxZI
   </data>
  </layer>
- <objectgroup id="8" name="objects">
-  <object id="1" template="Template/Player.tx" x="181" y="224.667">
-   <properties>
-    <property name="Camera" type="class" propertytype="Camera">
-     <properties>
-      <property name="Damping" type="class" propertytype="Vec2">
-       <properties>
-        <property name="X" type="float" value="3"/>
-        <property name="Y" type="float" value="5"/>
-       </properties>
-      </property>
-      <property name="Zoom" type="float" value="2.5"/>
-     </properties>
-    </property>
-   </properties>
-  </object>
- </objectgroup>
 </map>

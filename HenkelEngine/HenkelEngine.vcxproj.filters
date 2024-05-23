@@ -27,9 +27,6 @@
     <ClCompile Include="scr\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scr\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="scr\ECS\Component\TransformComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -159,6 +156,15 @@
     <ClCompile Include="scr\Messenger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\World.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\ECS\Component\LevelComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scr\FileParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\sprite.frag" />
@@ -183,9 +189,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scr\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\ECS\Component\TransformComponent.h">
@@ -243,9 +246,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\Physics\PhysicsWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scr\HenkelEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\ECS\System\PhysicsSystem.h">
@@ -327,6 +327,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\Messenger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\ECS\Component\LevelComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scr\FileParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

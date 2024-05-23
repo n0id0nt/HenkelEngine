@@ -9,6 +9,15 @@ Script.update = function()
     end
 end
 
-Script.onCollisionEnter = function(contact)
-    
+Script.onCollisionPreSolve = function(contact)
+    local otherEntity = contact.other
+    local otherPhysicsBody = otherEntity:getPhysicsBody()
+    if otherPhysicsBody then
+        local lowestY = contact:getLowestPointOfFixture()
+        local otherHighestY = contact:getHighestPointOfOtherFixture()
+        if otherHighestY > lowestY then
+            print("other physics")
+            contact.enabled = false
+        end
+    end
 end

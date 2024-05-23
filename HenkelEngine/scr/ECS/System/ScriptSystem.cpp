@@ -19,52 +19,13 @@
 #include "UI\UIArea.h"
 #include "UI\UIText.h"
 
-ScriptSystem::ScriptSystem(Registry* registry) : m_registry(registry), m_lua()
+void ScriptSystem::Update(Registry* registry, sol::state& lua)
 {
-	m_lua.open_libraries(sol::lib::base, sol::lib::package, sol::lib::math);
-	// Change the working directory
-	DEBUG_PRINT(Engine::GetInstance()->GetProjectDirectory())
-	m_lua.script(std::format("package.path = '{}Scripts/?.lua'", Engine::GetInstance()->GetProjectDirectory()));
-
-	HenkelEngine::LUABindLibraries(m_lua);
-
-	Entity::LUABind(m_lua);
-
-	TransformComponent::LUABind(m_lua);
-	CollisionBodyComponent::LUABind(m_lua);
-	PhysicsBodyComponent::LUABind(m_lua);
-	TileMapCollisionBodyComponent::LUABind(m_lua);
-	StaticBodyComponent::LUABind(m_lua);
-	ScriptComponent::LUABind(m_lua);
-	SpriteComponent::LUABind(m_lua);
-	SpriteAnimationComponent::LUABind(m_lua);
-	CameraComponent::LUABind(m_lua);
-	UIComponent::LUABind(m_lua);
-	RenderComponent::LUABind(m_lua);
-
-	UIArea::LUABind(m_lua);
-	UIText::LUABind(m_lua);
-}
-
-void ScriptSystem::BindToLua(LUABindable& luaBindable)
-{
-	luaBindable.LUABind(m_lua);
-}
-
-void ScriptSystem::Update()
-{
+	auto scriptComponents = registry->GetAllComponents<ScriptComponent>();
+	for (auto& script : scriptComponents)
 	{
-		auto scriptComponents = m_registry->GetAllComponents<ScriptComponent>();
-		for (auto& script : scriptComponents)
-		{
-			script->Bind(m_lua);
-			script->Update();
-			script->Unbind(m_lua);
-		}
+		script->Bind(lua);
+		script->Update();
+		script->Unbind(lua);
 	}
-}
-
-sol::state& ScriptSystem::GetSolState()
-{
-	return m_lua;
 }

@@ -16,7 +16,7 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 	}
 	else
 	{
-		std::cerr << "Lua script loading no Script.update() function provided" << std::endl;
+		DEBUG_ERROR("Lua script loading no Script.update() function provided");
 		ASSERT(false); // TODO can probaly remove this check cause the update function is not always needed
 	}
 
@@ -29,7 +29,13 @@ ScriptComponent::ScriptComponent(const std::string& script, sol::state& lua, Ent
 	if (m_onCollisionExitFunction)
 	{
 		lua.script("function onCollisionExit(contact) Script.onCollisionExit(contact) end");
-		m_onCollisionExit = lua["onCollisionExit"];
+
+	}
+
+	if (m_onCollisionPreSolveFunction)
+	{
+		lua.script("function onCollisionPreSolve(contact) Script.onCollisionPreSolve(contact) end");
+		m_onCollisionPreSolve = lua["onCollisionPreSolve"];
 	}
 
 	if (m_onMessageFunction)
@@ -52,45 +58,64 @@ void ScriptComponent::Update()
 		if (!result.valid()) {
 			// An error occurred; retrieve and handle the error message
 			sol::error err = result;
-			std::cerr << "Lua script execution error: " << err.what() << std::endl;
+			DEBUG_ERROR(std::format("Lua script execution error: {}", err.what()));
 
 			ASSERT(false);
 		}
 	}
 }
 
-void ScriptComponent::OnCollisionEnter(const ContactListener::Contact& other)
+void ScriptComponent::OnCollisionEnter(ContactListener::Contact& contact)
 {
 	if (m_onCollisionEnter.valid())
 	{
 		sol::protected_function onCollisionEnterScript = m_onCollisionEnter;
 
-		sol::protected_function_result result = onCollisionEnterScript(other);
+		sol::protected_function_result result = onCollisionEnterScript(contact);
 
 		// Check if the execution was successful
 		if (!result.valid()) {
 			// An error occurred; retrieve and handle the error message
 			sol::error err = result;
-			std::cerr << "Lua script execution error: " << err.what() << std::endl;
+			DEBUG_ERROR(std::format("Lua script execution error: {}", err.what()));
 
 			ASSERT(false);
 		}
 	}
 }
 
-void ScriptComponent::OnCollisionExit(const ContactListener::Contact& other)
+void ScriptComponent::OnCollisionExit(ContactListener::Contact& contact)
 {
 	if (m_onCollisionExit.valid())
 	{
 		sol::protected_function onCollisionExitScript = m_onCollisionExit;
 
-		sol::protected_function_result result = onCollisionExitScript(other);
+		sol::protected_function_result result = onCollisionExitScript(contact);
 
 		// Check if the execution was successful
 		if (!result.valid()) {
 			// An error occurred; retrieve and handle the error message
 			sol::error err = result;
-			std::cerr << "Lua script execution error: " << err.what() << std::endl;
+			DEBUG_ERROR(std::format("Lua script execution error: {}", err.what()));
+
+			ASSERT(false);
+		}
+	}
+}
+
+void ScriptComponent::OnCollisionPreSolve(ContactListener::Contact& contact)
+{
+	if (m_onCollisionPreSolve.valid())
+	{
+		sol::protected_function onCollisionPreSolveScript = m_onCollisionPreSolve;
+
+		sol::protected_function_result result = onCollisionPreSolveScript(contact);
+
+		// Check if the execution was successful
+		if (!result.valid()) {
+			// An error occurred; retrieve and handle the error message
+			sol::error err = result;
+			DEBUG_ERROR(std::format("Lua script execution error: {}", err.what()));
 
 			ASSERT(false);
 		}
@@ -109,7 +134,7 @@ void ScriptComponent::OnMessage(const std::string& messageId, const sol::object&
 		if (!result.valid()) {
 			// An error occurred; retrieve and handle the error message
 			sol::error err = result;
-			std::cerr << "Lua script execution error: " << err.what() << std::endl;
+			DEBUG_ERROR(std::format("Lua script execution error: {}", err.what()));
 
 			ASSERT(false);
 		}
@@ -243,6 +268,7 @@ void ScriptComponent::LUABind(sol::state& lua)
 		"update", &ScriptComponent::m_updateFunction,
 		"onCollisionEnter", &ScriptComponent::m_onCollisionEnterFunction,
 		"onCollisionExit", &ScriptComponent::m_onCollisionExitFunction,
+		"onCollisionPreSolve", &ScriptComponent::m_onCollisionPreSolveFunction,
 		"onMessage", &ScriptComponent::m_onMessage
 	);
 }

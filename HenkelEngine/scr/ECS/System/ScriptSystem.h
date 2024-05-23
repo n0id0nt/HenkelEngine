@@ -6,20 +6,8 @@
 #include "ECS\Entity\Entity.h"
 #include "ECS/Registry.h"
 
-class ScriptSystem
+namespace ScriptSystem
 {
-public:
-	ScriptSystem(Registry* registry);
-
-	void BindToLua(LUABindable& luaBindable);
-
-	void Update();
-
-	sol::state& GetSolState();
-
-private:
-
-	Registry* m_registry;
-	sol::state m_lua;
+	void Update(Registry* registry, sol::state& lua);
 };
 

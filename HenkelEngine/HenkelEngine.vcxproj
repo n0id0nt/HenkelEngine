@@ -101,6 +101,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\FileParser.cpp" />
+    <ClCompile Include="scr\ECS\Component\LevelComponent.cpp" />
     <ClCompile Include="scr\Messenger.cpp" />
     <ClCompile Include="scr\Font.cpp" />
     <ClCompile Include="scr\opengl\BatchRenderer.cpp" />
@@ -135,7 +137,6 @@
     <ClCompile Include="scr\opengl\openglHelper.cpp" />
     <ClCompile Include="scr\opengl\Shader.cpp" />
     <ClCompile Include="scr\opengl\Texture.cpp" />
-    <ClCompile Include="scr\Scene.cpp" />
     <ClCompile Include="scr\ECS\Component\TransformComponent.cpp" />
     <ClCompile Include="scr\TimeHelper.cpp" />
     <ClCompile Include="scr\UI\UIArea.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="scr\ECS\System\UISystem.cpp" />
     <ClCompile Include="scr\UI\UIQuad.cpp" />
     <ClCompile Include="scr\UI\UITexture.cpp" />
+    <ClCompile Include="scr\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\UI.frag" />
@@ -163,6 +165,8 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\FileParser.h" />
+    <ClInclude Include="scr\ECS\Component\LevelComponent.h" />
     <ClInclude Include="scr\Messenger.h" />
     <ClInclude Include="scr\Font.h" />
     <ClInclude Include="scr\opengl\BatchRenderer.h" />
@@ -183,7 +187,6 @@
     <ClInclude Include="scr\ECS\System\ScriptSystem.h" />
     <ClInclude Include="scr\ECS\System\RenderSystem.h" />
     <ClInclude Include="scr\ECS\System\PhysicsSystem.h" />
-    <ClInclude Include="scr\HenkelEngine.h" />
     <ClInclude Include="scr\Physics\PhysicsWorld.h" />
     <ClInclude Include="scr\ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h" />
     <ClInclude Include="scr\opengl\DebugRenderer.h" />
@@ -201,7 +204,6 @@
     <ClInclude Include="scr\opengl\openglHelper.h" />
     <ClInclude Include="scr\opengl\Shader.h" />
     <ClInclude Include="scr\opengl\Texture.h" />
-    <ClInclude Include="scr\Scene.h" />
     <ClInclude Include="scr\ECS\Component\TransformComponent.h" />
     <ClInclude Include="scr\UI\UIArea.h" />
     <ClInclude Include="scr\UI\UIText.h" />
@@ -215,6 +217,7 @@
     <ClInclude Include="scr\ECS\System\UISystem.h" />
     <ClInclude Include="scr\UI\UIQuad.h" />
     <ClInclude Include="scr\UI\UITexture.h" />
+    <ClInclude Include="scr\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

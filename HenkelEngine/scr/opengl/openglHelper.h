@@ -7,7 +7,12 @@
 #define DEBUG_PRINT(x) DebugPrint(std::format("PRINT: {}\n",x));
 #define DEBUG_ERROR(x) DebugPrint(std::format("ERROR: {}\n",x));
 
+#ifdef _DEBUG
 #define ASSERT(x) if (!(x)) __debugbreak();
+#else
+#define ASSERT(x)
+#endif // _DEBUG
+
 #define GLCall(x) GLClearError();\
     x;\
     ASSERT(GLLogCall(#x, __FILE__, __LINE__));

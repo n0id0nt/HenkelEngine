@@ -415,7 +415,7 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 }
                 else
                 {
-                    std::cerr << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    DEBUG_ERROR(std::format("{} is not a valid binding type.", bindingType));
                     ASSERT(false);
                 }
             }
@@ -436,7 +436,7 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 }
                 else
                 {
-                    std::cerr << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    DEBUG_ERROR(std::format("{} is not a valid binding type.", bindingType));
                     ASSERT(false);
                 }
             }
@@ -478,7 +478,7 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 }
                 else
                 {
-                    std::cerr << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    DEBUG_ERROR(std::format("{} is not a valid binding type.", bindingType));
                     ASSERT(false);
                 }
             }
@@ -513,14 +513,14 @@ void Input::LoadInputBindings(const std::string& fileDir, const std::string& lev
                 }
                 else
                 {
-                    std::cerr << "ERROR: " << bindingType << " is not a valid binding type." << std::endl;
+                    DEBUG_ERROR(std::format("{} is not a valid binding type.", bindingType));
                     ASSERT(false);
                 }
             }
         }
         else
         {
-            std::cerr << "ERROR: " << inputType << " is not a valid input type." << std::endl;
+            DEBUG_ERROR(std::format("{} is not a valid input type.", inputType));
             ASSERT(false);
         }
     }
