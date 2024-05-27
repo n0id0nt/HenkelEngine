@@ -6,6 +6,7 @@
 #include "ECS\System\ScriptSystem.h"
 #include "ECS\System\CameraSystem.h"
 #include "ECS\System\UISystem.h"
+#include "ECS\System\LevelSystem.h"
 #include "Engine.h"
 
 // TODO might want to load this from a file
@@ -30,14 +31,14 @@ void World::Update()
 	AnimationSystem::Update(&m_registry);
 	CameraSystem::Update(&m_registry, m_camera.get());
 	UISystem::Update(&m_registry);
+#ifdef _DEBUG
+	LevelSystem::Update(&m_registry);
+	GUIPanel::EntityHierarchy::Panel(m_entities);
+#endif // _DEBUG
 }
 
 void World::Render()
 {
-#ifdef _DEBUG
-	GUIPanel::EntityHierarchy::Panel(m_entities);
-#endif // _DEBUG
-
 	RenderSystem::Update(&m_registry);
 }
 

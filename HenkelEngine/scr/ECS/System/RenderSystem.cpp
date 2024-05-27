@@ -84,7 +84,7 @@ void RenderSystem::Update(Registry* registry)
 		auto* materialComponent = registry->GetComponent<MaterialComponent>(entity);
 		auto* uiComponent = registry->GetComponent<UIComponent>(entity);
 
-		glm::mat4 model = transformComponent->GetWorldMatrix();
+		glm::mat4 model = glm::mat4(1.0f);
 		glm::mat4 projection = glm::ortho(0.0f, width, height, 0.0f);
 		glm::mat4 view = glm::mat4(1.0f);
 

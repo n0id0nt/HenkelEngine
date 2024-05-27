@@ -27,14 +27,18 @@ void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::
 {
 	// this is a place holder and will adventually load from file
 	world->GetPhysicsWorld()->SetPixelsPerMeter(16.0f);
-	Entity* levelEntity0 = world->CreateEntity("AutoMappingTestLevel.tmx");
-	levelEntity0->CreateComponent<LevelComponent>("AutoMappingTestLevel.tmx", glm::ivec2(1024, 16), glm::ivec2(512, 256));
-	Entity* levelEntity1 = world->CreateEntity("AutoMappingTestLevel.tmx");
-	levelEntity1->CreateComponent<LevelComponent>("AutoMappingTestLevel2.tmx", glm::ivec2(1536, -32), glm::ivec2(512, 512));
-	Entity* levelEntity2 = world->CreateEntity("AutoMappingTestLevel.tmx");
-	levelEntity2->CreateComponent<LevelComponent>("AutoMappingTestLevel3.tmx", glm::ivec2(2048, 64), glm::ivec2(512, 256));
-	Entity* levelEntity3 = world->CreateEntity("AutoMappingTestLevel.tmx");
-	levelEntity3->CreateComponent<LevelComponent>("AutoMappingTestLevel4.tmx", glm::ivec2(2384, 528), glm::ivec2(512, 512));
+	Entity* levelEntity0 = world->CreateEntity("AutoMappingTestLevel1.tmx");
+	levelEntity0->CreateComponent<LevelComponent>("AutoMappingTestLevel.tmx", glm::ivec2(512, 256));
+	levelEntity0->CreateComponent<TransformComponent>(levelEntity0, glm::vec3(1024, 16, 0));
+	Entity* levelEntity1 = world->CreateEntity("AutoMappingTestLevel2.tmx");
+	levelEntity1->CreateComponent<LevelComponent>("AutoMappingTestLevel2.tmx", glm::ivec2(512, 512));
+	levelEntity1->CreateComponent<TransformComponent>(levelEntity1, glm::vec3(1536, -32, 0));
+	Entity* levelEntity2 = world->CreateEntity("AutoMappingTestLevel3.tmx");
+	levelEntity2->CreateComponent<LevelComponent>("AutoMappingTestLevel3.tmx", glm::ivec2(512, 256));
+	levelEntity2->CreateComponent<TransformComponent>(levelEntity2, glm::vec3(2048, 64, 0));
+	Entity* levelEntity3 = world->CreateEntity("AutoMappingTestLevel4.tmx");
+	levelEntity3->CreateComponent<LevelComponent>("AutoMappingTestLevel4.tmx", glm::ivec2(512, 512));
+	levelEntity3->CreateComponent<TransformComponent>(levelEntity3, glm::vec3(2384, 528, 0));
 
 	LoadLevel(world, levelEntity0);
 }
@@ -77,6 +81,7 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 		{
 			// create tilemap component
 			Entity* tilemapEntity = world->CreateEntity(layer.attribute("name").as_string());
+			tilemapEntity->SetParent(levelEntity);
 			unsigned int width = layer.attribute("width").as_uint();
 			unsigned int height = layer.attribute("height").as_uint();
 
@@ -131,7 +136,8 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 							maskLayer = Engine::GetInstance()->GetCollisionLayer(colliderProperty.attribute("value").as_string());
 						}
 					}
-					tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(world->GetPhysicsWorld(), *tilemap, tilemapEntity, isSensor, categoryLayer, maskLayer);
+					auto* tilemapCollision = tilemapEntity->CreateComponent<TileMapCollisionBodyComponent>(world->GetPhysicsWorld(), *tilemap, tilemapEntity, isSensor, categoryLayer, maskLayer);
+					tilemapCollision->SetPosition(transform->GetWorldPosition());
 				}
 				else if (splitPropertyName[0] == "Tag")
 				{
@@ -180,13 +186,14 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 		else if (name == "objectgroup")
 		{
 			// create tilemap component
-			auto* tilemapEntity = world->CreateEntity(layer.attribute("name").as_string());
-			tilemapEntity->CreateComponent<TransformComponent>(tilemapEntity, glm::vec3{ layer.attribute("offsetx").as_float(), layer.attribute("offsety").as_float(), 0.f }, glm::vec3(), glm::vec3{ 1.f,1.f,1.f });
+			Entity* objectGroupEntity = world->CreateEntity(layer.attribute("name").as_string());
+			objectGroupEntity->SetParent(levelEntity);
+			objectGroupEntity->CreateComponent<TransformComponent>(objectGroupEntity, glm::vec3{ layer.attribute("offsetx").as_float(), layer.attribute("offsety").as_float(), 0.f }, glm::vec3(), glm::vec3{ 1.f,1.f,1.f });
 
 			for (auto& object : layer.children("object"))
 			{
-				auto* gameObjectEntity = CreateObject(world, object, fileDir, tileSheet);
-				gameObjectEntity->SetParent(tilemapEntity);
+				Entity* gameObjectEntity = CreateObject(world, object, fileDir, tileSheet);
+				gameObjectEntity->SetParent(objectGroupEntity);
 
 				auto* transform = gameObjectEntity->GetComponent<TransformComponent>();
 				auto* physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
@@ -204,6 +211,7 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 	}
 
 	Entity* layoutEntity = LoadUILayout(world, fileDir, "UI/Layouts/TestLayout.xml");
+	layoutEntity->SetParent(levelEntity);
 	layoutEntity->CreateComponent<ScriptComponent>(fileDir + "Scripts/UI/UIScript.lua", Engine::GetInstance()->GetSolState(), layoutEntity);
 }
 

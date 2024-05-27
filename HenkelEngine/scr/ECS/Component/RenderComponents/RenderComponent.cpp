@@ -1,6 +1,5 @@
 #include "RenderComponent.h"
 #include "Camera.h"
-#include "Scene.h"
 #include "Window.h"
 
 RenderComponent::RenderComponent(unsigned int quads) : m_batchRenderer(quads)

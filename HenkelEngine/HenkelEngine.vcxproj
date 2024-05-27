@@ -101,6 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="scr\ECS\System\LevelSystem.cpp" />
     <ClCompile Include="scr\FileParser.cpp" />
     <ClCompile Include="scr\ECS\Component\LevelComponent.cpp" />
     <ClCompile Include="scr\Messenger.cpp" />
@@ -165,6 +166,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="scr\ECS\System\LevelSystem.h" />
     <ClInclude Include="scr\FileParser.h" />
     <ClInclude Include="scr\ECS\Component\LevelComponent.h" />
     <ClInclude Include="scr\Messenger.h" />

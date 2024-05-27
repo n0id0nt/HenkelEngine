@@ -5,11 +5,10 @@
 
 struct LevelComponent
 {
-	LevelComponent(const std::string& fileName, glm::ivec2 offset, glm::ivec2 size);
+	LevelComponent(const std::string& fileName, glm::ivec2 size);
 
 	std::string fileName;
 
-	glm::ivec2 offset;
 	glm::ivec2 size;
 };
 
