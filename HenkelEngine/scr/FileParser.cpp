@@ -38,7 +38,10 @@ void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::
 	levelEntity2->CreateComponent<TransformComponent>(levelEntity2, glm::vec3(2048, 64, 0));
 	Entity* levelEntity3 = world->CreateEntity("AutoMappingTestLevel4.tmx");
 	levelEntity3->CreateComponent<LevelComponent>("AutoMappingTestLevel4.tmx", glm::ivec2(512, 512));
-	levelEntity3->CreateComponent<TransformComponent>(levelEntity3, glm::vec3(2384, 528, 0));
+	levelEntity3->CreateComponent<TransformComponent>(levelEntity3, glm::vec3(2560, 16, 0));
+	Entity* levelEntity4 = world->CreateEntity("AutoMappingTestLevel5.tmx");
+	levelEntity4->CreateComponent<LevelComponent>("AutoMappingTestLevel5.tmx", glm::ivec2(512, 512));
+	levelEntity4->CreateComponent<TransformComponent>(levelEntity4, glm::vec3(2384, 528, 0));
 
 	LoadLevel(world, levelEntity0);
 }
@@ -47,6 +50,8 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 {
 	LevelComponent* level = levelEntity->GetComponent<LevelComponent>();
 	ASSERT(level);
+	ASSERT(!level->loaded);
+	level->loaded = true;
 
 	std::string fileDir = Engine::GetInstance()->GetProjectDirectory();
 	pugi::xml_document doc;

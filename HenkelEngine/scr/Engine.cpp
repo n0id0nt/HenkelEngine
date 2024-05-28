@@ -18,6 +18,7 @@
 #include <ECS\Component\SpriteAnimationComponent.h>
 #include <ECS\Component\CameraComponent.h>
 #include <ECS\Component\UIComponent.h>
+#include <ECS\Component\LevelComponent.h>
 #include "UI\UIArea.h"
 #include "UI\UIText.h"
 
@@ -56,6 +57,7 @@ void Engine::InitialiseLua()
 	CameraComponent::LUABind(m_lua);
 	UIComponent::LUABind(m_lua);
 	RenderComponent::LUABind(m_lua);
+	LevelComponent::LUABind(m_lua);
 
 	UIArea::LUABind(m_lua);
 	UIText::LUABind(m_lua);

@@ -10,7 +10,7 @@
 #ifdef _DEBUG
 #define ASSERT(x) if (!(x)) __debugbreak();
 #else
-#define ASSERT(x)
+#define ASSERT(x) x;
 #endif // _DEBUG
 
 #define GLCall(x) GLClearError();\

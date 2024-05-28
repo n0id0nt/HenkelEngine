@@ -1,6 +1,5 @@
 #include "BatchRenderer.h"
 #include "Camera.h"
-#include "Scene.h"
 #include "Window.h"
 #include "Engine.h"
 

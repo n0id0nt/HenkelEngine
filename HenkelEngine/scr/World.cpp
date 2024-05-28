@@ -69,10 +69,23 @@ void World::DeleteEntity(Entity* entity)
 		// remove entity from the list and also need to remove all the components from the registry and ensure all resources the components used are released and remove collider from physics scene
 }
 
+Entity* World::GetEntityFromEntityID(EntityId entityId)
+{
+	for (auto& entity : m_entities)
+	{
+		if (entity->GetEntityId() == entityId)
+		{
+			return entity.get();
+		}
+	}
+	return nullptr;
+}
+
 void World::LUABind(sol::state& lua)
 {
 	lua.new_usertype<World>("World"
-		//,"setCurrentLevel", &World::SetCurrentLevel
+		, "loadLevel", [](World* world, Entity* levelEntity) { LevelSystem::LoadLevel(world, levelEntity); }
+		, "findLevelWithPosition", [](World* world, const glm::vec2& position) { return LevelSystem::FindLevelWithPosition(world, &world->m_registry, position); }
 	);
 	lua.set("World", this);
 }

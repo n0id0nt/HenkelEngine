@@ -66,7 +66,7 @@ void Font::RenderFont(BatchRenderer* batchRenderer, const std::string& text, flo
                 curX += (width - wrappedLinesWidths[i]);
                 break;
             default:
-                ASSERT(false)
+                ASSERT(false);
             }
             std::stringstream curWrappedLineStream(wrappedLines[i]);
             for (std::string curWord; std::getline(curWrappedLineStream, curWord, ' ');)
@@ -147,10 +147,10 @@ glm::vec2 Font::GetStringDimentions(const std::string& text)
 
 void Font::CreateFont(const std::string& font, int size, unsigned int& renderID, int& width, int& height)
 {
-    FT_Library ft;
+    FT_Library ft{};
     ASSERT(!FT_Init_FreeType(&ft));
 
-    FT_Face face;
+    FT_Face face{};
     ASSERT(!FT_New_Face(ft, font.c_str(), 0, &face));
 
     FT_Set_Pixel_Sizes(face, 0, size);

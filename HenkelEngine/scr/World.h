@@ -4,14 +4,9 @@
 #include <string>
 #include "Camera.h"
 #include "LUABindable.h"
-#include <ECS\Registry.h>
-#include "ECS\System\AnimationSystem.h"
-#include "ECS\System\PhysicsSystem.h"
-#include "ECS\System\RenderSystem.h"
-#include "ECS\System\ScriptSystem.h"
-#include "ECS\System\UISystem.h"
-#include <ECS\System\CameraSystem.h>
+#include "ECS\Registry.h"
 #include "sol\sol.hpp"
+#include "Physics\PhysicsWorld.h"
 
 class World : public LUABindable
 {
@@ -28,6 +23,7 @@ public:
 	Entity* CreateTemplatedObject(const std::string& levelFile);
 	Entity* CreateEntity(const std::string& name);
 	void DeleteEntity(Entity* entity);
+	Entity* GetEntityFromEntityID(EntityId entityId);
 
 	template <typename ComponentType>
 	std::vector<Entity*> GetEntitiesWithComponent()

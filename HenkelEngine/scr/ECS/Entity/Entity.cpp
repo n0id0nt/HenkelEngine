@@ -8,6 +8,7 @@
 #include <ECS\Component\SpriteAnimationComponent.h>
 #include <ECS\Component\CameraComponent.h>
 #include <ECS\Component\UIComponent.h>
+#include <ECS\Component\LevelComponent.h>
 
 Entity::Entity(const std::string& name, Registry* registry)
 	: m_name(name), m_registry(registry), m_parent(nullptr), m_children(), m_tags(), m_isIndependentFromLevel(false)
@@ -109,6 +110,7 @@ void Entity::LUABind(sol::state& lua)
 		"getUILayout", &Entity::GetComponent<UIComponent>,
 		"getCamera", &Entity::GetComponent<CameraComponent>,
 		"getRenderer", &Entity::GetComponent<RenderComponent>,
+		"getLevel", &Entity::GetComponent<LevelComponent>,
 		"addTag", &Entity::AddTag,
 		"removeTag", &Entity::RemoveTag,
 		"hasTag", &Entity::HasTag

@@ -4,6 +4,8 @@
 #include "ECS\Entity\Entity.h"
 #include "pugixml.hpp"
 #include "Resourse\TileSheet.h"
+#include <memory>
+#include "UI\UIArea.h"
 
 namespace FileParser
 {

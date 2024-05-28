@@ -110,6 +110,21 @@ Script.update = function()
         --local transform = potion:getTransform()
         --transform:setWorldPosition(GO:getTransform():getWorldPosition())
     end
+
+    -- test for loading in and out levels
+    -- get the level the player is in
+    local position = GO:getTransform():getWorldPosition()
+    local levelGO = World:findLevelWithPosition(position)
+    if levelGO  then
+        local level = levelGO:getLevel()
+        -- check if the level is currently loaded
+        if not level.loaded then
+            print("Load level: " .. level.fileName)
+            -- load in the new level
+            World:loadLevel(levelGO)
+            -- unload other level (after delay???)
+        end
+    end
 end
 
 Script.onCollisionEnter = function(contact)

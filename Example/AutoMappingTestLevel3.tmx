@@ -39,7 +39,7 @@
    <property name="Script" type="file" value="Scripts/OneWayPlatform.lua"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwUgDAAgAAAE=
+   eJxjYBgFo2AUDBXAj4RHAX0BPxY8CkbBUAYAmy8AeQ==
   </data>
  </layer>
  <layer id="2" name="ground" width="32" height="16">
