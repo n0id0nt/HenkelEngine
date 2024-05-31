@@ -9,6 +9,14 @@ void LevelSystem::LoadLevel(World* world, Entity* levelEntity)
 	FileParser::LoadLevel(world, levelEntity);
 }
 
+void LevelSystem::UnloadLevel(World* world, Entity* levelEntity)
+{
+	for (auto& childEntity : levelEntity->GetChildren())
+	{
+		world->DeleteEntity(childEntity);
+	}
+}
+
 Entity* LevelSystem::FindLevelWithPosition(World* world, Registry* registry, const glm::vec2& position)
 {
 	auto view = registry->GetEntitiesWithComponents<LevelComponent, TransformComponent>();

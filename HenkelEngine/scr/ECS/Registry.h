@@ -62,7 +62,7 @@ public:
             std::free(entityComponents->second);
             entityComponents->second.erase(entityId);
         }
-    }
+    } 
 
     // Check if an entity has a specific component
     template <typename ComponentType>

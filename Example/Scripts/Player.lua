@@ -115,14 +115,23 @@ Script.update = function()
     -- get the level the player is in
     local position = GO:getTransform():getWorldPosition()
     local levelGO = World:findLevelWithPosition(position)
-    if levelGO  then
+    if levelGO then
         local level = levelGO:getLevel()
         -- check if the level is currently loaded
         if not level.loaded then
             print("Load level: " .. level.fileName)
             -- load in the new level
-            World:loadLevel(levelGO)
+            local levelToLoad = levelGO
             -- unload other level (after delay???)
+            local levels = World:getLevelEntities()
+            for _,levelGO in ipairs(levels) do
+                local level = levelGO:getLevel()
+                if level and level.loaded then
+                    print("Unload level: " .. level.fileName)
+                    World:unloadLevel(levelGO)
+                end
+            end
+            World:loadLevel(levelToLoad)
         end
     end
 end
