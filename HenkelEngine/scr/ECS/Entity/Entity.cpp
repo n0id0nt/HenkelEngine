@@ -11,7 +11,7 @@
 #include <ECS\Component\LevelComponent.h>
 
 Entity::Entity(const std::string& name, Registry* registry)
-	: m_name(name), m_registry(registry), m_parent(nullptr), m_children(), m_tags(), m_isIndependentFromLevel(false)
+	: m_name(name), m_registry(registry), m_parent(nullptr), m_children(), m_tags(), m_isIndependentFromLevel(false), m_scheduledForDeletion(false)
 {
 	m_entity = m_registry->CreateEntity();
 }
@@ -31,7 +31,7 @@ void Entity::SetChild(Entity* entity)
 	if (entity->m_parent == this)
 		return;
 
-	entity->RemoveParent(entity->m_parent);
+	entity->RemoveParent();
 
 	m_children.push_back(entity);
 	entity->m_parent = this;
@@ -49,22 +49,31 @@ void Entity::SetParent(Entity* entity)
 	m_parent->m_children.push_back(this);
 }
 
+void Entity::Delete()
+{
+	m_scheduledForDeletion = true;
+}
+
+bool Entity::IsMarkedForDeletion()
+{
+	return m_scheduledForDeletion;
+}
+
 void Entity::RemoveChild(Entity* entity)
 {
 	if (entity->m_parent != this)
 		return;
-
 	entity->m_parent = nullptr;
 	m_children.erase(std::remove(m_children.begin(), m_children.end(), entity), m_children.end());
 }
 
-void Entity::RemoveParent(Entity* entity)
+void Entity::RemoveParent()
 {
-	if (m_parent != entity)
+	if (!m_parent)
 		return;
-
+	auto parentsChildren = m_parent->m_children;
+	parentsChildren.erase(std::remove(parentsChildren.begin(), parentsChildren.end(), this), parentsChildren.end());
 	m_parent = nullptr;
-	entity->m_children.erase(std::remove(m_children.begin(), m_children.end(), entity), m_children.end());
 }
 
 void Entity::AddTag(std::string tag)

@@ -11,16 +11,17 @@ void LevelSystem::LoadLevel(World* world, Entity* levelEntity)
 
 void LevelSystem::UnloadLevel(World* world, Entity* levelEntity)
 {
-	for (auto& childEntity : levelEntity->GetChildren())
+	for (auto childEntity : levelEntity->GetChildren())
 	{
-		world->DeleteEntity(childEntity);
+		childEntity->Delete();
+		//world->DeleteEntity(childEntity);
 	}
 }
 
 Entity* LevelSystem::FindLevelWithPosition(World* world, Registry* registry, const glm::vec2& position)
 {
 	auto view = registry->GetEntitiesWithComponents<LevelComponent, TransformComponent>();
-	for (auto& entity : view)
+	for (auto entity : view)
 	{
 		auto* transform = registry->GetComponent<TransformComponent>(entity);
 		auto* level = registry->GetComponent<LevelComponent>(entity);
@@ -41,7 +42,7 @@ Entity* LevelSystem::FindLevelWithPosition(World* world, Registry* registry, con
 void LevelSystem::Update(Registry* registry)
 {
 	auto view = registry->GetEntitiesWithComponents<LevelComponent, TransformComponent>();
-	for (auto& entity : view)
+	for (auto entity : view)
 	{
 		auto* transform = registry->GetComponent<TransformComponent>(entity);
 		auto* level = registry->GetComponent<LevelComponent>(entity);

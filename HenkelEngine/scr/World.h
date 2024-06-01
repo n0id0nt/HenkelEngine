@@ -71,6 +71,8 @@ public:
 
 private:
 
+	void DeleteEntitiesSchedeledForDeletion();
+
 	std::unique_ptr<Camera> m_camera;
 	std::vector<std::unique_ptr<Entity>> m_entities;
 

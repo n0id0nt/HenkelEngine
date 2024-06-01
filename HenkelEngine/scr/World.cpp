@@ -33,6 +33,7 @@ void World::Update()
 	AnimationSystem::Update(&m_registry);
 	CameraSystem::Update(&m_registry, m_camera.get());
 	UISystem::Update(&m_registry);
+	DeleteEntitiesSchedeledForDeletion();
 #ifdef _DEBUG
 	LevelSystem::Update(&m_registry);
 	GUIPanel::EntityHierarchy::Panel(m_entities);
@@ -86,6 +87,24 @@ Entity* World::GetEntityFromEntityID(EntityId entityId)
 		}
 	}
 	return nullptr;
+}
+
+void World::DeleteEntitiesSchedeledForDeletion()
+{
+	std::vector<Entity*> entitiesToDelete;
+	for (auto& entity : m_entities)
+	{
+		if (entity->IsMarkedForDeletion())
+		{
+			entity->RemoveParent();
+			entitiesToDelete.push_back(entity.get());
+		}
+	}
+
+	for (auto entity : entitiesToDelete)
+	{
+		DeleteEntity(entity);
+	}
 }
 
 template<typename ComponentType>

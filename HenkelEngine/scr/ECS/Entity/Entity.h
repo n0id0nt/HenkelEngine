@@ -20,8 +20,12 @@ public:
 	void SetChild(Entity* entity);
 	void SetParent(Entity* entity);
 
+	// schedules the deletion of the entity at the end of the current frame
+	void Delete();
+	bool IsMarkedForDeletion();
+
 	void RemoveChild(Entity* entity);
-	void RemoveParent(Entity* entity);
+	void RemoveParent();
 
 	void AddTag(std::string tag);
 	void RemoveTag(std::string tag);
@@ -63,5 +67,6 @@ private:
 	std::string m_name;
 
 	bool m_isIndependentFromLevel;
+	bool m_scheduledForDeletion;
 };
 
