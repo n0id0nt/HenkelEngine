@@ -1,5 +1,5 @@
 #pragma once
-#include <ECS\Registry.h>
+#include <ECS\Registry\Registry.h>
 #include "Camera.h"
 
 namespace CameraSystem

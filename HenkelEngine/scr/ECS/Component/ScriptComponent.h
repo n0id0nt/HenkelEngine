@@ -3,7 +3,7 @@
 #include <string>
 #include "sol/sol.hpp"
 #include <iostream>
-#include "ECS/Registry.h"
+#include "ECS\Registry\Registry.h"
 #include "ECS\Entity\Entity.h"
 #include "ECS\Component\TransformComponent.h"
 #include "ECS\Component\PhysicsBodyComponents\PhysicsBodyComponent.h"

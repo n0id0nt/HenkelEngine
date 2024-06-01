@@ -8,7 +8,7 @@
 #include <array>
 #include "../RenderComponents/TileMapComponent.h"
 #include "Physics\PhysicsWorld.h"
-#include <ECS\Registry.h>
+#include <ECS\Registry\Registry.h>
 #include <ECS\Entity\Entity.h>
 #include "CollisionBodyComponent.h"
 

@@ -8,11 +8,12 @@ Registry::~Registry()
 {
 	for (auto& entityComponents : m_components)
 	{
-		for (auto& component : entityComponents.second)
+		for (auto entity : m_entities)
 		{
-			std::free(component.second);
+			entityComponents.second->EntityDestroyed(entity);
 		}
-		entityComponents.second.clear();
+
+		delete entityComponents.second;
 	}
 	m_components.clear();
 	m_entities.clear();
@@ -32,12 +33,6 @@ void Registry::DeleteEntity(EntityId entityId)
 
 	for (auto& entityComponents : m_components)
 	{
-		auto component = entityComponents.second.find(entityId);
-
-		if (component != entityComponents.second.end())
-		{
-			std::free(component->second);
-			entityComponents.second.erase(entityId);
-		}
+		entityComponents.second->EntityDestroyed(entityId);
 	}
 }

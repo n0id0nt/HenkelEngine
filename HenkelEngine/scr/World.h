@@ -4,7 +4,7 @@
 #include <string>
 #include "Camera.h"
 #include "LUABindable.h"
-#include "ECS\Registry.h"
+#include "ECS\Registry\Registry.h"
 #include "sol\sol.hpp"
 #include "Physics\PhysicsWorld.h"
 

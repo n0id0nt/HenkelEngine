@@ -8,8 +8,8 @@ ResourcePool::ResourcePool() : m_shaders(), m_textures()
 
 ResourcePool::~ResourcePool()
 {
-	m_shaders.clear();
 	m_textures.clear();
+	m_shaders.clear();
 }
 
 void ResourcePool::CreateShader(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath)

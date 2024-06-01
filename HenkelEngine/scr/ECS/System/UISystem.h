@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ECS/Registry.h"
+#include "ECS\Registry\Registry.h"
 #include "UI/UIArea.h"
 
 namespace UISystem

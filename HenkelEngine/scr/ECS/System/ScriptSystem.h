@@ -4,7 +4,7 @@
 #include "LUABindable.h"
 #include <string>
 #include "ECS\Entity\Entity.h"
-#include "ECS/Registry.h"
+#include "ECS\Registry\Registry.h"
 
 namespace ScriptSystem
 {

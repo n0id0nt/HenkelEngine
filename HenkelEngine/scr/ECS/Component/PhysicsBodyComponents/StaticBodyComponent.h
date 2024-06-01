@@ -1,7 +1,7 @@
 #pragma once
 #include "box2d\box2d.h"
 #include "Physics\PhysicsWorld.h"
-#include <ECS\Registry.h>
+#include <ECS\Registry\Registry.h>
 #include <ECS\Entity\Entity.h>
 #include <sol\sol.hpp>
 #include "CollisionBodyComponent.h"

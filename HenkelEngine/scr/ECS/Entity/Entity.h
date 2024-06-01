@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 #include "sol\sol.hpp"
-#include "ECS\Registry.h"
+#include "ECS\Registry\Registry.h"
 #include <set>
 
 class Entity

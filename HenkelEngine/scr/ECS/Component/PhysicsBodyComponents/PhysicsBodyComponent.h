@@ -6,7 +6,7 @@
 #include <vector>
 #include "Physics\PhysicsWorld.h"
 #include <sol\sol.hpp>
-#include <ECS\Registry.h>
+#include <ECS\Registry\Registry.h>
 #include <ECS\Entity\Entity.h>
 #include "CollisionBodyComponent.h"
 #include <set>
