@@ -20,14 +20,14 @@
         },
         "AutoMappingTestLevel.tmx": {
             "expandedObjectLayers": [
-                8,
-                10
+                10,
+                8
             ],
             "scale": 2,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 780,
-                "y": 331.25
+                "x": 256,
+                "y": 127.25
             }
         },
         "AutoMappingTestLevel2.tmx": {
@@ -66,16 +66,16 @@
             "scale": 2,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 344.75,
-                "y": 169.75
+                "x": 800,
+                "y": 159.75
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0001_Level_0.tmx": {
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": -37.5,
-                "y": 254.5
+                "x": 379.5,
+                "y": 306
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0001_Level_0.tmx#CaveTiles": {
@@ -94,8 +94,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 382.5,
-                "y": 219.5
+                "x": 825.5,
+                "y": 354
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0002_Level_1.tmx#CaveTiles": {
@@ -154,8 +154,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": -173.5,
-                "y": 784.5
+                "x": 224,
+                "y": 144.5
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0005_Level_4.tmx#CaveTiles": {
@@ -203,8 +203,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 176.75,
-                "y": 337.25
+                "x": 246,
+                "y": 264.25
             }
         },
         "TestTiles.tsj": {

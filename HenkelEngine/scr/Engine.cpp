@@ -143,9 +143,9 @@ void Engine::ExitEngine()
 	DebugRenderer::ExitDebugRenderer();
 	m_input.reset();
 	m_world.reset();
+	m_resourcePool.reset();
 	m_window.reset();
 	m_time.reset();
-	m_resourcePool.reset();
 
 #ifdef _DEBUG
 	ImGui_ImplOpenGL3_Shutdown();
