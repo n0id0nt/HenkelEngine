@@ -17,11 +17,13 @@
 #include "UI/UIQuad.h"
 #include "UI/UITexture.h"
 #include "UI/UIText.h"
+#include <queue>
 
 const std::string s_testMap1 = "TestLevel.tmx";
 const std::string s_testMap2 = "AutoMappingTestLevel.tmx";
 
 static int activeCameraId = 0;
+static std::queue<Entity*> entitiesSeperateFromLevel;
 
 void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::string& worldFile)
 {
@@ -218,6 +220,13 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 	Entity* layoutEntity = LoadUILayout(world, fileDir, "UI/Layouts/TestLayout.xml");
 	layoutEntity->SetParent(levelEntity);
 	layoutEntity->CreateComponent<ScriptComponent>(fileDir + "Scripts/UI/UIScript.lua", Engine::GetInstance()->GetSolState(), layoutEntity);
+
+	while (entitiesSeperateFromLevel.size() > 0)
+	{
+		Entity* entity = entitiesSeperateFromLevel.front();
+		entitiesSeperateFromLevel.pop();
+		entity->RemoveParent();
+	}
 }
 
 Entity* FileParser::LoadTemplate(World* world, const std::string& fileDir, const std::string& levelFile)
@@ -415,6 +424,12 @@ Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, con
 					sprite->yOffset = spriteProperty.attribute("value").as_float();
 				}
 			}
+		}
+		else if (splitPropertyName[0] == "InitualiseInScene")
+		{
+			// TODO find object in scene that matches this name if none create a new parent object of this name
+			//gameObjectEntity->RemoveParent();
+			entitiesSeperateFromLevel.push(gameObjectEntity);
 		}
 		else if (splitPropertyName[0] == "Camera")
 		{

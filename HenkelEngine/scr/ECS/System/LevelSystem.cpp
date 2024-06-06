@@ -11,6 +11,8 @@ void LevelSystem::LoadLevel(World* world, Entity* levelEntity)
 
 void LevelSystem::UnloadLevel(World* world, Entity* levelEntity)
 {
+	auto* levelComponent = levelEntity->GetComponent<LevelComponent>();
+	levelComponent->loaded = false;
 	for (auto childEntity : levelEntity->GetChildren())
 	{
 		childEntity->Delete();

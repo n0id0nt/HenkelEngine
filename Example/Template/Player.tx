@@ -142,6 +142,7 @@
     </properties>
    </property>
    <property name="DefaultAnimation" value="Idle"/>
+   <property name="InitualiseInScene" value="GamePlay"/>
    <property name="Script" type="file" value="../Scripts/Player.lua"/>
    <property name="Script#maxSpeed" type="float" value="100"/>
    <property name="Sprite" type="class" propertytype="Sprite">

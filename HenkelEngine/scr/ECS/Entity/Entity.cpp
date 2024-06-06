@@ -71,7 +71,7 @@ void Entity::RemoveParent()
 {
 	if (!m_parent)
 		return;
-	auto parentsChildren = m_parent->m_children;
+	auto& parentsChildren = m_parent->m_children;
 	parentsChildren.erase(std::remove(parentsChildren.begin(), parentsChildren.end(), this), parentsChildren.end());
 	m_parent = nullptr;
 }
