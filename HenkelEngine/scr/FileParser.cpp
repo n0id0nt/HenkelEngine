@@ -4,19 +4,21 @@
 #include "base64.h"
 #include "HelperFunctions.h"
 #include "zlib.h"
-#include "ECS\Component\RenderComponents\RenderComponent.h"
+#include "ECS/Component/RenderComponents\RenderComponent.h"
 #include "ECS/Component/LevelComponent.h"
-#include "ECS\Component\ScriptComponent.h"
-#include "ECS\Component\RenderComponents\TileMapComponent.h"
-#include "ECS\Component\PhysicsBodyComponents\TileMapCollisionBodyComponent.h"
-#include "ECS\Component\RenderComponents\SpriteComponent.h"
-#include "ECS\Component\PhysicsBodyComponents\StaticBodyComponent.h"
-#include "ECS\Component\SpriteAnimationComponent.h"
-#include "ECS\Component\UIComponent.h"
+#include "ECS/Component/ScriptComponent.h"
+#include "ECS/Component/RenderComponents/TileMapComponent.h"
+#include "ECS/Component/PhysicsBodyComponents/TileMapCollisionBodyComponent.h"
+#include "ECS/Component/RenderComponents/SpriteComponent.h"
+#include "ECS/Component/PhysicsBodyComponents/StaticBodyComponent.h"
+#include "ECS/Component/SpriteAnimationComponent.h"
+#include "ECS/Component/UIComponent.h"
 #include "UI/UIArea.h"
 #include "UI/UIQuad.h"
 #include "UI/UITexture.h"
 #include "UI/UIText.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
 #include <queue>
 #include <tuple>
 
@@ -28,25 +30,29 @@ static std::queue<std::tuple<std::string, Entity*>> entitiesSeperateFromLevel;
 
 void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::string& worldFile)
 {
-	// TODO this is a place holder and will adventually load from file
-	world->GetPhysicsWorld()->SetPixelsPerMeter(16.0f);
-	Entity* levelEntity0 = world->CreateEntity("AutoMappingTestLevel1.tmx");
-	levelEntity0->CreateComponent<LevelComponent>("AutoMappingTestLevel.tmx", glm::ivec2(512, 256));
-	levelEntity0->CreateComponent<TransformComponent>(levelEntity0, glm::vec3(1024, 16, 0));
-	Entity* levelEntity1 = world->CreateEntity("AutoMappingTestLevel2.tmx");
-	levelEntity1->CreateComponent<LevelComponent>("AutoMappingTestLevel2.tmx", glm::ivec2(512, 512));
-	levelEntity1->CreateComponent<TransformComponent>(levelEntity1, glm::vec3(1536, -32, 0));
-	Entity* levelEntity2 = world->CreateEntity("AutoMappingTestLevel3.tmx");
-	levelEntity2->CreateComponent<LevelComponent>("AutoMappingTestLevel3.tmx", glm::ivec2(512, 256));
-	levelEntity2->CreateComponent<TransformComponent>(levelEntity2, glm::vec3(2048, 64, 0));
-	Entity* levelEntity3 = world->CreateEntity("AutoMappingTestLevel4.tmx");
-	levelEntity3->CreateComponent<LevelComponent>("AutoMappingTestLevel4.tmx", glm::ivec2(512, 512));
-	levelEntity3->CreateComponent<TransformComponent>(levelEntity3, glm::vec3(2560, 16, 0));
-	Entity* levelEntity4 = world->CreateEntity("AutoMappingTestLevel5.tmx");
-	levelEntity4->CreateComponent<LevelComponent>("AutoMappingTestLevel5.tmx", glm::ivec2(512, 512));
-	levelEntity4->CreateComponent<TransformComponent>(levelEntity4, glm::vec3(2384, 528, 0));
+	std::ifstream f(fileDir + worldFile);
+	nlohmann::json data = nlohmann::json::parse(f);
 
-	LoadLevel(world, levelEntity0);
+	world->GetPhysicsWorld()->SetPixelsPerMeter(16.0f);
+
+	bool loadedLevel = false;
+	for (auto& map : data["maps"])
+	{
+		std::string filename = map["fileName"];
+		int height = map["height"];
+		int width = map["width"];
+		int x = map["x"];
+		int y = map["y"];
+
+		Entity* levelEntity = world->CreateEntity(filename);
+		levelEntity->CreateComponent<LevelComponent>(filename, glm::ivec2(width, height));
+		levelEntity->CreateComponent<TransformComponent>(levelEntity, glm::vec3(x, y, 0));
+		if (!loadedLevel)
+		{
+			LoadLevel(world, levelEntity);
+			loadedLevel = true;
+		}
+	}
 }
 
 void FileParser::LoadLevel(World* world, Entity* levelEntity)
