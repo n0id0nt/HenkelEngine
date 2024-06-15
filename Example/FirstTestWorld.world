@@ -34,6 +34,13 @@
             "width": 512,
             "x": 2384,
             "y": 528
+        },
+        {
+            "fileName": "AutoMappingTestLevel6.tmx",
+            "height": 512,
+            "width": 512,
+            "x": 3072,
+            "y": -192
         }
     ],
     "onlyShowAdjacentMaps": false,
