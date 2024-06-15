@@ -27,7 +27,7 @@ static std::queue<Entity*> entitiesSeperateFromLevel;
 
 void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::string& worldFile)
 {
-	// this is a place holder and will adventually load from file
+	// TODO this is a place holder and will adventually load from file
 	world->GetPhysicsWorld()->SetPixelsPerMeter(16.0f);
 	Entity* levelEntity0 = world->CreateEntity("AutoMappingTestLevel1.tmx");
 	levelEntity0->CreateComponent<LevelComponent>("AutoMappingTestLevel.tmx", glm::ivec2(512, 256));

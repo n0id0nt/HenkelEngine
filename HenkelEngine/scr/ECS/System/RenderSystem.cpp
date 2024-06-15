@@ -61,6 +61,10 @@ void RenderSystem::Update(Registry* registry)
 			renderComponent->SetQuadUVs(spriteComponent->tileSheet.GetSpriteRectAtIndex(spriteComponent->index), spriteComponent->flipped);
 			model = glm::translate(glm::mat4(1.0f), glm::vec3{spriteComponent->xOffset * (spriteComponent->flipped ? -1.0f : 1.0f), spriteComponent->yOffset, 0.0f}) * model;
 		}
+		if (tilemapComponent)
+		{
+			model = glm::translate(glm::mat4(1.0f), glm::vec3{ tilemapComponent->GetTileWidth()/2, tilemapComponent->GetTileHeight()/2, 0.0f}) * model;
+		}
 
 		materialComponent->Bind(model, view, projection);
 		renderComponent->BindTextures();

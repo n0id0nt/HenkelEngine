@@ -62,23 +62,23 @@ std::array<b2Vec2, 2> TileMapCollisionBodyComponent::GetSideLine(Dir inputDir, g
 	{
 	case Dir::Right:
 		return std::array<b2Vec2, 2>{
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
 		};
 	case Dir::Up:
 		return std::array<b2Vec2, 2>{
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
 		};
 	case Dir::Left:
 		return std::array<b2Vec2, 2>{
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
 		};
 	case Dir::Down:
 		return std::array<b2Vec2, 2>{
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
-			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() - tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth() / 2.f) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
+			b2Vec2{ (inputTile.x * tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter(), (inputTile.y * tilemap.GetTileWidth() + tilemap.GetTileWidth()) / m_world->GetPixelsPerMeter() },
 		};
 	}
 	return std::array<b2Vec2, 2>{};
