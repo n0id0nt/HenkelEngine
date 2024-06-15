@@ -177,6 +177,7 @@ void ScriptComponent::SetScriptProperty(const std::string& name, sol::object obj
 
 	// Check if the component was found
 	ASSERT(it != m_properties.end());
+	if (it == m_properties.end()) return;
 	it->name = name;
 	it->value = object;
 }

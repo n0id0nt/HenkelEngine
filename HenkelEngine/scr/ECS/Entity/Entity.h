@@ -65,6 +65,7 @@ private:
 	std::set<std::string> m_tags;
 
 	std::string m_name;
+	int m_uniqueHash = 0;
 
 	bool m_isIndependentFromLevel;
 	bool m_scheduledForDeletion;

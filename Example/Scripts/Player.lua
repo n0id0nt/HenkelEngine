@@ -7,6 +7,7 @@ local Wall_Slide_State = require("WallSlideState")
 local Wall_Jump_State = require("WallJumpState")
 local Climb_State = require("ClimbState")
 
+Movement.registerProperties(Script)
 local movement = Movement:new()
 
 -- params are a set of shared variable across all states

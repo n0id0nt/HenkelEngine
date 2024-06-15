@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="13" nextobjectid="5">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4f9691" nextlayerid="13" nextobjectid="7">
  <properties>
-  <property name="ActiveCamera" type="object" value="1"/>
+  <property name="ActiveCamera" type="object" value="3"/>
   <property name="Pixels Per Meter" type="float" value="16"/>
  </properties>
  <tileset firstgid="1" source="cavesofgallet_tiles.tsx"/>
@@ -16,9 +16,19 @@
   </data>
  </layer>
  <objectgroup id="10" name="Cameras">
-  <object id="3" name="Camera" x="36" y="37.3333">
+  <object id="3" name="Camera" x="232" y="152">
    <properties>
-    <property name="Camera" type="class" propertytype="Camera"/>
+    <property name="Camera" type="class" propertytype="Camera">
+     <properties>
+      <property name="Damping" type="class" propertytype="Vec2">
+       <properties>
+        <property name="X" type="float" value="3"/>
+        <property name="Y" type="float" value="3"/>
+       </properties>
+      </property>
+      <property name="Zoom" type="float" value="2"/>
+     </properties>
+    </property>
    </properties>
    <point/>
   </object>

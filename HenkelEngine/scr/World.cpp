@@ -89,6 +89,18 @@ Entity* World::GetEntityFromEntityID(EntityId entityId)
 	return nullptr;
 }
 
+Entity* World::FindEntityFromName(std::string name)
+{
+	for (auto& entity : m_entities)
+	{
+		if (entity->GetName() == name)
+		{
+			return entity.get();
+		}
+	}
+	return nullptr;
+}
+
 void World::DeleteEntitiesSchedeledForDeletion()
 {
 	std::vector<Entity*> entitiesToDelete;

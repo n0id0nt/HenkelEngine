@@ -67,6 +67,8 @@ public:
 		return m_registry.GetAllComponents<ComponentType>();
 	}
 
+	Entity* FindEntityFromName(std::string name);
+
 	void LUABind(sol::state& lua);
 
 private:

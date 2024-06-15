@@ -2,6 +2,32 @@ local Helper_Functions = require("HelperFunctions")
 
 local Movement = {}
 
+function Movement.registerProperties(script)
+    -- move
+    script:property("accelerationTime", 0.3)
+    script:property("deccelerationTime", 0.2)
+    script:property("maxSpeed", 80)
+    -- climb
+    script:property("climbSpeed", 40)
+    -- wall slide
+    script:property("wallSideMaxFallSpeed", 10)
+    -- jump
+    script:property("jumpDist", 16 * 3)
+    script:property("jumpHeight", 16 * 6)
+    script:property("jumpArcHeight", 16)
+    script:property("jumpArcDist", 16)
+    script:property("jumpFallDist", 16 * 2)
+    script:property("maxFallSpeed", 300)
+    script:property("bufferTime", 100)
+    script:property("coyoteTime", 100)
+    -- collision
+    script:property("groundCheckArea", 1)
+    script:property("groundLayer", 1)
+    script:property("groundAngle", 25)
+    -- dash
+    script:property("dashSpeed", 500)
+end
+
 function Movement:new()
     local obj = {}
     setmetatable(obj, self)
@@ -65,10 +91,6 @@ end
 --------------------------------------------------------------
 --MOVE
 --------------------------------------------------------------
-Script:property("accelerationTime", 0.3)
-Script:property("deccelerationTime", 0.2)
-Script:property("maxSpeed", 80)
-
 function Movement:moveMaxSpeed()
     self.horizontalSpeed = self.horizontalInput * maxSpeed
 end
@@ -92,8 +114,6 @@ end
 --------------------------------------------------------------
 --CLIMB
 --------------------------------------------------------------
-Script:property("climbSpeed", 40)
-
 function Movement:climb()
     self.verticalSpeed = self.verticalInput * climbSpeed
 end
@@ -101,8 +121,6 @@ end
 --------------------------------------------------------------
 --WALLSLIDE
 --------------------------------------------------------------
-Script:property("wallSideMaxFallSpeed", 10)
-
 Movement.isWallSliding = false
 
 function Movement:wallSlide()
@@ -120,15 +138,6 @@ end
 --------------------------------------------------------------
 --JUMP
 --------------------------------------------------------------
-Script:property("jumpDist", 16 * 3)
-Script:property("jumpHeight", 16 * 6)
-Script:property("jumpArcHeight", 16)
-Script:property("jumpArcDist", 16)
-Script:property("jumpFallDist", 16 * 2)
-Script:property("maxFallSpeed", 300)
-Script:property("bufferTime", 100)
-Script:property("coyoteTime", 100)
-
 function Movement:canUseCoyote()
     return self.coyoteUsable and not self.isGrounded and (self.timeLeftGrounded + coyoteTime > Time:getTime()) and self.lastJumpPress == Time:getTime()
 end
@@ -215,10 +224,6 @@ end
 --------------------------------------------------------------
 --COLLISION
 --------------------------------------------------------------
-Script:property("groundCheckArea", 1)
-Script:property("groundLayer", 1)
-Script:property("groundAngle", 25)
-
 function Movement:checkGrounded()
     return GO:getPhysicsBody():checkGrounded(groundAngle)
 end
@@ -226,8 +231,6 @@ end
 --------------------------------------------------------------
 --DASH
 --------------------------------------------------------------
-Script:property("dashSpeed", 500)
-
 function Movement:dash()
     self.canDash = false
     self.horizontalSpeed = self.facing * dashSpeed

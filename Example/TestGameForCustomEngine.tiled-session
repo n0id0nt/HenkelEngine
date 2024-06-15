@@ -23,59 +23,71 @@
                 10,
                 8
             ],
-            "scale": 2,
-            "selectedLayer": 4,
+            "scale": 1,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 256,
-                "y": 127.25
+                "x": 703,
+                "y": 230.5
             }
         },
         "AutoMappingTestLevel2.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 3,
+            "expandedObjectLayers": [
+                13
+            ],
+            "scale": 1,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 470,
-                "y": 501
+                "x": 604,
+                "y": 261.5
             }
         },
         "AutoMappingTestLevel3.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 3,
+            "expandedObjectLayers": [
+                13
+            ],
+            "scale": 1,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": -44,
-                "y": 403
+                "x": 652,
+                "y": 246.5
             }
         },
         "AutoMappingTestLevel4.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 3,
+            "expandedObjectLayers": [
+                13
+            ],
+            "scale": 1,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": -558,
-                "y": 449
+                "x": 285,
+                "y": 590.5
             }
         },
         "AutoMappingTestLevel5.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 3,
+            "expandedObjectLayers": [
+                13
+            ],
+            "scale": 1,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": -434.66666666666663,
-                "y": -244.66666666666669
+                "x": 247,
+                "y": 250.5
             }
         },
         "AutomappingRules/AutoTileRules.tmx": {
             "scale": 2,
             "selectedLayer": 8,
             "viewCenter": {
-                "x": 800,
-                "y": 159.75
+                "x": 799,
+                "y": 159.25
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0001_Level_0.tmx": {
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 379.5,
-                "y": 306
+                "x": 378,
+                "y": 305.5
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0001_Level_0.tmx#CaveTiles": {
@@ -94,8 +106,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 825.5,
-                "y": 354
+                "x": 1406,
+                "y": 538.5
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0002_Level_1.tmx#CaveTiles": {
@@ -154,8 +166,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 224,
-                "y": 144.5
+                "x": 222,
+                "y": 143.5
             }
         },
         "Levels/ExampleLDKTLevel/tiled/0005_Level_4.tmx#CaveTiles": {
@@ -203,8 +215,8 @@
             "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 246,
-                "y": 264.25
+                "x": 232.5,
+                "y": 251.25
             }
         },
         "TestTiles.tsj": {
@@ -256,17 +268,17 @@
         "Levels/ExampleLDKTLevel/tiled/0002_Level_1.tmx"
     ],
     "project": "TestGameForCustomEngine.tiled-project",
-    "property.type": "string",
+    "property.type": "Tag",
     "recentFiles": [
+        "AutoMappingTestLevel.tmx",
+        "Warrior_Sheet-Effect.tsx",
+        "Levels/ExampleLDKTLevel/tiled/0001_Level_0.tmx",
+        "Levels/ExampleLDKTLevel/tiled/0002_Level_1.tmx",
+        "Levels/ExampleLDKTLevel/tiled/0005_Level_4.tmx",
         "TestLevel.tmx",
         "adventurer-1.3-Sheet.tsx",
         "cavesofgallet_tiles.tsx",
-        "AutoMappingTestLevel.tmx",
         "AutomappingRules/AutoTileRules.tmx",
-        "Warrior_Sheet-Effect.tsx",
-        "Levels/ExampleLDKTLevel/tiled/0001_Level_0.tmx",
-        "Levels/ExampleLDKTLevel/tiled/0005_Level_4.tmx",
-        "Levels/ExampleLDKTLevel/tiled/0002_Level_1.tmx",
         "Player.tmx",
         "TestTiles.tsj",
         "TestLevel.tmj"

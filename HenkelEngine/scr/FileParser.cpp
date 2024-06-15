@@ -18,12 +18,13 @@
 #include "UI/UITexture.h"
 #include "UI/UIText.h"
 #include <queue>
+#include <tuple>
 
 const std::string s_testMap1 = "TestLevel.tmx";
 const std::string s_testMap2 = "AutoMappingTestLevel.tmx";
 
 static int activeCameraId = 0;
-static std::queue<Entity*> entitiesSeperateFromLevel;
+static std::queue<std::tuple<std::string, Entity*>> entitiesSeperateFromLevel;
 
 void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::string& worldFile)
 {
@@ -199,7 +200,8 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 
 			for (auto& object : layer.children("object"))
 			{
-				Entity* gameObjectEntity = CreateObject(world, object, fileDir, tileSheet);
+				Entity* gameObjectEntity = CreateObject(world, object, fileDir, tileSheet, true);
+				if (!gameObjectEntity) continue;
 				gameObjectEntity->SetParent(objectGroupEntity);
 
 				auto* transform = gameObjectEntity->GetComponent<TransformComponent>();
@@ -223,13 +225,21 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 
 	while (entitiesSeperateFromLevel.size() > 0)
 	{
-		Entity* entity = entitiesSeperateFromLevel.front();
+		Entity* entity = std::get<Entity*>(entitiesSeperateFromLevel.front());
+		std::string sceneName = std::get<std::string>(entitiesSeperateFromLevel.front());
 		entitiesSeperateFromLevel.pop();
-		entity->RemoveParent();
+
+		Entity* level = world->FindEntityFromName(sceneName);
+		if (!level)
+		{
+			level = world->CreateEntity(sceneName);
+		}
+
+		entity->SetParent(level);
 	}
 }
 
-Entity* FileParser::LoadTemplate(World* world, const std::string& fileDir, const std::string& levelFile)
+Entity* FileParser::LoadTemplate(World* world, const std::string& fileDir, const std::string& levelFile, bool unique)
 {
 	// Get Working Dir of new file
 	std::string file = fileDir + levelFile;
@@ -240,10 +250,10 @@ Entity* FileParser::LoadTemplate(World* world, const std::string& fileDir, const
 
 	TileSheet tileSheet(Engine::GetInstance()->GetProjectDirectory(), workingDir + doc.child("template").child("tileset").attribute("source").as_string());
 
-	return CreateObject(world, doc.child("template").child("object"), workingDir, tileSheet);
+	return CreateObject(world, doc.child("template").child("object"), workingDir, tileSheet, unique);
 }
 
-Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet)
+Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, const std::string& fileDir, const TileSheet& tileSheet, bool unique)
 {
 	Entity* gameObjectEntity = nullptr;
 
@@ -251,7 +261,8 @@ Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, con
 
 	if (object.attribute("template"))
 	{
-		gameObjectEntity = LoadTemplate(world, fileDir, object.attribute("template").as_string());
+		gameObjectEntity = LoadTemplate(world, fileDir, object.attribute("template").as_string(), unique);
+		if (!gameObjectEntity) return nullptr;
 		auto* tranformComponent = gameObjectEntity->GetComponent<TransformComponent>();
 		auto* physicsBody = gameObjectEntity->GetComponent<PhysicsBodyComponent>();
 		auto* staticBody = gameObjectEntity->GetComponent<StaticBodyComponent>();
@@ -271,6 +282,10 @@ Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, con
 	else
 	{
 		std::string objectName = object.attribute("name").as_string();
+		if (unique && world->FindEntityFromName(objectName))
+		{
+			return nullptr;
+		}
 		gameObjectEntity = world->CreateEntity(objectName);
 
 		gameObjectEntity->CreateComponent<MaterialComponent>("res/shaders/sprite.vert", "res/shaders/sprite.frag");
@@ -427,9 +442,7 @@ Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, con
 		}
 		else if (splitPropertyName[0] == "InitualiseInScene")
 		{
-			// TODO find object in scene that matches this name if none create a new parent object of this name
-			//gameObjectEntity->RemoveParent();
-			entitiesSeperateFromLevel.push(gameObjectEntity);
+			entitiesSeperateFromLevel.push(std::tuple<std::string, Entity*>(property.attribute("value").as_string(), gameObjectEntity));
 		}
 		else if (splitPropertyName[0] == "Camera")
 		{
@@ -438,7 +451,7 @@ Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, con
 			if (object.attribute("id").as_int() == activeCameraId)
 			{
 				cameraComponent->MakeCameraActiveFromCamera(world->GetCamera());
-				cameraComponent->ForcePosition();
+				//cameraComponent->ForcePosition();
 			}
 			for (auto& cameraProperty : property.child("properties").children())
 			{
@@ -535,7 +548,7 @@ Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, con
 
 Entity* FileParser::CreateTemplatedObject(World* world, const std::string& levelFile)
 {
-	return LoadTemplate(world, Engine::GetInstance()->GetProjectDirectory(), levelFile);
+	return LoadTemplate(world, Engine::GetInstance()->GetProjectDirectory(), levelFile, false);
 }
 
 Entity* FileParser::LoadUILayout(World* world, const std::string& fileDir, const std::string& levelFile)
