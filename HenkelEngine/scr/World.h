@@ -69,6 +69,7 @@ public:
 
 	Entity* FindEntityFromName(std::string name);
 
+	sol::table LUAGetAllEntitiesWithTag(const std::string& tag);
 	void LUABind(sol::state& lua);
 
 private:

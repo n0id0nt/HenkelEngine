@@ -132,6 +132,20 @@ sol::table LUAGetAllObjectsOfType(World* world)
 	return objects;
 }
 
+sol::table World::LUAGetAllEntitiesWithTag(const std::string& tag)
+{
+	sol::state& lua = Engine::GetInstance()->GetInstance()->GetSolState();
+	sol::table objects = lua.create_table();
+	for (auto& entity : m_entities)
+	{
+		if (entity->HasTag(tag))
+		{
+			objects.add(entity.get());
+		}
+	}
+	return objects;
+}
+
 void World::LUABind(sol::state& lua)
 {
 	lua.new_usertype<World>("World"
@@ -139,6 +153,7 @@ void World::LUABind(sol::state& lua)
 		, "unloadLevel", [](World* world, Entity* levelEntity) { LevelSystem::UnloadLevel(world, levelEntity); }
 		, "findLevelWithPosition", [](World* world, const glm::vec2& position) { return LevelSystem::FindLevelWithPosition(world, &world->m_registry, position); }
 		, "getLevelEntities", &LUAGetAllObjectsOfType<LevelComponent>
+		, "getEntitiesWithTag", &World::LUAGetAllEntitiesWithTag
 	);
 	lua.set("World", this);
 }

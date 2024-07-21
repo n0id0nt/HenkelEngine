@@ -22,6 +22,8 @@
 #include <queue>
 #include <tuple>
 
+constexpr static const bool ENTITY_HAVE_SCRIPT = false;
+
 const std::string s_testMap1 = "TestLevel.tmx";
 const std::string s_testMap2 = "AutoMappingTestLevel.tmx";
 
@@ -35,6 +37,12 @@ void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::
 
 	world->GetPhysicsWorld()->SetPixelsPerMeter(16.0f);
 
+	// create game with script
+	Entity* gameEntity = world->CreateEntity("Game");
+	const std::string script = "Scripts/Game.lua";
+	//gameEntity->CreateComponent<TransformComponent>(gameEntity, glm::vec3());
+	gameEntity->CreateComponent<ScriptComponent>(fileDir + script, Engine::GetInstance()->GetSolState(), gameEntity);
+	
 	bool loadedLevel = false;
 	for (auto& map : data["maps"])
 	{
@@ -53,6 +61,7 @@ void FileParser::LoadWorld(World* world, const std::string& fileDir, const std::
 			loadedLevel = true;
 		}
 	}
+
 }
 
 void FileParser::LoadLevel(World* world, Entity* levelEntity)
@@ -157,7 +166,7 @@ void FileParser::LoadLevel(World* world, Entity* levelEntity)
 				{
 					tilemapEntity->AddTag(splitPropertyName[1]);
 				}
-				else if (splitPropertyName[0] == "Script")
+				else if (splitPropertyName[0] == "Script" && ENTITY_HAVE_SCRIPT)
 				{
 					if (splitPropertyName.size() > 1)
 					{
@@ -323,7 +332,7 @@ Entity* FileParser::CreateObject(World* world, const pugi::xml_node& object, con
 
 		std::vector<std::string> splitPropertyName(iterator, end);
 
-		if (splitPropertyName[0] == "Script")
+		if (splitPropertyName[0] == "Script" && ENTITY_HAVE_SCRIPT)
 		{
 			if (splitPropertyName.size() > 1)
 			{

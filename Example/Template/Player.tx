@@ -151,6 +151,7 @@
      <property name="YOffset" type="float" value="-6"/>
     </properties>
    </property>
+   <property name="Tag#Player" type="class" propertytype="Tag"/>
   </properties>
  </object>
 </template>
